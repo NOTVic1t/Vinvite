@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Daftar Tamu — Vinvite Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+
+<div class="mobile-topbar">
+  <button id="sidebar-toggle">☰</button>
+  <span class="auth-logo" style="margin:0;">Vinvite</span>
+  <span></span>
+</div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <div class="topbar"><h1>Daftar Tamu</h1></div>
+    <div class="content">
+
+      <div class="card">
+        <h3 class="card-title">Tambah Tamu</h3>
+        <form id="guest-form">
+          <div class="field-row two">
+            <div class="field"><label>Nama Tamu</label><input name="name" required /></div>
+            <div class="field"><label>No. WhatsApp</label><input name="phone" placeholder="08xxxxxxxxxx" /></div>
+          </div>
+          <div class="field-row two">
+            <div class="field"><label>Grup</label><input name="group_label" placeholder="Keluarga, Kantor, Kampus..." /></div>
+            <div class="field">
+              <label>Diundang ke</label>
+              <select name="invited_session">
+                <option value="both">Akad & Resepsi</option>
+                <option value="akad">Akad saja</option>
+                <option value="resepsi">Resepsi saja</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Tambah Tamu</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">Tamu Terdaftar</h3>
+        <div class="table-wrap">
+          <table id="guest-table">
+            <thead><tr><th>Nama</th><th>WhatsApp</th><th>Grup</th><th>Sesi</th><th>Link Undangan</th><th></th></tr></thead>
+            <tbody id="guest-tbody"></tbody>
+          </table>
+        </div>
+        <p class="empty-state" id="guest-empty" hidden><h3>Belum ada tamu</h3><p>Tambahkan tamu pertamamu di atas.</p></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../../engine/config.js"></script>
+<script src="../../engine/supabase-client.js"></script>
+<script src="../js/admin-common.js"></script>
+<script>
+  let invitation = null;
+  const client = () => window.getVinviteClient();
+
+  function guestLink(guest) {
+    if (!invitation) return "#";
+    const base = `${location.origin}${location.pathname.replace(/admin\/pages\/.*/, "")}themes/${invitation.theme_slug}/index.html`;
+    return `${base}?slug=${invitation.slug}&to=${encodeURIComponent(guest.name)}`;
+  }
+
+  function waText(guest) {
+    const link = guestLink(guest);
+    const names = `${invitation.groom_nickname || invitation.groom_name} & ${invitation.bride_nickname || invitation.bride_name}`;
+    return encodeURIComponent(`Assalamu'alaikum/Halo ${guest.name},\n\nDengan penuh sukacita kami mengundang Bapak/Ibu/Saudara/i untuk hadir di acara pernikahan kami, ${names}.\n\nBerikut undangan digital kami:\n${link}\n\nMohon doa restu & konfirmasi kehadirannya 🙏`);
+  }
+
+  async function loadGuests() {
+    const { data: guests } = await client().from("guests").select("*").eq("invitation_id", invitation.id).order("created_at", { ascending: false });
+    const tbody = document.getElementById("guest-tbody");
+    const empty = document.getElementById("guest-empty");
+
+    if (!guests || !guests.length) {
+      tbody.innerHTML = "";
+      empty.hidden = false;
+      return;
+    }
+    empty.hidden = true;
+    tbody.innerHTML = guests.map(g => `
+      <tr>
+        <td>${g.name}</td>
+        <td>${g.phone || "—"}</td>
+        <td>${g.group_label || "—"}</td>
+        <td><span class="badge grey">${g.invited_session}</span></td>
+        <td><a href="${guestLink(g)}" target="_blank" style="font-size:.78rem;">Buka Link</a></td>
+        <td style="display:flex;gap:6px;">
+          <a class="btn btn-outline btn-sm" target="_blank" href="https://wa.me/?text=${waText(g)}">WA</a>
+          <button class="btn btn-danger btn-sm" data-id="${g.id}">Hapus</button>
+        </td>
+      </tr>
+    `).join("");
+
+    tbody.querySelectorAll("button[data-id]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        await client().from("guests").delete().eq("id", btn.dataset.id);
+        loadGuests();
+      });
+    });
+  }
+
+  (async function () {
+    const auth = await window.requireAuth("..");
+    if (!auth) return;
+    window.renderAdminSidebar("guests", "..", auth.profile);
+    window.initMobileSidebarToggle();
+
+    const { data: inv } = await client()
+      .from("invitations").select("*").eq("user_id", auth.user.id)
+      .order("created_at", { ascending: false }).limit(1).maybeSingle();
+
+    if (!inv) {
+      document.querySelector(".content").innerHTML = `
+        <div class="empty-state"><h3>Buat undangan terlebih dahulu</h3>
+        <p>Isi detail undangan sebelum menambahkan tamu.</p>
+        <a class="btn btn-primary" style="margin-top:14px;" href="invitation-editor.html">Buat Undangan</a></div>`;
+      return;
+    }
+    invitation = inv;
+    loadGuests();
+
+    document.getElementById("guest-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const payload = Object.fromEntries(fd.entries());
+      payload.invitation_id = invitation.id;
+      const { error } = await client().from("guests").insert(payload);
+      if (error) return window.vinviteToast("Gagal menambah tamu: " + error.message);
+      e.target.reset();
+      window.vinviteToast("Tamu ditambahkan ✓");
+      loadGuests();
+    });
+  })();
+</script>
+</body>
+</html>

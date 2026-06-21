@@ -1,0 +1,10 @@
+{
+  "slug": "13-mawar-klasik",
+  "name": "Mawar Klasik",
+  "category": "Classic Romantic Floral",
+  "status": "planned",
+  "palette": { "deep_rose": "#7A2E3A", "blush": "#E9C9C9", "cream": "#FBF5EF", "gold": "#B68A4E", "ink": "#3A2A2A" },
+  "type": { "display": "Playfair Display", "body": "EB Garamond" },
+  "signature": "A single hand-drawn rose illustration that blooms (via SVG path animation) the first time the hero section scrolls into view.",
+  "brief": "Timelessly romantic, rose-centric, deep red and blush — for couples who want florals without going boho or pastel."
+}

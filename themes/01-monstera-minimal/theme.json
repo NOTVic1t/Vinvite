@@ -1,0 +1,19 @@
+{
+  "slug": "01-monstera-minimal",
+  "name": "Monstera Minimal",
+  "category": "Minimalist Modern",
+  "status": "built",
+  "palette": {
+    "ivory": "#FBF8F3",
+    "sage": "#46594C",
+    "sand": "#DCD0B8",
+    "ink": "#262420",
+    "gold": "#B08C4F"
+  },
+  "type": {
+    "display": "Cormorant Garamond",
+    "body": "Jost"
+  },
+  "signature": "A hand-drawn monstera-leaf line that draws itself across each section's divider as it scrolls into view.",
+  "brief": "Clean, airy, botanical-minimal. For couples who want something modern and uncluttered rather than ornate. Generous whitespace, thin hairline rules, a circular monogram, restrained motion."
+}

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Undangan Pernikahan — Senja Sinematik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- COVER GATE -->
+<section id="cover-screen" class="cover">
+  <div class="bar bar-top"></div>
+  <div class="bar bar-bottom"></div>
+  <div class="cover-bg" style="background-image:url('https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1400&auto=format&fit=crop')"></div>
+  <div class="cover-grain"></div>
+  <div class="cover-content">
+    <p class="slate">ADEGAN 00 — PEMBUKA</p>
+    <h1 class="cover-names">Radit <span>&amp;</span> Nindy</h1>
+    <p class="cover-to">Untuk</p>
+    <p class="cover-guest" id="cover-guest-name">Bapak/Ibu Tamu Undangan</p>
+    <button id="open-invitation-btn" class="btn-open">▶ Mulai Cerita</button>
+  </div>
+</section>
+
+<main id="main-content">
+
+  <!-- HERO -->
+  <section class="scene hero">
+    <div class="bar bar-top"></div><div class="bar bar-bottom"></div>
+    <p class="slate">ADEGAN 01 — THE WEDDING OF</p>
+    <h1 class="hero-names" id="hero-names">Radit &amp; Nindy</h1>
+    <p class="hero-date" id="hero-date">17 Oktober 2026</p>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="scene-plain quote">
+    <p class="quote-text">&ldquo;Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu cenderung dan merasa tenteram kepadanya.&rdquo;</p>
+    <p class="quote-source">QS. Ar-Rum: 21</p>
+  </section>
+
+  <!-- COUPLE -->
+  <section class="scene-plain couple">
+    <p class="slate">ADEGAN 02 — PEMERAN UTAMA</p>
+    <div class="couple-grid">
+      <div class="couple-card">
+        <div class="couple-photo"><img src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?q=80&w=600&auto=format&fit=crop" alt="" /></div>
+        <h3 id="groom-name">Raditya Pradana</h3>
+        <p id="groom-parents">Putra dari Bapak Sutrisno &amp; Ibu Wulandari</p>
+      </div>
+      <div class="couple-amp">&amp;</div>
+      <div class="couple-card">
+        <div class="couple-photo"><img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=600&auto=format&fit=crop" alt="" /></div>
+        <h3 id="bride-name">Anindya Kirana</h3>
+        <p id="bride-parents">Putri dari Bapak Hartono &amp; Ibu Suryani</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <section class="scene-plain countdown-section">
+    <p class="slate">TIMECODE MENUJU HARI-H</p>
+    <div class="countdown">
+      <div class="cd-item"><span id="cd-d">00</span><label>HARI</label></div>
+      <span class="cd-colon">:</span>
+      <div class="cd-item"><span id="cd-h">00</span><label>JAM</label></div>
+      <span class="cd-colon">:</span>
+      <div class="cd-item"><span id="cd-m">00</span><label>MENIT</label></div>
+      <span class="cd-colon">:</span>
+      <div class="cd-item"><span id="cd-s">00</span><label>DETIK</label></div>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section class="scene-plain events">
+    <p class="slate">ADEGAN 03 — LOKASI SYUTING</p>
+    <div class="event-grid">
+      <div class="event-card">
+        <h3>Akad Nikah</h3>
+        <p id="akad-date">Sabtu, 17 Oktober 2026</p>
+        <p id="akad-time">08:00 – 10:00 WIB</p>
+        <p id="akad-venue">Kediaman Mempelai Wanita</p>
+        <p id="akad-address" class="event-address">Jl. Kenanga No. 12, Bandung</p>
+        <a id="akad-maps" href="#" target="_blank" rel="noopener" class="btn-maps">Buka Lokasi</a>
+      </div>
+      <div class="event-card">
+        <h3>Resepsi</h3>
+        <p id="resepsi-date">Sabtu, 17 Oktober 2026</p>
+        <p id="resepsi-time">11:00 – 14:00 WIB</p>
+        <p id="resepsi-venue">Gedung Graha Pertiwi</p>
+        <p id="resepsi-address" class="event-address">Jl. Asia Afrika No. 88, Bandung</p>
+        <a id="resepsi-maps" href="#" target="_blank" rel="noopener" class="btn-maps">Buka Lokasi</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOVE STORY -->
+  <section class="scene-plain story">
+    <p class="slate">ADEGAN 04 — ALUR CERITA</p>
+    <div class="story-timeline" id="story-timeline"></div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="scene-plain gallery">
+    <p class="slate">ADEGAN 05 — CUPLIKAN</p>
+    <div class="gallery-grid" id="gallery-grid"></div>
+  </section>
+
+  <!-- GIFT -->
+  <section class="scene-plain gift">
+    <p class="slate">ADEGAN 06 — TANDA KASIH</p>
+    <p class="gift-intro">Doa restu Anda adalah hadiah yang paling berarti. Namun jika ingin memberi tanda kasih, kami menyediakan:</p>
+    <div class="gift-accounts" id="gift-accounts"></div>
+  </section>
+
+  <!-- RSVP -->
+  <section class="scene-plain rsvp">
+    <p class="slate">ADEGAN 07 — KONFIRMASI KEHADIRAN</p>
+    <form id="rsvp-form" class="form">
+      <input type="text" name="guest_name" placeholder="Nama Anda" required />
+      <select name="attendance" required>
+        <option value="">Konfirmasi Kehadiran</option>
+        <option value="hadir">Hadir</option>
+        <option value="tidak_hadir">Tidak Hadir</option>
+        <option value="ragu">Masih Ragu</option>
+      </select>
+      <input type="number" name="guest_count" min="1" max="5" value="1" placeholder="Jumlah Tamu" />
+      <textarea name="message" placeholder="Ucapan & doa (opsional)" rows="3"></textarea>
+      <button type="submit" class="btn-submit">Kirim Konfirmasi</button>
+    </form>
+    <p id="rsvp-success" class="form-success" hidden>Terima kasih atas konfirmasi Anda 🤍</p>
+  </section>
+
+  <!-- GUESTBOOK -->
+  <section class="scene-plain guestbook">
+    <p class="slate">ADEGAN 08 — UCAPAN &amp; DOA</p>
+    <form id="guestbook-form" class="form">
+      <input type="text" name="name" placeholder="Nama Anda" required />
+      <textarea name="message" placeholder="Tulis ucapan & doa Anda" rows="3" required></textarea>
+      <button type="submit" class="btn-submit">Kirim Ucapan</button>
+    </form>
+    <div id="guestbook-list" class="wishes-list"></div>
+  </section>
+
+  <!-- CLOSING -->
+  <footer class="scene end">
+    <div class="bar bar-top"></div><div class="bar bar-bottom"></div>
+    <p class="slate">TAMAT</p>
+    <p class="closing-text">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
+    <p class="closing-names">Radit &amp; Nindy</p>
+    <p class="credit">Made with Vinvite — By Victor Rizki Valentiano</p>
+  </footer>
+
+</main>
+
+<button id="music-toggle" class="music-toggle" aria-label="Putar musik">♪</button>
+<audio id="bg-music" src="" preload="none"></audio>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../../engine/config.js"></script>
+<script src="../../engine/supabase-client.js"></script>
+<script src="../../engine/sample-data.js"></script>
+<script src="../../engine/countdown.js"></script>
+<script src="../../engine/rsvp.js"></script>
+<script src="../../engine/guestbook.js"></script>
+<script src="../../engine/gallery.js"></script>
+<script src="../../engine/music-player.js"></script>
+<script src="../../engine/cover-gate.js"></script>
+<script src="script.js"></script>
+<script src="../../engine/data-loader.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "slug": "03-senja-sinematik",
+  "name": "Senja Sinematik",
+  "category": "Cinematic Dark",
+  "status": "built",
+  "palette": {
+    "near_black": "#0E0D11",
+    "indigo": "#1C2033",
+    "amber": "#D9A24B",
+    "smoke": "#8E8C95",
+    "cream": "#ECE6DA"
+  },
+  "type": {
+    "display": "Cinzel",
+    "body": "Manrope"
+  },
+  "signature": "Cinematic letterbox bars frame every full-bleed photo section like film stock; the cover gate opens like curtains parting on a scene, sections are numbered like a film slate (ADEGAN 01, 02...), and the countdown reads like a film timer in monospace digits.",
+  "brief": "Moody, dramatic, photography-forward. For couples who want their wedding told like a film — golden-hour grading, wide cinematic crops, slow reveals."
+}

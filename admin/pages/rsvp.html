@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RSVP — Vinvite Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+
+<div class="mobile-topbar">
+  <button id="sidebar-toggle">☰</button>
+  <span class="auth-logo" style="margin:0;">Vinvite</span>
+  <span></span>
+</div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <div class="topbar"><h1>RSVP</h1></div>
+    <div class="content">
+
+      <div class="stat-grid">
+        <div class="stat-card"><div class="num" id="stat-total">—</div><div class="label">Total Respon</div></div>
+        <div class="stat-card"><div class="num" id="stat-hadir">—</div><div class="label">Hadir</div></div>
+        <div class="stat-card"><div class="num" id="stat-tidak">—</div><div class="label">Tidak Hadir</div></div>
+        <div class="stat-card"><div class="num" id="stat-ragu">—</div><div class="label">Masih Ragu</div></div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">Semua Respon</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Nama</th><th>Status</th><th>Jumlah</th><th>Pesan</th><th>Waktu</th></tr></thead>
+            <tbody id="rsvp-tbody"></tbody>
+          </table>
+        </div>
+        <p class="empty-state" id="rsvp-empty" hidden><h3>Belum ada respon RSVP</h3></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../../engine/config.js"></script>
+<script src="../../engine/supabase-client.js"></script>
+<script src="../js/admin-common.js"></script>
+<script>
+  function badgeFor(status) {
+    if (status === "hadir") return '<span class="badge green">Hadir</span>';
+    if (status === "tidak_hadir") return '<span class="badge red">Tidak Hadir</span>';
+    return '<span class="badge amber">Masih Ragu</span>';
+  }
+
+  (async function () {
+    const auth = await window.requireAuth("..");
+    if (!auth) return;
+    window.renderAdminSidebar("rsvp", "..", auth.profile);
+    window.initMobileSidebarToggle();
+
+    const client = window.getVinviteClient();
+    const { data: invitation } = await client
+      .from("invitations").select("id").eq("user_id", auth.user.id)
+      .order("created_at", { ascending: false }).limit(1).maybeSingle();
+
+    if (!invitation) {
+      document.querySelector(".content").innerHTML = `<div class="empty-state"><h3>Buat undangan terlebih dahulu</h3></div>`;
+      return;
+    }
+
+    const { data: rsvps } = await client.from("rsvps").select("*").eq("invitation_id", invitation.id).order("created_at", { ascending: false });
+
+    const hadir = (rsvps || []).filter(r => r.attendance === "hadir").length;
+    const tidak = (rsvps || []).filter(r => r.attendance === "tidak_hadir").length;
+    const ragu = (rsvps || []).filter(r => r.attendance === "ragu").length;
+
+    document.getElementById("stat-total").textContent = (rsvps || []).length;
+    document.getElementById("stat-hadir").textContent = hadir;
+    document.getElementById("stat-tidak").textContent = tidak;
+    document.getElementById("stat-ragu").textContent = ragu;
+
+    const tbody = document.getElementById("rsvp-tbody");
+    if (!rsvps || !rsvps.length) {
+      document.getElementById("rsvp-empty").hidden = false;
+      return;
+    }
+    tbody.innerHTML = rsvps.map(r => `
+      <tr>
+        <td>${r.guest_name}</td>
+        <td>${badgeFor(r.attendance)}</td>
+        <td>${r.guest_count}</td>
+        <td>${r.message || "—"}</td>
+        <td>${new Date(r.created_at).toLocaleString("id-ID")}</td>
+      </tr>
+    `).join("");
+  })();
+</script>
+</body>
+</html>

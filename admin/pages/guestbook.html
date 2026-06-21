@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ucapan & Doa — Vinvite Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+
+<div class="mobile-topbar">
+  <button id="sidebar-toggle">☰</button>
+  <span class="auth-logo" style="margin:0;">Vinvite</span>
+  <span></span>
+</div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <div class="topbar"><h1>Ucapan &amp; Doa</h1></div>
+    <div class="content">
+      <div class="card">
+        <h3 class="card-title">Semua Ucapan</h3>
+        <div id="wish-list" style="display:flex;flex-direction:column;gap:14px;"></div>
+        <p class="empty-state" id="wish-empty" hidden><h3>Belum ada ucapan</h3></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../../engine/config.js"></script>
+<script src="../../engine/supabase-client.js"></script>
+<script src="../js/admin-common.js"></script>
+<script>
+  (async function () {
+    const auth = await window.requireAuth("..");
+    if (!auth) return;
+    window.renderAdminSidebar("guestbook", "..", auth.profile);
+    window.initMobileSidebarToggle();
+
+    const client = window.getVinviteClient();
+    const { data: invitation } = await client
+      .from("invitations").select("id").eq("user_id", auth.user.id)
+      .order("created_at", { ascending: false }).limit(1).maybeSingle();
+
+    if (!invitation) {
+      document.querySelector(".content").innerHTML = `<div class="empty-state"><h3>Buat undangan terlebih dahulu</h3></div>`;
+      return;
+    }
+
+    async function load() {
+      const { data: wishes } = await client.from("guestbook").select("*").eq("invitation_id", invitation.id).order("created_at", { ascending: false });
+      const list = document.getElementById("wish-list");
+      if (!wishes || !wishes.length) {
+        document.getElementById("wish-empty").hidden = false;
+        return;
+      }
+      list.innerHTML = wishes.map(w => `
+        <div style="border-bottom:1px solid var(--border);padding-bottom:14px;display:flex;justify-content:space-between;gap:10px;">
+          <div>
+            <strong style="font-family:'Fraunces',serif;">${w.name}</strong>
+            <p style="font-size:.85rem;color:var(--grey);margin-top:4px;">${w.message}</p>
+            <p style="font-size:.7rem;color:#a39d8f;margin-top:6px;">${new Date(w.created_at).toLocaleString("id-ID")}</p>
+          </div>
+          <button class="btn btn-danger btn-sm" data-id="${w.id}" style="height:fit-content;">Hapus</button>
+        </div>
+      `).join("");
+      list.querySelectorAll("button[data-id]").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          await client.from("guestbook").delete().eq("id", btn.dataset.id);
+          load();
+        });
+      });
+    }
+    load();
+  })();
+</script>
+</body>
+</html>

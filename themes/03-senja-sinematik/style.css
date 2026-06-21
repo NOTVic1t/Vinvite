@@ -1,0 +1,143 @@
+/* =============================================================================
+   VINVITE — THEME 03: SENJA SINEMATIK
+   Palette: near-black #0E0D11 / indigo #1C2033 / amber #D9A24B / smoke #8E8C95 / cream #ECE6DA
+============================================================================= */
+
+:root {
+  --black: #0E0D11;
+  --indigo: #1C2033;
+  --amber: #D9A24B;
+  --smoke: #8E8C95;
+  --cream: #ECE6DA;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { background: var(--black); color: var(--cream); font-family: "Manrope", sans-serif; overflow-x: hidden; }
+body.vinvite-locked { overflow: hidden; height: 100vh; }
+h1, h2, h3 { font-family: "Cinzel", serif; letter-spacing: .03em; }
+
+.slate {
+  font-family: "JetBrains Mono", monospace; font-size: .68rem; letter-spacing: .25em;
+  text-transform: uppercase; color: var(--amber); text-align: center; margin-bottom: 18px;
+}
+
+/* letterbox bars used on cover + hero + closing scenes */
+.bar { position: absolute; left: 0; right: 0; height: 7vh; background: #000; z-index: 5; }
+.bar-top { top: 0; } .bar-bottom { bottom: 0; }
+
+/* ---------- COVER ---------- */
+.cover { position: fixed; inset: 0; z-index: 50; overflow: hidden; transition: opacity .9s ease, visibility .9s ease; }
+.cover.is-closing { opacity: 0; visibility: hidden; pointer-events: none; }
+.cover-bg { position: absolute; inset: 0; background-size: cover; background-position: center; filter: saturate(1.05) brightness(.55); }
+.cover-grain { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 2px); mix-blend-mode: overlay; }
+.cover-content { position: relative; z-index: 6; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 32px; }
+.cover-names { font-size: 3rem; color: var(--cream); margin: 14px 0; }
+.cover-names span { color: var(--amber); }
+.cover-to { font-size: .8rem; color: var(--smoke); margin-top: 18px; }
+.cover-guest { font-family: "Cinzel", serif; font-size: 1.1rem; margin-top: 6px; border-bottom: 1px solid var(--amber); padding-bottom: 8px; }
+.btn-open {
+  margin-top: 36px; padding: 14px 36px; background: var(--amber); color: var(--black); border: none;
+  font-family: "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; font-size: .72rem;
+  cursor: pointer;
+}
+.btn-open:hover { background: #eab564; }
+
+/* ---------- HERO (full-bleed scene with letterbox) ---------- */
+.scene.hero {
+  position: relative; min-height: 78vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 14vh 28px;
+  background: linear-gradient(180deg, var(--indigo), var(--black)),
+              url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=1400&auto=format&fit=crop') center/cover;
+  background-blend-mode: multiply;
+}
+.hero-names { font-size: 2.8rem; color: var(--cream); margin: 6px 0 14px; }
+.hero-date { font-family: "JetBrains Mono", monospace; letter-spacing: .15em; color: var(--amber); font-size: .85rem; }
+
+/* ---------- GENERIC SCENE ---------- */
+.scene-plain { max-width: 620px; margin: 0 auto; padding: 80px 28px; text-align: center; }
+
+/* ---------- QUOTE ---------- */
+.quote-text { font-family: "Cinzel", serif; font-size: 1.2rem; line-height: 1.8; color: var(--cream); }
+.quote-source { margin-top: 14px; font-family: "JetBrains Mono", monospace; font-size: .68rem; letter-spacing: .2em; color: var(--smoke); }
+
+/* ---------- COUPLE ---------- */
+.couple-grid { display: flex; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 8px; }
+.couple-card { max-width: 220px; }
+.couple-photo { width: 160px; height: 200px; overflow: hidden; margin: 0 auto 16px; position: relative; }
+.couple-photo::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgba(217,162,75,.5); }
+.couple-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(.15) contrast(1.05); }
+.couple-card h3 { font-size: 1.35rem; margin-bottom: 8px; color: var(--cream); }
+.couple-card p { font-size: .8rem; line-height: 1.6; color: var(--smoke); }
+.couple-amp { font-family: "Cinzel", serif; font-size: 2rem; color: var(--amber); }
+
+/* ---------- COUNTDOWN ---------- */
+.countdown { display: flex; justify-content: center; align-items: center; gap: 10px; }
+.cd-item { display: flex; flex-direction: column; align-items: center; min-width: 60px; }
+.cd-item span { font-family: "JetBrains Mono", monospace; font-size: 2.1rem; color: var(--amber); }
+.cd-item label { font-family: "JetBrains Mono", monospace; font-size: .58rem; letter-spacing: .15em; margin-top: 2px; color: var(--smoke); }
+.cd-colon { font-family: "JetBrains Mono", monospace; font-size: 1.6rem; color: var(--smoke); margin-bottom: 16px; }
+
+/* ---------- EVENTS ---------- */
+.event-grid { display: grid; gap: 22px; margin-top: 8px; }
+@media (min-width: 600px) { .event-grid { grid-template-columns: 1fr 1fr; } }
+.event-card { background: var(--indigo); padding: 30px 20px; border-left: 2px solid var(--amber); text-align: left; }
+.event-card h3 { font-size: 1.25rem; margin-bottom: 10px; color: var(--cream); }
+.event-card p { font-size: .85rem; margin-bottom: 4px; color: var(--cream); }
+.event-address { color: var(--smoke) !important; font-size: .78rem !important; }
+.btn-maps { display: inline-block; margin-top: 14px; font-family: "JetBrains Mono", monospace; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber); padding-bottom: 2px; }
+
+/* ---------- STORY ---------- */
+.story-timeline { text-align: left; margin-top: 24px; display: flex; flex-direction: column; gap: 26px; }
+.story-item { border-left: 2px solid var(--amber); padding-left: 20px; }
+.story-date { font-family: "JetBrains Mono", monospace; font-size: .68rem; letter-spacing: .15em; color: var(--amber); }
+.story-title { font-family: "Cinzel", serif; font-size: 1.15rem; margin: 4px 0 6px; color: var(--cream); }
+.story-text { font-size: .85rem; color: var(--smoke); line-height: 1.6; }
+
+/* ---------- GALLERY ---------- */
+.gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 8px; }
+.gallery-item { aspect-ratio: 16/10; overflow: hidden; }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(.1) contrast(1.05) brightness(.92); transition: transform .4s, filter .4s; }
+.gallery-item img:hover { transform: scale(1.05); filter: none; }
+
+/* ---------- GIFT ---------- */
+.gift-intro { font-size: .85rem; color: var(--smoke); line-height: 1.7; margin-bottom: 22px; }
+.gift-accounts { display: flex; flex-direction: column; gap: 14px; }
+.gift-account { background: var(--indigo); padding: 18px 22px; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 12px; border-left: 2px solid var(--amber); }
+.gift-account-info p:first-child { font-family: "JetBrains Mono", monospace; font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; color: var(--amber); margin-bottom: 4px; }
+.gift-account-info p:last-child { font-size: .8rem; color: var(--smoke); }
+.gift-account-info strong { font-family: "Cinzel", serif; font-size: 1.1rem; display: block; color: var(--cream); }
+.btn-copy { border: 1px solid var(--amber); background: none; color: var(--amber); padding: 8px 14px; font-family: "JetBrains Mono", monospace; font-size: .65rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; white-space: nowrap; }
+.btn-copy:hover { background: var(--amber); color: var(--black); }
+
+/* ---------- FORMS ---------- */
+.form { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; text-align: left; }
+.form input, .form select, .form textarea {
+  font-family: "Manrope"; font-size: .88rem; padding: 12px 14px;
+  border: 1px solid #3a3744; background: var(--indigo); color: var(--cream); width: 100%;
+}
+.form input::placeholder, .form textarea::placeholder { color: var(--smoke); }
+.form input:focus, .form select:focus, .form textarea:focus { outline: 1px solid var(--amber); }
+.btn-submit { background: var(--amber); color: var(--black); border: none; padding: 13px; font-family: "JetBrains Mono", monospace; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+.btn-submit:hover { background: #eab564; }
+.form-success { margin-top: 16px; color: var(--amber); font-size: .85rem; }
+
+/* ---------- WISHES ---------- */
+.wishes-list { margin-top: 26px; display: flex; flex-direction: column; gap: 16px; text-align: left; max-height: 360px; overflow-y: auto; }
+.wish-item { border-bottom: 1px solid #3a3744; padding-bottom: 14px; }
+.wish-name { font-family: "Cinzel", serif; font-size: 1rem; color: var(--amber); }
+.wish-message { font-size: .82rem; color: var(--cream); margin-top: 4px; line-height: 1.5; }
+.vinvite-empty { font-size: .82rem; color: var(--smoke); }
+
+/* ---------- CLOSING SCENE ---------- */
+.scene.end { position: relative; min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 14vh 28px; background: radial-gradient(ellipse at center, var(--indigo), var(--black)); }
+.closing-text { font-size: .85rem; color: var(--smoke); line-height: 1.8; max-width: 420px; margin: 0 auto; }
+.closing-names { font-family: "Cinzel", serif; font-size: 2rem; margin-top: 18px; color: var(--amber); }
+.credit { margin-top: 36px; font-family: "JetBrains Mono", monospace; font-size: .62rem; letter-spacing: .08em; color: #5b5864; }
+
+/* ---------- MUSIC TOGGLE ---------- */
+.music-toggle { position: fixed; bottom: 22px; right: 22px; z-index: 40; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--amber); background: var(--black); color: var(--amber); font-size: 1.1rem; cursor: pointer; }
+.music-toggle.is-playing { animation: spin 4s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) { .music-toggle.is-playing { animation: none; } }

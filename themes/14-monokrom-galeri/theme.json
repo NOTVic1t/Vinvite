@@ -1,0 +1,10 @@
+{
+  "slug": "14-monokrom-galeri",
+  "name": "Monokrom Galeri",
+  "category": "Minimal Editorial Photography",
+  "status": "planned",
+  "palette": { "black": "#111111", "white": "#FFFFFF", "grey": "#B7B7B7", "off_white": "#F2F2F2" },
+  "type": { "display": "a tall condensed grotesk", "body": "Helvetica-style neutral grotesk" },
+  "signature": "A magazine-style asymmetric photo grid with large duotone portraits and oversized running numerals, like an editorial spread rather than a card.",
+  "brief": "For photography-forward couples — almost no color, huge black-and-white portraits do the talking, layout reads like a print magazine, not a typical invite."
+}

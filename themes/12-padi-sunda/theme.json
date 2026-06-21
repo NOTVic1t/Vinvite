@@ -1,0 +1,10 @@
+{
+  "slug": "12-padi-sunda",
+  "name": "Padi Sunda",
+  "category": "Traditional Sundanese",
+  "status": "planned",
+  "palette": { "rice_green": "#5C7A3B", "earth_brown": "#6B4A2F", "cream": "#F4EEDD", "maroon": "#6E2A2A", "ink": "#2A2118" },
+  "type": { "display": "Cormorant Garamond", "body": "Mukta" },
+  "signature": "Terraced rice-paddy line art forms the horizon behind the hero section; a kujang blade silhouette marks the closing scene.",
+  "brief": "West Java / Sundanese cultural wedding — rice-terrace imagery, earthy green and brown, regional rather than generically 'traditional'."
+}

@@ -1,0 +1,17 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Local env / secrets (in case anyone adds a .env later)
+.env
+.env.local
+
+# Logs
+*.log
+
+# Node (only relevant if you ever add tooling on top of this static site)
+node_modules/

@@ -1,0 +1,10 @@
+{
+  "slug": "15-aurora-modern",
+  "name": "Aurora Modern",
+  "category": "Modern Gradient",
+  "status": "planned",
+  "palette": { "violet": "#6B4FA0", "teal": "#3FA9A0", "pink": "#E07BA8", "near_black": "#15131C", "white": "#F7F5FA" },
+  "type": { "display": "Clash Display / a geometric display face", "body": "Satoshi / a clean geometric sans" },
+  "signature": "A slow-shifting aurora-gradient mesh behind glassmorphic content cards, with content panels that feel like frosted glass over moving light.",
+  "brief": "For couples wanting something unmistakably contemporary and tech-forward rather than traditional — soft gradient motion, frosted-glass cards, confident modern type."
+}

@@ -1,0 +1,10 @@
+{
+  "slug": "09-kamar-vintage",
+  "name": "Kamar Vintage",
+  "category": "Vintage Classic",
+  "status": "planned",
+  "palette": { "sepia": "#E8DCC4", "dusty_rose": "#B98C8C", "ink": "#3B342B", "brass": "#A88B4A", "cream": "#F5EEDD" },
+  "type": { "display": "Abril Fatface", "body": "Vollkorn" },
+  "signature": "A sepia photo-corner frame around every portrait, with an art-deco sunburst motif marking the hero section like a 1920s film title card.",
+  "brief": "Old-world romantic vintage — sepia tones, art-deco linework, feels like a found photograph album rather than a digital page."
+}

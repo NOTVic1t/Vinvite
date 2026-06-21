@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Edit Undangan — Vinvite Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+
+<div class="mobile-topbar">
+  <button id="sidebar-toggle">☰</button>
+  <span class="auth-logo" style="margin:0;">Vinvite</span>
+  <span></span>
+</div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <div class="main">
+    <div class="topbar">
+      <h1>Edit Undangan</h1>
+      <button class="btn btn-primary" id="save-btn">Simpan</button>
+    </div>
+    <div class="content">
+
+      <form id="inv-form">
+
+        <div class="card">
+          <h3 class="card-title">Mempelai Pria</h3>
+          <div class="field-row two">
+            <div class="field"><label>Nama Lengkap</label><input name="groom_name" required /></div>
+            <div class="field"><label>Nama Panggilan</label><input name="groom_nickname" /></div>
+          </div>
+          <div class="field"><label>Putra dari</label><input name="groom_parents" placeholder="Putra dari Bapak ... & Ibu ..." /></div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Mempelai Wanita</h3>
+          <div class="field-row two">
+            <div class="field"><label>Nama Lengkap</label><input name="bride_name" required /></div>
+            <div class="field"><label>Nama Panggilan</label><input name="bride_nickname" /></div>
+          </div>
+          <div class="field"><label>Putri dari</label><input name="bride_parents" placeholder="Putri dari Bapak ... & Ibu ..." /></div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Akad Nikah</h3>
+          <div class="field-row two">
+            <div class="field"><label>Tanggal</label><input type="date" name="akad_date" /></div>
+            <div class="field"><label>Waktu</label><input name="akad_time" placeholder="08:00 – 10:00 WIB" /></div>
+          </div>
+          <div class="field"><label>Nama Lokasi</label><input name="akad_venue_name" /></div>
+          <div class="field"><label>Alamat</label><input name="akad_venue_address" /></div>
+          <div class="field"><label>Link Google Maps</label><input name="akad_maps_url" placeholder="https://maps.google.com/..." /></div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Resepsi</h3>
+          <div class="field-row two">
+            <div class="field"><label>Tanggal</label><input type="date" name="resepsi_date" /></div>
+            <div class="field"><label>Waktu</label><input name="resepsi_time" placeholder="11:00 – 14:00 WIB" /></div>
+          </div>
+          <div class="field"><label>Nama Lokasi</label><input name="resepsi_venue_name" /></div>
+          <div class="field"><label>Alamat</label><input name="resepsi_venue_address" /></div>
+          <div class="field"><label>Link Google Maps</label><input name="resepsi_maps_url" placeholder="https://maps.google.com/..." /></div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Media</h3>
+          <div class="field"><label>URL Foto Cover</label><input name="cover_image_url" placeholder="https://..." /></div>
+          <div class="field"><label>URL Musik Latar (mp3)</label><input name="music_url" placeholder="https://..." /></div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Kisah Kami</h3>
+          <div id="story-repeater"></div>
+          <button type="button" class="btn btn-outline btn-sm" id="add-story">+ Tambah Cerita</button>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Galeri Foto</h3>
+          <div id="gallery-repeater"></div>
+          <button type="button" class="btn btn-outline btn-sm" id="add-gallery">+ Tambah Foto</button>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Amplop Digital</h3>
+          <div id="gift-repeater"></div>
+          <button type="button" class="btn btn-outline btn-sm" id="add-gift">+ Tambah Rekening</button>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Status</h3>
+          <div class="field">
+            <label>Status Undangan</label>
+            <select name="status">
+              <option value="draft">Draft (belum bisa dilihat tamu)</option>
+              <option value="published">Published (bisa dibagikan ke tamu)</option>
+              <option value="archived">Archived</option>
+            </select>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../../engine/config.js"></script>
+<script src="../../engine/supabase-client.js"></script>
+<script src="../js/admin-common.js"></script>
+<script>
+  let invitationId = null;
+  const client0 = () => window.getVinviteClient();
+
+  function storyItemHtml(s = {}) {
+    return `
+      <div class="repeater-item" data-repeater="story">
+        <button type="button" class="repeater-remove">✕ Hapus</button>
+        <div class="field-row two">
+          <div class="field"><label>Tahun/Tanggal</label><input class="s-date" value="${s.date || ""}" /></div>
+          <div class="field"><label>Judul</label><input class="s-title" value="${s.title || ""}" /></div>
+        </div>
+        <div class="field"><label>Cerita</label><textarea class="s-text" rows="2">${s.text || ""}</textarea></div>
+      </div>`;
+  }
+  function galleryItemHtml(url = "") {
+    return `
+      <div class="repeater-item" data-repeater="gallery">
+        <button type="button" class="repeater-remove">✕ Hapus</button>
+        <div class="field"><label>URL Foto</label><input class="g-url" value="${url}" placeholder="https://..." /></div>
+      </div>`;
+  }
+  function giftItemHtml(a = {}) {
+    return `
+      <div class="repeater-item" data-repeater="gift">
+        <button type="button" class="repeater-remove">✕ Hapus</button>
+        <div class="field-row two">
+          <div class="field"><label>Jenis</label><input class="a-type" value="${a.type || ""}" placeholder="Bank Transfer / E-Wallet" /></div>
+          <div class="field"><label>Nama Bank/E-Wallet</label><input class="a-bank" value="${a.bank_name || ""}" /></div>
+        </div>
+        <div class="field-row two">
+          <div class="field"><label>Nomor Rekening</label><input class="a-number" value="${a.account_number || ""}" /></div>
+          <div class="field"><label>Atas Nama</label><input class="a-holder" value="${a.account_holder || ""}" /></div>
+        </div>
+      </div>`;
+  }
+
+  function bindRemove(container) {
+    container.querySelectorAll(".repeater-remove").forEach(btn => {
+      btn.onclick = () => btn.closest(".repeater-item").remove();
+    });
+  }
+
+  document.getElementById("add-story").onclick = () => {
+    const c = document.getElementById("story-repeater");
+    c.insertAdjacentHTML("beforeend", storyItemHtml());
+    bindRemove(c);
+  };
+  document.getElementById("add-gallery").onclick = () => {
+    const c = document.getElementById("gallery-repeater");
+    c.insertAdjacentHTML("beforeend", galleryItemHtml());
+    bindRemove(c);
+  };
+  document.getElementById("add-gift").onclick = () => {
+    const c = document.getElementById("gift-repeater");
+    c.insertAdjacentHTML("beforeend", giftItemHtml());
+    bindRemove(c);
+  };
+
+  function collectStory() {
+    return [...document.querySelectorAll('[data-repeater="story"]')].map(el => ({
+      date: el.querySelector(".s-date").value,
+      title: el.querySelector(".s-title").value,
+      text: el.querySelector(".s-text").value,
+    }));
+  }
+  function collectGallery() {
+    return [...document.querySelectorAll('[data-repeater="gallery"]')].map(el => el.querySelector(".g-url").value).filter(Boolean);
+  }
+  function collectGift() {
+    return [...document.querySelectorAll('[data-repeater="gift"]')].map(el => ({
+      type: el.querySelector(".a-type").value,
+      bank_name: el.querySelector(".a-bank").value,
+      account_number: el.querySelector(".a-number").value,
+      account_holder: el.querySelector(".a-holder").value,
+    }));
+  }
+
+  function slugify(str) {
+    return str.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  }
+
+  (async function () {
+    const auth = await window.requireAuth("..");
+    if (!auth) return;
+    window.renderAdminSidebar("editor", "..", auth.profile);
+    window.initMobileSidebarToggle();
+
+    const client = client0();
+    const form = document.getElementById("inv-form");
+
+    const { data: existing } = await client
+      .from("invitations").select("*").eq("user_id", auth.user.id)
+      .order("created_at", { ascending: false }).limit(1).maybeSingle();
+
+    if (existing) {
+      invitationId = existing.id;
+      Object.entries(existing).forEach(([key, val]) => {
+        const input = form.querySelector(`[name="${key}"]`);
+        if (input && val !== null && typeof val !== "object") input.value = val;
+      });
+      const storyC = document.getElementById("story-repeater");
+      (existing.love_story || []).forEach(s => storyC.insertAdjacentHTML("beforeend", storyItemHtml(s)));
+      const galC = document.getElementById("gallery-repeater");
+      (existing.gallery || []).forEach(u => galC.insertAdjacentHTML("beforeend", galleryItemHtml(u)));
+      const giftC = document.getElementById("gift-repeater");
+      (existing.gift_accounts || []).forEach(a => giftC.insertAdjacentHTML("beforeend", giftItemHtml(a)));
+      bindRemove(document);
+    }
+
+    document.getElementById("save-btn").addEventListener("click", async () => {
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const fd = new FormData(form);
+      const payload = Object.fromEntries(fd.entries());
+      payload.love_story = collectStory();
+      payload.gallery = collectGallery();
+      payload.gift_accounts = collectGift();
+      payload.user_id = auth.user.id;
+
+      if (!existing) {
+        payload.slug = `${slugify(payload.groom_nickname || payload.groom_name)}-${slugify(payload.bride_nickname || payload.bride_name)}-${Date.now().toString().slice(-4)}`;
+      }
+
+      let result;
+      if (invitationId) {
+        result = await client.from("invitations").update(payload).eq("id", invitationId);
+      } else {
+        result = await client.from("invitations").insert(payload).select().single();
+        if (result.data) invitationId = result.data.id;
+      }
+
+      if (result.error) { window.vinviteToast("Gagal menyimpan: " + result.error.message); return; }
+      window.vinviteToast("Undangan berhasil disimpan ✓");
+    });
+  })();
+</script>
+</body>
+</html>

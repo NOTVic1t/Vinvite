@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard — Vinvite Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<div class="mobile-topbar">
+  <button id="sidebar-toggle">☰</button>
+  <span class="auth-logo" style="margin:0;">Vinvite</span>
+  <span></span>
+</div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <div class="main">
+    <div class="topbar"><h1>Dashboard</h1></div>
+    <div class="content">
+
+      <div class="stat-grid" id="stat-grid">
+        <div class="stat-card"><div class="num">—</div><div class="label">Total Tamu</div></div>
+        <div class="stat-card"><div class="num">—</div><div class="label">Konfirmasi Hadir</div></div>
+        <div class="stat-card"><div class="num">—</div><div class="label">Tidak Hadir</div></div>
+        <div class="stat-card"><div class="num">—</div><div class="label">Ucapan Masuk</div></div>
+      </div>
+
+      <div class="card" id="invitation-card">
+        <h3 class="card-title">Undangan Kamu</h3>
+        <p style="color:var(--grey);font-size:.85rem;">Memuat...</p>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">Langkah Cepat</h3>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a class="btn btn-dark" href="pages/invitation-editor.html">Edit Detail Undangan</a>
+          <a class="btn btn-outline" href="pages/themes.html">Pilih Tema</a>
+          <a class="btn btn-outline" href="pages/guests.html">Tambah Tamu</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../engine/config.js"></script>
+<script src="../engine/supabase-client.js"></script>
+<script src="js/admin-common.js"></script>
+<script>
+  (async function () {
+    const auth = await window.requireAuth(".");
+    if (!auth) return;
+    window.renderAdminSidebar("dashboard", ".", auth.profile);
+    window.initMobileSidebarToggle();
+
+    const client = window.getVinviteClient();
+    const { data: invitation } = await client
+      .from("invitations")
+      .select("*")
+      .eq("user_id", auth.user.id)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    const invCard = document.getElementById("invitation-card");
+
+    if (!invitation) {
+      invCard.innerHTML = `
+        <h3 class="card-title">Belum ada undangan</h3>
+        <p style="color:var(--grey);font-size:.85rem;margin-bottom:16px;">Mulai dengan mengisi detail undangan pertamamu.</p>
+        <a class="btn btn-primary" href="pages/invitation-editor.html">Buat Undangan</a>`;
+      return;
+    }
+
+    invCard.innerHTML = `
+      <h3 class="card-title">${invitation.groom_name} &amp; ${invitation.bride_name}</h3>
+      <p style="font-size:.85rem;color:var(--grey);margin-bottom:6px;">
+        Tema: <strong style="color:var(--ink);">${invitation.theme_slug}</strong> ·
+        Status: <span class="badge ${invitation.status === "published" ? "green" : "amber"}">${invitation.status}</span>
+      </p>
+      <p style="font-size:.85rem;color:var(--grey);margin-bottom:16px;">
+        Link: <code>?slug=${invitation.slug}</code>
+      </p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a class="btn btn-dark btn-sm" href="pages/invitation-editor.html">Edit</a>
+        <a class="btn btn-outline btn-sm" target="_blank" href="../themes/${invitation.theme_slug}/index.html?slug=${invitation.slug}">Pratinjau</a>
+      </div>`;
+
+    const [{ count: guestCount }, { data: rsvps }, { count: wishCount }] = await Promise.all([
+      client.from("guests").select("*", { count: "exact", head: true }).eq("invitation_id", invitation.id),
+      client.from("rsvps").select("attendance").eq("invitation_id", invitation.id),
+      client.from("guestbook").select("*", { count: "exact", head: true }).eq("invitation_id", invitation.id),
+    ]);
+
+    const hadir = (rsvps || []).filter(r => r.attendance === "hadir").length;
+    const tidakHadir = (rsvps || []).filter(r => r.attendance === "tidak_hadir").length;
+
+    document.getElementById("stat-grid").innerHTML = `
+      <div class="stat-card"><div class="num">${guestCount || 0}</div><div class="label">Total Tamu</div></div>
+      <div class="stat-card"><div class="num">${hadir}</div><div class="label">Konfirmasi Hadir</div></div>
+      <div class="stat-card"><div class="num">${tidakHadir}</div><div class="label">Tidak Hadir</div></div>
+      <div class="stat-card"><div class="num">${wishCount || 0}</div><div class="label">Ucapan Masuk</div></div>
+    `;
+  })();
+</script>
+</body>
+</html>

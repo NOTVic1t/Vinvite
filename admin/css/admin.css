@@ -1,0 +1,122 @@
+/* =============================================================================
+   VINVITE ADMIN — SHARED STYLES
+============================================================================= */
+
+:root {
+  --ink: #14201C;
+  --emerald: #1F6F54;
+  --emerald-dark: #154E3B;
+  --cream: #FAF6EE;
+  --coral: #E8633D;
+  --sand: #EDE3D0;
+  --grey: #5C6B62;
+  --border: #E2DBC9;
+  --danger: #C0432E;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Plus Jakarta Sans", -apple-system, sans-serif;
+  background: var(--cream); color: var(--ink);
+}
+a { color: inherit; }
+h1, h2, h3 { font-family: "Fraunces", serif; font-weight: 600; }
+
+/* ---------- AUTH SCREEN ---------- */
+.auth-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.auth-card { width: 100%; max-width: 380px; background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 36px 30px; }
+.auth-logo { font-family: "Fraunces", serif; font-weight: 600; font-size: 1.4rem; text-align: center; margin-bottom: 6px; }
+.auth-sub { text-align: center; color: var(--grey); font-size: .85rem; margin-bottom: 28px; }
+.auth-tabs { display: flex; border: 1px solid var(--border); border-radius: 100px; padding: 3px; margin-bottom: 22px; }
+.auth-tab { flex: 1; text-align: center; padding: 8px; font-size: .8rem; font-weight: 600; border-radius: 100px; cursor: pointer; background: none; border: none; color: var(--grey); }
+.auth-tab.active { background: var(--ink); color: #fff; }
+.auth-error { background: #FBEAE6; color: var(--danger); font-size: .8rem; padding: 10px 12px; border-radius: 8px; margin-bottom: 16px; display: none; }
+.auth-error.visible { display: block; }
+
+/* ---------- FORM ELEMENTS (shared) ---------- */
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.field label { font-size: .76rem; font-weight: 600; color: var(--grey); }
+.field input, .field select, .field textarea {
+  font-family: inherit; font-size: .9rem; padding: 11px 13px;
+  border: 1px solid var(--border); border-radius: 9px; background: #fff; color: var(--ink); width: 100%;
+}
+.field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--emerald); outline-offset: 1px; }
+.field-row { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 560px) { .field-row.two { grid-template-columns: 1fr 1fr; } }
+
+.btn { font-family: inherit; font-size: .85rem; font-weight: 600; padding: 12px 20px; border-radius: 9px; border: none; cursor: pointer; }
+.btn-block { width: 100%; }
+.btn-primary { background: var(--coral); color: #fff; }
+.btn-primary:hover { background: #d6562f; }
+.btn-dark { background: var(--ink); color: #fff; }
+.btn-dark:hover { background: #0d1612; }
+.btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--ink); }
+.btn-outline:hover { border-color: var(--ink); }
+.btn-danger { background: #fff; border: 1.5px solid var(--danger); color: var(--danger); }
+.btn-danger:hover { background: var(--danger); color: #fff; }
+.btn-sm { padding: 7px 12px; font-size: .75rem; }
+.btn[disabled] { opacity: .55; cursor: not-allowed; }
+
+/* ---------- APP SHELL ---------- */
+.app-shell { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 230px; background: var(--ink); color: var(--sand); flex-shrink: 0;
+  display: flex; flex-direction: column; padding: 24px 16px; position: sticky; top: 0; height: 100vh;
+}
+.sidebar-logo { font-family: "Fraunces", serif; font-weight: 600; font-size: 1.2rem; color: #fff; padding: 0 10px 24px; }
+.sidebar-section { font-size: .65rem; letter-spacing: .15em; text-transform: uppercase; color: #76837a; padding: 14px 10px 6px; }
+.sidebar-link {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 9px;
+  text-decoration: none; font-size: .87rem; color: var(--sand); margin-bottom: 2px;
+}
+.sidebar-link:hover { background: rgba(255,255,255,.06); }
+.sidebar-link.active { background: var(--emerald); color: #fff; }
+.sidebar-footer { margin-top: auto; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.1); }
+.sidebar-user { font-size: .78rem; color: #b7bdb3; padding: 0 10px 10px; word-break: break-all; }
+.sidebar-credit { font-size: .62rem; color: #5e685f; padding: 8px 10px 0; }
+
+.main { flex: 1; min-width: 0; }
+.topbar { display: flex; align-items: center; justify-content: space-between; padding: 20px 32px; border-bottom: 1px solid var(--border); background: #fff; }
+.topbar h1 { font-size: 1.3rem; }
+.content { padding: 32px; max-width: 980px; }
+
+.mobile-topbar { display: none; }
+@media (max-width: 860px) {
+  .sidebar { position: fixed; left: -240px; z-index: 40; transition: left .25s ease; }
+  .sidebar.open { left: 0; }
+  .mobile-topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: var(--ink); color: #fff; }
+  .mobile-topbar button { background: none; border: none; color: #fff; font-size: 1.3rem; cursor: pointer; }
+  .content { padding: 20px; }
+  .topbar { padding: 16px 20px; }
+}
+
+/* ---------- CARDS / STATS ---------- */
+.stat-grid { display: grid; gap: 16px; grid-template-columns: repeat(2, 1fr); margin-bottom: 28px; }
+@media (min-width: 700px) { .stat-grid { grid-template-columns: repeat(4, 1fr); } }
+.stat-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+.stat-card .num { font-family: "Fraunces", serif; font-size: 1.9rem; color: var(--emerald); }
+.stat-card .label { font-size: .76rem; color: var(--grey); margin-top: 4px; }
+
+.card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin-bottom: 20px; }
+.card-title { font-size: 1.05rem; margin-bottom: 16px; }
+
+/* ---------- TABLE ---------- */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+th { text-align: left; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); padding: 10px 12px; border-bottom: 1px solid var(--border); }
+td { padding: 12px; border-bottom: 1px solid #f1ece0; vertical-align: top; }
+.badge { display: inline-block; font-size: .68rem; font-weight: 600; padding: 4px 10px; border-radius: 100px; }
+.badge.green { background: #E2F1E9; color: var(--emerald-dark); }
+.badge.amber { background: #FBEFD9; color: #8A6315; }
+.badge.red { background: #FBEAE6; color: var(--danger); }
+.badge.grey { background: #EEEEEE; color: var(--grey); }
+
+/* ---------- REPEATER (love story / gallery / gift accounts) ---------- */
+.repeater-item { border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px; position: relative; }
+.repeater-remove { position: absolute; top: 10px; right: 10px; background: none; border: none; color: var(--danger); font-size: .8rem; cursor: pointer; }
+
+.empty-state { text-align: center; padding: 50px 20px; color: var(--grey); }
+.empty-state h3 { color: var(--ink); margin-bottom: 8px; }
+
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--ink); color: #fff; padding: 12px 18px; border-radius: 10px; font-size: .85rem; opacity: 0; transform: translateY(10px); transition: opacity .25s, transform .25s; pointer-events: none; z-index: 60; }
+.toast.visible { opacity: 1; transform: translateY(0); }

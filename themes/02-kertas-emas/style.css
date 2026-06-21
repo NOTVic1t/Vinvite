@@ -1,0 +1,168 @@
+/* =============================================================================
+   VINVITE — THEME 02: KERTAS EMAS
+   Palette: black #0D0C0A / burgundy #3A0E12 / gold #C9A227 / ivory #F3EAD8 / bronze #8C6A3F
+============================================================================= */
+
+:root {
+  --black: #0D0C0A;
+  --burgundy: #3A0E12;
+  --gold: #C9A227;
+  --ivory: #F3EAD8;
+  --bronze: #8C6A3F;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--black);
+  color: var(--ivory);
+  font-family: "EB Garamond", serif;
+  overflow-x: hidden;
+}
+body.vinvite-locked { overflow: hidden; height: 100vh; }
+
+h1, h2, h3 { font-family: "Playfair Display", serif; }
+
+.eyebrow {
+  font-family: "Cormorant SC", serif;
+  font-size: 0.85rem; letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--gold); text-align: center; margin-bottom: 16px;
+}
+
+.ornament-line { width: 110px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 22px auto; position: relative; }
+.ornament-line::before { content: "❖"; position: absolute; left: 50%; top: -8px; transform: translateX(-50%); color: var(--gold); font-size: .7rem; background: var(--black); padding: 0 8px; }
+.ornament-line.small { width: 70px; margin: 12px auto; }
+
+/* ---------- COVER ---------- */
+.cover {
+  position: fixed; inset: 0; z-index: 50;
+  background: radial-gradient(ellipse at center, var(--burgundy) 0%, var(--black) 75%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; color: var(--ivory); padding: 32px;
+  transition: opacity .9s ease, visibility .9s ease;
+}
+.cover.is-closing { opacity: 0; visibility: hidden; pointer-events: none; }
+.crest { font-size: 2.2rem; color: var(--gold); margin-bottom: 18px; }
+.crest.small { font-size: 1.4rem; margin-bottom: 12px; }
+.cover-eyebrow { font-family: "Cormorant SC", serif; letter-spacing: .25em; text-transform: uppercase; font-size: .78rem; color: var(--bronze); }
+.cover-names {
+  font-size: 3.1rem; font-style: italic; margin: 16px 0;
+  background: linear-gradient(110deg, var(--bronze) 20%, var(--gold) 40%, #fff6da 50%, var(--gold) 60%, var(--bronze) 80%);
+  background-size: 250% auto;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shimmer 4.5s linear infinite;
+}
+@keyframes shimmer { to { background-position: -250% center; } }
+.cover-to { font-size: .85rem; color: var(--bronze); margin-top: 14px; }
+.cover-guest { font-family: "Playfair Display", serif; font-style: italic; font-size: 1.15rem; margin-top: 6px; border-bottom: 1px solid var(--bronze); padding-bottom: 8px; }
+.btn-open {
+  margin-top: 38px; padding: 14px 40px; background: transparent;
+  border: 1px solid var(--gold); color: var(--gold);
+  font-family: "Cormorant SC"; letter-spacing: .2em; text-transform: uppercase; font-size: .78rem;
+  cursor: pointer; transition: background .3s, color .3s;
+}
+.btn-open:hover { background: var(--gold); color: var(--black); }
+
+/* ---------- FRAME ---------- */
+.frame { position: relative; max-width: 760px; margin: 0 auto; border: 1px solid var(--bronze); padding: 4px; }
+.frame::before { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(201,162,39,.35); pointer-events: none; }
+.corner { position: absolute; width: 26px; height: 26px; border: 2px solid var(--gold); }
+.corner.tl { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+.corner.tr { top: -1px; right: -1px; border-left: none; border-bottom: none; }
+.corner.bl { bottom: -1px; left: -1px; border-right: none; border-top: none; }
+.corner.br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+/* ---------- SECTIONS ---------- */
+.section { max-width: 600px; margin: 0 auto; padding: 80px 30px; text-align: center; }
+.hero-names { font-size: 3rem; font-style: italic; color: var(--ivory); }
+.hero-date { letter-spacing: .15em; color: var(--bronze); margin-top: 10px; font-size: .9rem; }
+
+/* ---------- QUOTE ---------- */
+.quote-text { font-size: 1.25rem; font-style: italic; line-height: 1.8; color: var(--ivory); }
+.quote-source { margin-top: 16px; font-size: .75rem; letter-spacing: .15em; color: var(--bronze); }
+
+/* ---------- COUPLE ---------- */
+.couple-grid { display: flex; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 10px; }
+.couple-card { max-width: 220px; }
+.couple-photo { width: 150px; height: 190px; overflow: hidden; margin: 0 auto 16px; border: 1px solid var(--gold); padding: 6px; }
+.couple-photo img { width: 100%; height: 100%; object-fit: cover; }
+.couple-card h3 { font-size: 1.5rem; margin-bottom: 8px; font-style: italic; }
+.couple-card p { font-size: .8rem; line-height: 1.6; color: var(--bronze); }
+.couple-amp { font-family: "Playfair Display", serif; font-style: italic; font-size: 2rem; color: var(--gold); }
+
+/* ---------- COUNTDOWN ---------- */
+.countdown { display: flex; justify-content: center; gap: 18px; }
+.cd-item { display: flex; flex-direction: column; align-items: center; min-width: 64px; border: 1px solid var(--bronze); padding: 14px 8px; }
+.cd-item span { font-family: "Playfair Display", serif; font-size: 2rem; color: var(--gold); }
+.cd-item label { font-family: "Cormorant SC"; font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; margin-top: 4px; color: var(--bronze); }
+
+/* ---------- EVENTS ---------- */
+.event-grid { display: grid; gap: 24px; margin-top: 10px; }
+@media (min-width: 600px) { .event-grid { grid-template-columns: 1fr 1fr; } }
+.event-card { border: 1px solid var(--bronze); padding: 30px 20px; }
+.event-card h3 { font-style: italic; font-size: 1.35rem; }
+.event-card p { font-size: .85rem; margin-bottom: 4px; color: var(--ivory); }
+.event-address { color: var(--bronze) !important; font-size: .78rem !important; }
+.btn-maps { display: inline-block; margin-top: 14px; font-family: "Cormorant SC"; font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 2px; }
+
+/* ---------- STORY ---------- */
+.story-timeline { text-align: left; margin-top: 24px; border-left: 1px solid var(--bronze); padding-left: 26px; display: flex; flex-direction: column; gap: 28px; }
+.story-item { position: relative; }
+.story-item::before { content: "✦"; color: var(--gold); position: absolute; margin-left: -33px; top: 0; font-size: .8rem; }
+.story-date { font-family: "Cormorant SC"; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+.story-title { font-family: "Playfair Display", serif; font-style: italic; font-size: 1.25rem; margin: 4px 0 6px; }
+.story-text { font-size: .85rem; color: var(--bronze); line-height: 1.6; }
+
+/* ---------- GALLERY ---------- */
+.gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 10px; }
+.gallery-item { aspect-ratio: 1; overflow: hidden; border: 1px solid var(--bronze); }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; filter: sepia(.12); transition: transform .4s; }
+.gallery-item img:hover { transform: scale(1.06); }
+
+/* ---------- GIFT ---------- */
+.gift-intro { font-size: .85rem; color: var(--bronze); line-height: 1.7; margin-bottom: 22px; }
+.gift-accounts { display: flex; flex-direction: column; gap: 14px; }
+.gift-account { border: 1px solid var(--bronze); padding: 18px 22px; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.gift-account-info p:first-child { font-family: "Cormorant SC"; font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+.gift-account-info p:last-child { font-size: .8rem; color: var(--bronze); }
+.gift-account-info strong { font-family: "Playfair Display", serif; font-size: 1.15rem; display: block; color: var(--ivory); }
+.btn-copy { border: 1px solid var(--gold); background: none; color: var(--gold); padding: 8px 14px; font-family: "Cormorant SC"; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; white-space: nowrap; }
+.btn-copy:hover { background: var(--gold); color: var(--black); }
+
+/* ---------- FORMS ---------- */
+.form { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; text-align: left; }
+.form input, .form select, .form textarea {
+  font-family: "EB Garamond"; font-size: .92rem; padding: 12px 14px;
+  border: 1px solid var(--bronze); background: rgba(255,255,255,.03); color: var(--ivory); width: 100%;
+}
+.form input::placeholder, .form textarea::placeholder { color: #8c7e6a; }
+.form input:focus, .form select:focus, .form textarea:focus { outline: 1px solid var(--gold); }
+.btn-submit { background: var(--gold); color: var(--black); border: none; padding: 13px; font-family: "Cormorant SC"; font-size: .78rem; letter-spacing: .15em; text-transform: uppercase; cursor: pointer; }
+.btn-submit:hover { background: #e0bd4a; }
+.form-success { margin-top: 16px; color: var(--gold); font-size: .85rem; }
+
+/* ---------- WISHES ---------- */
+.wishes-list { margin-top: 26px; display: flex; flex-direction: column; gap: 16px; text-align: left; max-height: 360px; overflow-y: auto; }
+.wish-item { border-bottom: 1px solid var(--bronze); padding-bottom: 14px; }
+.wish-name { font-family: "Playfair Display", serif; font-style: italic; font-size: 1.05rem; color: var(--gold); }
+.wish-message { font-size: .82rem; color: var(--ivory); margin-top: 4px; line-height: 1.5; }
+.vinvite-empty { font-size: .82rem; color: var(--bronze); }
+
+/* ---------- FOOTER ---------- */
+.footer { padding-bottom: 70px; }
+.closing-text { font-size: .85rem; color: var(--bronze); line-height: 1.8; max-width: 420px; margin: 0 auto; }
+.closing-names { font-family: "Playfair Display", serif; font-style: italic; font-size: 2rem; margin-top: 18px; color: var(--gold); }
+.credit { margin-top: 36px; font-size: .65rem; letter-spacing: .08em; color: #6b5d44; }
+
+/* ---------- MUSIC TOGGLE ---------- */
+.music-toggle {
+  position: fixed; bottom: 22px; right: 22px; z-index: 40;
+  width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold);
+  background: var(--black); color: var(--gold); font-size: 1.1rem; cursor: pointer;
+}
+.music-toggle.is-playing { animation: spin 4s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cover-names, .music-toggle.is-playing { animation: none; }
+}

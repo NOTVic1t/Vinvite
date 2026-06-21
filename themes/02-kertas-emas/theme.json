@@ -1,0 +1,20 @@
+{
+  "slug": "02-kertas-emas",
+  "name": "Kertas Emas",
+  "category": "Luxury Royal",
+  "status": "built",
+  "palette": {
+    "black": "#0D0C0A",
+    "burgundy": "#3A0E12",
+    "gold": "#C9A227",
+    "ivory": "#F3EAD8",
+    "bronze": "#8C6A3F"
+  },
+  "type": {
+    "display": "Playfair Display",
+    "smallCaps": "Cormorant SC",
+    "body": "EB Garamond"
+  },
+  "signature": "A gold shimmer sweep across the couple's names on load, framed by an ornamental double border and a crest monogram, like a wax-sealed invitation card.",
+  "brief": "Opulent and ceremonial. For couples wanting a formal, high-end feel — symmetric layout, engraved typography, ornamental corner flourishes."
+}

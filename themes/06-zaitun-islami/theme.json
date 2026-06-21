@@ -1,0 +1,10 @@
+{
+  "slug": "06-zaitun-islami",
+  "name": "Zaitun Islami",
+  "category": "Islamic Elegant",
+  "status": "planned",
+  "palette": { "olive": "#4A5D3A", "gold": "#C9A227", "cream": "#F5F0E1", "deep_green": "#2C3A22", "ink": "#26261E" },
+  "type": { "display": "an Arabic-influenced calligraphic display face", "body": "Lora" },
+  "signature": "An islimi (Islamic geometric) lattice pattern framing the cover, with a hilal (crescent) and star motif marking the countdown.",
+  "brief": "Elegant Islamic wedding invite — olive and gold, geometric arabesque framing, opens with a Qur'anic verse as the centerpiece rather than an afterthought."
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Semua Pesanan — Vinvite Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+
+<div class="mobile-topbar">
+  <button id="sidebar-toggle">☰</button>
+  <span class="auth-logo" style="margin:0;">Vinvite</span>
+  <span></span>
+</div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <div class="topbar"><h1>Semua Pesanan</h1></div>
+    <div class="content">
+      <p style="color:var(--grey);font-size:.85rem;margin-bottom:20px;">Halaman ini hanya terlihat oleh akun dengan peran <strong>admin</strong> platform.</p>
+      <div class="card">
+        <h3 class="card-title">Daftar Pesanan</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Paket</th><th>Jumlah</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead>
+            <tbody id="orders-tbody"></tbody>
+          </table>
+        </div>
+        <p class="empty-state" id="orders-empty" hidden><h3>Belum ada pesanan</h3></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../../engine/config.js"></script>
+<script src="../../engine/supabase-client.js"></script>
+<script src="../js/admin-common.js"></script>
+<script>
+  function badgeFor(status) {
+    if (status === "verified") return '<span class="badge green">Terverifikasi</span>';
+    if (status === "rejected") return '<span class="badge red">Ditolak</span>';
+    return '<span class="badge amber">Menunggu</span>';
+  }
+
+  (async function () {
+    const auth = await window.requireAuth("..");
+    if (!auth) return;
+
+    if (!auth.profile || auth.profile.role !== "admin") {
+      document.querySelector(".content").innerHTML = `<div class="empty-state"><h3>Akses ditolak</h3><p>Halaman ini khusus untuk admin platform.</p></div>`;
+      window.renderAdminSidebar("orders", "..", auth.profile);
+      window.initMobileSidebarToggle();
+      return;
+    }
+
+    window.renderAdminSidebar("orders", "..", auth.profile);
+    window.initMobileSidebarToggle();
+
+    const client = window.getVinviteClient();
+
+    async function load() {
+      const { data: orders } = await client.from("orders").select("*").order("created_at", { ascending: false });
+      const tbody = document.getElementById("orders-tbody");
+      if (!orders || !orders.length) {
+        document.getElementById("orders-empty").hidden = false;
+        return;
+      }
+      tbody.innerHTML = orders.map(o => `
+        <tr>
+          <td>${o.package}</td>
+          <td>Rp ${Number(o.amount).toLocaleString("id-ID")}</td>
+          <td>${badgeFor(o.status)}</td>
+          <td>${new Date(o.created_at).toLocaleDateString("id-ID")}</td>
+          <td style="display:flex;gap:6px;">
+            <button class="btn btn-outline btn-sm" data-id="${o.id}" data-status="verified">Verifikasi</button>
+            <button class="btn btn-danger btn-sm" data-id="${o.id}" data-status="rejected">Tolak</button>
+          </td>
+        </tr>
+      `).join("");
+
+      tbody.querySelectorAll("button[data-id]").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          await client.from("orders").update({ status: btn.dataset.status }).eq("id", btn.dataset.id);
+          load();
+        });
+      });
+    }
+    load();
+  })();
+</script>
+</body>
+</html>

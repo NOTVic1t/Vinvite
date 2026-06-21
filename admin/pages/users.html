@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Semua Pengguna — Vinvite Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+
+<div class="mobile-topbar">
+  <button id="sidebar-toggle">☰</button>
+  <span class="auth-logo" style="margin:0;">Vinvite</span>
+  <span></span>
+</div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <div class="topbar"><h1>Semua Pengguna</h1></div>
+    <div class="content">
+      <div class="card">
+        <h3 class="card-title">Pengguna Terdaftar</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Nama</th><th>Peran</th><th>Undangan</th><th>Bergabung</th></tr></thead>
+            <tbody id="users-tbody"></tbody>
+          </table>
+        </div>
+        <p class="empty-state" id="users-empty" hidden><h3>Belum ada pengguna</h3></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../../engine/config.js"></script>
+<script src="../../engine/supabase-client.js"></script>
+<script src="../js/admin-common.js"></script>
+<script>
+  (async function () {
+    const auth = await window.requireAuth("..");
+    if (!auth) return;
+
+    if (!auth.profile || auth.profile.role !== "admin") {
+      document.querySelector(".content").innerHTML = `<div class="empty-state"><h3>Akses ditolak</h3><p>Halaman ini khusus untuk admin platform.</p></div>`;
+      window.renderAdminSidebar("users", "..", auth.profile);
+      window.initMobileSidebarToggle();
+      return;
+    }
+
+    window.renderAdminSidebar("users", "..", auth.profile);
+    window.initMobileSidebarToggle();
+
+    const client = window.getVinviteClient();
+    const { data: profiles } = await client.from("profiles").select("*").order("created_at", { ascending: false });
+    const { data: invitations } = await client.from("invitations").select("user_id");
+
+    const countByUser = {};
+    (invitations || []).forEach(i => { countByUser[i.user_id] = (countByUser[i.user_id] || 0) + 1; });
+
+    const tbody = document.getElementById("users-tbody");
+    if (!profiles || !profiles.length) {
+      document.getElementById("users-empty").hidden = false;
+      return;
+    }
+    tbody.innerHTML = profiles.map(p => `
+      <tr>
+        <td>${p.full_name || "—"}</td>
+        <td><span class="badge ${p.role === "admin" ? "green" : "grey"}">${p.role}</span></td>
+        <td>${countByUser[p.id] || 0}</td>
+        <td>${new Date(p.created_at).toLocaleDateString("id-ID")}</td>
+      </tr>
+    `).join("");
+  })();
+</script>
+</body>
+</html>

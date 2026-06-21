@@ -1,0 +1,17 @@
+[
+  { "slug": "01-monstera-minimal", "name": "Monstera Minimal", "category": "Minimalist Modern", "status": "built" },
+  { "slug": "02-kertas-emas", "name": "Kertas Emas", "category": "Luxury Royal", "status": "built" },
+  { "slug": "03-senja-sinematik", "name": "Senja Sinematik", "category": "Cinematic Dark", "status": "built" },
+  { "slug": "04-melati-jawa", "name": "Melati Jawa", "category": "Traditional Javanese", "status": "planned" },
+  { "slug": "05-kasih-pastel", "name": "Kasih Pastel", "category": "Romantic Pastel", "status": "planned" },
+  { "slug": "06-zaitun-islami", "name": "Zaitun Islami", "category": "Islamic Elegant", "status": "planned" },
+  { "slug": "07-rimba-tropis", "name": "Rimba Tropis", "category": "Rustic Tropical Garden", "status": "planned" },
+  { "slug": "08-anggrek-boho", "name": "Anggrek Boho", "category": "Boho Chic", "status": "planned" },
+  { "slug": "09-kamar-vintage", "name": "Kamar Vintage", "category": "Vintage Classic", "status": "planned" },
+  { "slug": "10-geometri-berani", "name": "Geometri Berani", "category": "Modern Bold Geometric", "status": "planned" },
+  { "slug": "11-cahaya-bali", "name": "Cahaya Bali", "category": "Balinese Tropical", "status": "planned" },
+  { "slug": "12-padi-sunda", "name": "Padi Sunda", "category": "Traditional Sundanese", "status": "planned" },
+  { "slug": "13-mawar-klasik", "name": "Mawar Klasik", "category": "Classic Romantic Floral", "status": "planned" },
+  { "slug": "14-monokrom-galeri", "name": "Monokrom Galeri", "category": "Minimal Editorial Photography", "status": "planned" },
+  { "slug": "15-aurora-modern", "name": "Aurora Modern", "category": "Modern Gradient", "status": "planned" }
+]

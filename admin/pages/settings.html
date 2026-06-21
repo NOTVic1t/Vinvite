@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pengaturan — Vinvite Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+
+<div class="mobile-topbar">
+  <button id="sidebar-toggle">☰</button>
+  <span class="auth-logo" style="margin:0;">Vinvite</span>
+  <span></span>
+</div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <div class="topbar"><h1>Pengaturan</h1></div>
+    <div class="content">
+
+      <div class="card">
+        <h3 class="card-title">Profil</h3>
+        <form id="profile-form">
+          <div class="field"><label>Nama Lengkap</label><input name="full_name" required /></div>
+          <div class="field"><label>No. WhatsApp</label><input name="phone" placeholder="08xxxxxxxxxx" /></div>
+          <button type="submit" class="btn btn-primary">Simpan Profil</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">Ganti Kata Sandi</h3>
+        <form id="password-form">
+          <div class="field"><label>Kata Sandi Baru</label><input type="password" name="password" minlength="6" required /></div>
+          <button type="submit" class="btn btn-dark">Ubah Kata Sandi</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../../engine/config.js"></script>
+<script src="../../engine/supabase-client.js"></script>
+<script src="../js/admin-common.js"></script>
+<script>
+  (async function () {
+    const auth = await window.requireAuth("..");
+    if (!auth) return;
+    window.renderAdminSidebar("settings", "..", auth.profile);
+    window.initMobileSidebarToggle();
+
+    const client = window.getVinviteClient();
+    const form = document.getElementById("profile-form");
+    if (auth.profile) {
+      form.full_name.value = auth.profile.full_name || "";
+      form.phone.value = auth.profile.phone || "";
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const { error } = await client.from("profiles").update({
+        full_name: fd.get("full_name"), phone: fd.get("phone"),
+      }).eq("id", auth.user.id);
+      if (error) return window.vinviteToast("Gagal menyimpan: " + error.message);
+      window.vinviteToast("Profil disimpan ✓");
+    });
+
+    document.getElementById("password-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const { error } = await client.auth.updateUser({ password: fd.get("password") });
+      if (error) return window.vinviteToast("Gagal mengubah kata sandi: " + error.message);
+      window.vinviteToast("Kata sandi diubah ✓");
+      e.target.reset();
+    });
+  })();
+</script>
+</body>
+</html>
