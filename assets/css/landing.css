@@ -47,6 +47,39 @@ a { color: inherit; }
 .btn-secondary { background: transparent; color: var(--ink); padding: 14px 28px; border-radius: 100px; text-decoration: none; font-weight: 600; font-size: .9rem; border: 1.5px solid var(--ink); display: inline-block; }
 .btn-secondary:hover { background: var(--ink); color: var(--cream); }
 .btn-primary.full, .btn-secondary.full { width: 100%; text-align: center; }
+.btn-glow { box-shadow: 0 0 0 4px rgba(232,99,61,.18), 0 14px 30px -10px rgba(232,99,61,.55); }
+.btn-wa-outline {
+  display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--ink);
+  padding: 13px 24px; border-radius: 100px; text-decoration: none; font-weight: 600; font-size: .88rem;
+  border: 1.5px solid var(--border, var(--sand));
+}
+.btn-wa-outline:hover { border-color: #25D366; }
+.wa-dot { width: 9px; height: 9px; border-radius: 50%; background: #25D366; display: inline-block; }
+
+/* ---------- FLOATING WHATSAPP BUBBLE ---------- */
+.wa-bubble {
+  position: fixed; right: 20px; bottom: 86px; z-index: 45;
+  width: 56px; height: 56px; border-radius: 50%; background: #25D366;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 24px -6px rgba(37,211,102,.6); text-decoration: none;
+}
+@media (min-width: 860px) { .wa-bubble { bottom: 28px; } }
+
+/* ---------- BOTTOM MOBILE NAV ---------- */
+.bottom-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 44;
+  background: #fff; border-top: 1px solid var(--sand);
+  display: flex; justify-content: space-around; padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+}
+.bottom-nav-item {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  text-decoration: none; color: var(--grey); font-size: .65rem; font-weight: 600;
+}
+.bottom-nav-item span { font-size: 1.15rem; line-height: 1; }
+.bottom-nav-item.active { color: var(--emerald); }
+@media (min-width: 860px) { .bottom-nav { display: none; } }
+body { padding-bottom: 64px; }
+@media (min-width: 860px) { body { padding-bottom: 0; } }
 .hero-stats { display: flex; gap: 36px; margin-top: 48px; }
 .hero-stats strong { display: block; font-family: "Fraunces", serif; font-size: 1.6rem; color: var(--emerald); }
 .hero-stats span { font-size: .76rem; color: var(--grey); }
@@ -80,6 +113,11 @@ a { color: inherit; }
 .theme-tile span { font-size: .68rem; color: var(--grey); display: block; margin-top: 2px; }
 .theme-tile .badge { position: absolute; top: 12px; right: 12px; font-size: .6rem; letter-spacing: .1em; text-transform: uppercase; padding: 4px 9px; border-radius: 100px; background: var(--emerald); color: #fff; }
 .theme-tile .badge.soon { background: var(--grey); }
+.theme-tile-wa {
+  position: absolute; bottom: 12px; right: 12px; width: 30px; height: 30px; border-radius: 50%;
+  background: #25D366; display: flex; align-items: center; justify-content: center;
+  font-size: .8rem; text-decoration: none; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,.18);
+}
 
 /* ---------- HOW ---------- */
 .how { padding: 90px 6vw; max-width: 1000px; margin: 0 auto; }
