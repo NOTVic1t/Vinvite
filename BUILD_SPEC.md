@@ -116,3 +116,33 @@ message in the form "Halo Vinvite, saya [isi nama Anda] mau buat undangan dengan
 theme-aware when the click originated from a specific theme (gallery tile, demo banner), generic
 otherwise. The number comes from `engine/config.js` → `VINVITE_CONFIG.WHATSAPP_NUMBER`, shared
 with the demo banner so there's one place to configure it.
+
+## 10. Embedded maps + social proof (added after initial build)
+
+Every theme — built and future — includes:
+
+- `engine/maps-embed.js` → `window.injectMapsEmbed("#akad-map", address)` renders a no-API-key
+  Google Maps iframe preview under each event card (in addition to the existing "Buka di Google
+  Maps" link button). Hides itself gracefully if no address is set.
+- `engine/social-proof.js` → `window.initSocialProof("#social-proof", invitationId)` shows
+  "X orang akan hadir" near the RSVP section, summed from confirmed RSVPs. Shows an illustrative
+  placeholder in demo/preview mode (no real invitation row), hides itself if the real count is 0.
+
+Both need a `<div id="akad-map" class="map-embed" hidden></div>` / `id="resepsi-map"` pair near
+each event card, and a `<p id="social-proof" class="social-proof" hidden></p>` near the RSVP
+form, styled per-theme (see the 3 built themes for the pattern).
+
+## 11. Admin: Excel/CSV import & export (added after initial build)
+
+`admin/js/admin-excel.js` (uses the SheetJS CDN library) gives every admin page:
+
+- `window.parseExcelFile(file)` → array of row objects from an uploaded .xlsx/.csv
+- `window.mapRowsToGuests(rows)` → loosely matches column headers (Nama/WhatsApp/Grup/Sesi,
+  case-insensitive) into the `guests` table shape
+- `window.exportToExcel(data, filename, sheetName)` → downloads any array of objects as .xlsx
+- `window.downloadGuestTemplate()` → downloads a starter template for guest import
+
+`guests.html` uses this for bulk guest import (with a preview-before-confirm step) and guest
+list export; `rsvp.html` uses it to export RSVP responses. Pattern to reuse for any future
+export-needing admin page: include the SheetJS CDN script + `admin-excel.js`, then call
+`exportToExcel`.
