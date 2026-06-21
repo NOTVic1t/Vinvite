@@ -31,7 +31,10 @@
       </div>
 
       <div class="card">
-        <h3 class="card-title">Semua Respon</h3>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+          <h3 class="card-title" style="margin-bottom:0;">Semua Respon</h3>
+          <button class="btn btn-outline btn-sm" id="export-rsvp-btn">Export ke Excel</button>
+        </div>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Nama</th><th>Status</th><th>Jumlah</th><th>Pesan</th><th>Waktu</th></tr></thead>
@@ -46,9 +49,11 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="../../engine/config.js"></script>
 <script src="../../engine/supabase-client.js"></script>
 <script src="../js/admin-common.js"></script>
+<script src="../js/admin-excel.js"></script>
 <script>
   function badgeFor(status) {
     if (status === "hadir") return '<span class="badge green">Hadir</span>';
@@ -77,6 +82,18 @@
     window.renderClientSubnav("rsvp", invitationId, `${invitation.groom_nickname || invitation.groom_name} & ${invitation.bride_nickname || invitation.bride_name}`);
 
     const { data: rsvps } = await client.from("rsvps").select("*").eq("invitation_id", invitation.id).order("created_at", { ascending: false });
+
+    document.getElementById("export-rsvp-btn").addEventListener("click", () => {
+      const rows = (rsvps || []).map(r => ({
+        Nama: r.guest_name,
+        Status: r.attendance === "hadir" ? "Hadir" : r.attendance === "tidak_hadir" ? "Tidak Hadir" : "Masih Ragu",
+        Jumlah: r.guest_count,
+        Pesan: r.message || "",
+        Waktu: new Date(r.created_at).toLocaleString("id-ID"),
+      }));
+      const coupleName = `${invitation.groom_nickname || invitation.groom_name}-${invitation.bride_nickname || invitation.bride_name}`;
+      window.exportToExcel(rows, `rsvp-${coupleName}.xlsx`, "RSVP");
+    });
 
     const hadir = (rsvps || []).filter(r => r.attendance === "hadir").length;
     const tidak = (rsvps || []).filter(r => r.attendance === "tidak_hadir").length;

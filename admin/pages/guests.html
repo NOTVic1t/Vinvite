@@ -24,7 +24,25 @@
       <div id="client-subnav"></div>
 
       <div class="card">
-        <h3 class="card-title">Tambah Tamu</h3>
+        <h3 class="card-title">Import dari Excel/CSV</h3>
+        <p style="font-size:.8rem;color:var(--grey);margin-bottom:14px;">
+          Kolom yang dibaca: <strong>Nama</strong> (wajib), WhatsApp, Grup, Sesi (akad/resepsi/both).
+          <button type="button" id="download-template-btn" style="background:none;border:none;color:var(--emerald);font-weight:600;cursor:pointer;text-decoration:underline;padding:0;font-size:inherit;">Unduh template</button>
+        </p>
+        <input type="file" id="import-file-input" accept=".xlsx,.xls,.csv" style="margin-bottom:14px;" />
+        <div id="import-preview" hidden>
+          <div class="table-wrap" style="max-height:260px;overflow-y:auto;">
+            <table>
+              <thead><tr><th>Nama</th><th>WhatsApp</th><th>Grup</th><th>Sesi</th></tr></thead>
+              <tbody id="import-preview-tbody"></tbody>
+            </table>
+          </div>
+          <button class="btn btn-primary" id="confirm-import-btn" style="margin-top:14px;">Import Semua Tamu</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">Tambah Tamu Manual</h3>
         <form id="guest-form">
           <div class="field-row two">
             <div class="field"><label>Nama Tamu</label><input name="name" required /></div>
@@ -46,7 +64,10 @@
       </div>
 
       <div class="card">
-        <h3 class="card-title">Tamu Terdaftar</h3>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+          <h3 class="card-title" style="margin-bottom:0;">Tamu Terdaftar</h3>
+          <button class="btn btn-outline btn-sm" id="export-guests-btn">Export ke Excel</button>
+        </div>
         <div class="table-wrap">
           <table id="guest-table">
             <thead><tr><th>Nama</th><th>WhatsApp</th><th>Grup</th><th>Sesi</th><th>Link Undangan</th><th></th></tr></thead>
@@ -61,12 +82,63 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="../../engine/config.js"></script>
 <script src="../../engine/supabase-client.js"></script>
 <script src="../js/admin-common.js"></script>
+<script src="../js/admin-excel.js"></script>
 <script>
   let invitation = null;
+  let pendingImportRows = [];
   const client = () => window.getVinviteClient();
+
+  document.getElementById("download-template-btn").addEventListener("click", () => {
+    window.downloadGuestTemplate();
+  });
+
+  document.getElementById("import-file-input").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const rawRows = await window.parseExcelFile(file);
+      pendingImportRows = window.mapRowsToGuests(rawRows);
+      const tbody = document.getElementById("import-preview-tbody");
+      if (!pendingImportRows.length) {
+        window.vinviteToast("Tidak ada baris valid ditemukan — pastikan ada kolom 'Nama'.");
+        document.getElementById("import-preview").hidden = true;
+        return;
+      }
+      tbody.innerHTML = pendingImportRows.map(r => `
+        <tr><td>${r.name}</td><td>${r.phone || "—"}</td><td>${r.group_label || "—"}</td><td>${r.invited_session}</td></tr>
+      `).join("");
+      document.getElementById("import-preview").hidden = false;
+      window.vinviteToast(`${pendingImportRows.length} baris siap diimpor ✓`);
+    } catch (err) {
+      window.vinviteToast("Gagal membaca file: " + err.message);
+    }
+  });
+
+  document.getElementById("confirm-import-btn").addEventListener("click", async () => {
+    if (!pendingImportRows.length || !invitation) return;
+    const payload = pendingImportRows.map(r => ({ ...r, invitation_id: invitation.id }));
+    const { error } = await client().from("guests").insert(payload);
+    if (error) return window.vinviteToast("Gagal mengimpor: " + error.message);
+    window.vinviteToast(`${payload.length} tamu berhasil diimpor ✓`);
+    pendingImportRows = [];
+    document.getElementById("import-preview").hidden = true;
+    document.getElementById("import-file-input").value = "";
+    loadGuests();
+  });
+
+  document.getElementById("export-guests-btn").addEventListener("click", async () => {
+    const { data: guests } = await client().from("guests").select("*").eq("invitation_id", invitation.id).order("created_at", { ascending: false });
+    const rows = (guests || []).map(g => ({
+      Nama: g.name, WhatsApp: g.phone || "", Grup: g.group_label || "",
+      Sesi: g.invited_session, "Sudah Dikirim": g.whatsapp_sent ? "Ya" : "Belum",
+    }));
+    const coupleName = `${invitation.groom_nickname || invitation.groom_name}-${invitation.bride_nickname || invitation.bride_name}`;
+    window.exportToExcel(rows, `tamu-${coupleName}.xlsx`, "Tamu");
+  });
 
   function guestLink(guest) {
     if (!invitation) return "#";
