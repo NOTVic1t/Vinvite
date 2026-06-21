@@ -89,4 +89,10 @@ window.renderInvitation = function (data) {
         <p class="wish-message">${e.message}</p>
       </div>`
   });
+
+  // new scroll fx: reveal, parallax, particles, progress
+  window.initScrollReveal();
+  window.initParallax();
+  window.initFloatingParticles("#particle-field", { symbol: "✦", count: 16, className: "particle-spark" });
+  window.initScrollProgress("#scroll-progress");
 };
