@@ -11,11 +11,14 @@
 </head>
 <body>
 
+<div id="scroll-progress" class="scroll-progress"></div>
+<div id="particle-field" class="particle-field"></div>
+
 <!-- COVER GATE -->
 <section id="cover-screen" class="cover">
   <div class="bar bar-top"></div>
   <div class="bar bar-bottom"></div>
-  <div class="cover-bg" style="background-image:url('https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1400&auto=format&fit=crop')"></div>
+  <div class="cover-bg" data-parallax data-parallax-speed="0.12" style="background-image:url('https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1400&auto=format&fit=crop')"></div>
   <div class="cover-grain"></div>
   <div class="cover-content">
     <p class="slate">ADEGAN 00 — PEMBUKA</p>
@@ -31,29 +34,32 @@
   <!-- HERO -->
   <section class="scene hero">
     <div class="bar bar-top"></div><div class="bar bar-bottom"></div>
-    <p class="slate">ADEGAN 01 — THE WEDDING OF</p>
-    <h1 class="hero-names" id="hero-names">Radit &amp; Nindy</h1>
-    <p class="hero-date" id="hero-date">17 Oktober 2026</p>
+    <div class="hero-bg-layer" data-parallax data-parallax-speed="0.2"></div>
+    <div class="hero-content">
+      <p class="slate" data-reveal>ADEGAN 01 — THE WEDDING OF</p>
+      <h1 class="hero-names" id="hero-names" data-reveal>Radit &amp; Nindy</h1>
+      <p class="hero-date" id="hero-date" data-reveal>17 Oktober 2026</p>
+    </div>
   </section>
 
   <!-- QUOTE -->
   <section class="scene-plain quote">
-    <p class="quote-text">&ldquo;Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu cenderung dan merasa tenteram kepadanya.&rdquo;</p>
+    <p class="quote-text" data-reveal>&ldquo;Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu cenderung dan merasa tenteram kepadanya.&rdquo;</p>
     <p class="quote-source">QS. Ar-Rum: 21</p>
   </section>
 
   <!-- COUPLE -->
   <section class="scene-plain couple">
     <p class="slate">ADEGAN 02 — PEMERAN UTAMA</p>
-    <div class="couple-grid">
+    <div class="couple-grid" data-reveal>
       <div class="couple-card">
-        <div class="couple-photo"><img src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?q=80&w=600&auto=format&fit=crop" alt="" /></div>
+        <div class="couple-photo"><img data-parallax data-parallax-speed="0.07" src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?q=80&w=600&auto=format&fit=crop" alt="" /></div>
         <h3 id="groom-name">Raditya Pradana</h3>
         <p id="groom-parents">Putra dari Bapak Sutrisno &amp; Ibu Wulandari</p>
       </div>
       <div class="couple-amp">&amp;</div>
       <div class="couple-card">
-        <div class="couple-photo"><img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=600&auto=format&fit=crop" alt="" /></div>
+        <div class="couple-photo"><img data-parallax data-parallax-speed="0.07" src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=600&auto=format&fit=crop" alt="" /></div>
         <h3 id="bride-name">Anindya Kirana</h3>
         <p id="bride-parents">Putri dari Bapak Hartono &amp; Ibu Suryani</p>
       </div>
@@ -63,7 +69,7 @@
   <!-- COUNTDOWN -->
   <section class="scene-plain countdown-section">
     <p class="slate">TIMECODE MENUJU HARI-H</p>
-    <div class="countdown">
+    <div class="countdown" data-reveal>
       <div class="cd-item"><span id="cd-d">00</span><label>HARI</label></div>
       <span class="cd-colon">:</span>
       <div class="cd-item"><span id="cd-h">00</span><label>JAM</label></div>
@@ -77,7 +83,7 @@
   <!-- EVENTS -->
   <section class="scene-plain events">
     <p class="slate">ADEGAN 03 — LOKASI SYUTING</p>
-    <div class="event-grid">
+    <div class="event-grid" data-reveal>
       <div class="event-card">
         <h3>Akad Nikah</h3>
         <p id="akad-date">Sabtu, 17 Oktober 2026</p>
@@ -100,26 +106,26 @@
   <!-- LOVE STORY -->
   <section class="scene-plain story">
     <p class="slate">ADEGAN 04 — ALUR CERITA</p>
-    <div class="story-timeline" id="story-timeline"></div>
+    <div class="story-timeline" id="story-timeline" data-reveal></div>
   </section>
 
   <!-- GALLERY -->
   <section class="scene-plain gallery">
     <p class="slate">ADEGAN 05 — CUPLIKAN</p>
-    <div class="gallery-grid" id="gallery-grid"></div>
+    <div class="gallery-grid" id="gallery-grid" data-reveal></div>
   </section>
 
   <!-- GIFT -->
   <section class="scene-plain gift">
     <p class="slate">ADEGAN 06 — TANDA KASIH</p>
     <p class="gift-intro">Doa restu Anda adalah hadiah yang paling berarti. Namun jika ingin memberi tanda kasih, kami menyediakan:</p>
-    <div class="gift-accounts" id="gift-accounts"></div>
+    <div class="gift-accounts" id="gift-accounts" data-reveal></div>
   </section>
 
   <!-- RSVP -->
   <section class="scene-plain rsvp">
     <p class="slate">ADEGAN 07 — KONFIRMASI KEHADIRAN</p>
-    <form id="rsvp-form" class="form">
+    <form id="rsvp-form" class="form" data-reveal>
       <input type="text" name="guest_name" placeholder="Nama Anda" required />
       <select name="attendance" required>
         <option value="">Konfirmasi Kehadiran</option>
@@ -169,6 +175,8 @@
 <script src="../../engine/gallery.js"></script>
 <script src="../../engine/music-player.js"></script>
 <script src="../../engine/cover-gate.js"></script>
+<script src="../../engine/scroll-fx.js"></script>
+<script src="../../engine/demo-banner.js"></script>
 <script src="script.js"></script>
 <script src="../../engine/data-loader.js"></script>
 </body>
