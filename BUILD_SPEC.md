@@ -83,3 +83,36 @@ Hand-building 15 independent designs is paced across sessions:
 
 "By Victor Rizki Valentiano" appears in: every invitation theme footer, the marketing site
 footer, the admin panel footer, and this repo's README.
+
+## 7. Animation standard (added after initial build)
+
+Every theme — the 3 built and all future ones — uses the shared `/engine/scroll-fx.js`:
+
+- `data-reveal` on content blocks → fade/slide-up on scroll into view
+- `data-parallax data-parallax-speed="0.1"` on photos/background layers → subtle depth on scroll
+- `window.initFloatingParticles(...)` → theme-appropriate ambient motion (e.g. falling leaves,
+  gold sparkle, rising embers — pick a symbol and direction that fits the theme's mood, not a
+  generic default)
+- `window.initScrollProgress("#scroll-progress")` → thin progress bar, themed color
+- CSS `scroll-snap-type: y proximity` + `scroll-snap-align: start` per section
+
+All of this respects `prefers-reduced-motion` automatically inside `scroll-fx.js` — no per-theme
+handling needed. Each theme also includes `engine/demo-banner.js`, which auto-shows a "this is a
+preview" bar with a WhatsApp CTA whenever the page is opened in self-serve demo mode (see §8).
+
+## 8. Self-serve "Coba Gratis" demo mode (added after initial build)
+
+`coba-gratis.html` lets a visitor preview a theme with their own names/date with no login and no
+WhatsApp contact required yet. It redirects to
+`themes/{slug}/index.html?demo=1&groom=...&bride=...&date=...`. `engine/data-loader.js` detects
+`?demo=1` and builds invitation data from the URL params (merged with sample data for anything
+not provided) instead of querying Supabase. `engine/demo-banner.js` then shows the order-now bar.
+This is separate from the reseller/admin-built flow — demo previews are never saved anywhere.
+
+## 9. WhatsApp ordering (added after initial build)
+
+There's no self-serve checkout. `assets/js/landing.js` builds `wa.me` links with a prefilled
+message in the form "Halo Vinvite, saya [isi nama Anda] mau buat undangan dengan tema X" —
+theme-aware when the click originated from a specific theme (gallery tile, demo banner), generic
+otherwise. The number comes from `engine/config.js` → `VINVITE_CONFIG.WHATSAPP_NUMBER`, shared
+with the demo banner so there's one place to configure it.

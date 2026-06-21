@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Coba Gratis — Vinvite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/landing.css" />
+<style>
+  .demo-wrap { max-width: 640px; margin: 0 auto; padding: 50px 6vw 100px; }
+  .demo-form .field { margin-bottom: 18px; }
+  .demo-form label { display: block; font-size: .78rem; font-weight: 600; color: var(--grey); margin-bottom: 6px; }
+  .demo-form input { width: 100%; padding: 13px 14px; border: 1px solid var(--sand); border-radius: 10px; font-family: inherit; font-size: .92rem; background: #fff; }
+  .demo-form input:focus { outline: 2px solid var(--emerald); outline-offset: 1px; }
+  .demo-theme-grid { display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); margin-top: 8px; }
+  @media (min-width: 600px) { .demo-theme-grid { grid-template-columns: repeat(3, 1fr); } }
+  .demo-theme-card {
+    border: 2px solid var(--sand); border-radius: 12px; padding: 14px; cursor: pointer;
+    background: #fff; text-align: left; font-family: inherit;
+  }
+  .demo-theme-card.selected { border-color: var(--emerald); background: #F0F7F3; }
+  .demo-theme-card.disabled { opacity: .45; cursor: not-allowed; }
+  .demo-theme-card h4 { font-family: "Fraunces", serif; font-size: .95rem; margin-bottom: 2px; }
+  .demo-theme-card span { font-size: .68rem; color: var(--grey); }
+  .demo-submit { width: 100%; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a href="index.html" class="nav-logo">Vinvite</a>
+  <a href="index.html" class="nav-cta-secondary">&larr; Kembali</a>
+</header>
+
+<div class="demo-wrap">
+  <p class="eyebrow">Coba Gratis</p>
+  <h1 class="section-title" style="margin-top:8px;">Lihat undangan kalian, sebelum pesan</h1>
+  <p class="section-sub" style="margin-bottom:30px;">Isi nama panggilan, tanggal, dan pilih tema — pratinjau langsung tampil, tanpa perlu daftar.</p>
+
+  <form id="demo-form" class="demo-form">
+    <div class="field-row two" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="field"><label>Nama Panggilan Pria</label><input name="groom" placeholder="Radit" required /></div>
+      <div class="field"><label>Nama Panggilan Wanita</label><input name="bride" placeholder="Nindy" required /></div>
+    </div>
+    <div class="field"><label>Tanggal Pernikahan</label><input type="date" name="date" /></div>
+
+    <div class="field">
+      <label>Pilih Tema</label>
+      <div class="demo-theme-grid" id="demo-theme-grid"></div>
+    </div>
+
+    <button type="submit" class="btn-primary demo-submit">Lihat Pratinjau &rarr;</button>
+  </form>
+</div>
+
+<script src="engine/config.js"></script>
+<script>
+  let selectedSlug = null;
+
+  async function loadThemes() {
+    const res = await fetch("themes/themes.json");
+    const themes = await res.json();
+    const grid = document.getElementById("demo-theme-grid");
+
+    grid.innerHTML = themes.map(t => `
+      <button type="button" class="demo-theme-card ${t.status !== "built" ? "disabled" : ""}" data-slug="${t.slug}" ${t.status !== "built" ? "disabled" : ""}>
+        <h4>${t.name}</h4>
+        <span>${t.status === "built" ? t.category : "Segera Hadir"}</span>
+      </button>
+    `).join("");
+
+    grid.querySelectorAll(".demo-theme-card:not(.disabled)").forEach(card => {
+      card.addEventListener("click", () => {
+        grid.querySelectorAll(".demo-theme-card").forEach(c => c.classList.remove("selected"));
+        card.classList.add("selected");
+        selectedSlug = card.dataset.slug;
+      });
+    });
+
+    // default-select the first built theme
+    const firstBuilt = grid.querySelector(".demo-theme-card:not(.disabled)");
+    if (firstBuilt) { firstBuilt.classList.add("selected"); selectedSlug = firstBuilt.dataset.slug; }
+  }
+  loadThemes();
+
+  document.getElementById("demo-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!selectedSlug) { alert("Pilih tema dulu ya 🙏"); return; }
+    const fd = new FormData(e.target);
+    const params = new URLSearchParams({
+      demo: "1",
+      groom: fd.get("groom") || "",
+      bride: fd.get("bride") || "",
+      date: fd.get("date") || "",
+    });
+    window.location.href = `themes/${selectedSlug}/index.html?${params.toString()}`;
+  });
+</script>
+</body>
+</html>
