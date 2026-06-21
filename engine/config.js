@@ -5,6 +5,9 @@
 // ============================================================================
 
 window.VINVITE_CONFIG = {
-  SUPABASE_URL: "https://gxnfdoespobfudifgkhh.supabase.co",
-  SUPABASE_ANON_KEY: "sb_publishable_yy0FKG1ZChTfPithCPzCCQ_13gL04Vc",
+  SUPABASE_URL: "YOUR_SUPABASE_PROJECT_URL",
+  SUPABASE_ANON_KEY: "YOUR_SUPABASE_ANON_KEY",
+
+  // Your WhatsApp number with country code, no + or spaces, e.g. "6281234567890"
+  WHATSAPP_NUMBER: "62YOUR_WHATSAPP_NUMBER",
 };
