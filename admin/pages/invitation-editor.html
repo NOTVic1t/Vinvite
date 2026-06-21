@@ -26,7 +26,27 @@
     </div>
     <div class="content">
 
+      <div id="client-subnav"></div>
+
       <form id="inv-form">
+
+        <div class="card">
+          <h3 class="card-title">Kontak Klien</h3>
+          <p style="font-size:.8rem;color:var(--grey);margin-bottom:14px;">Klien tidak memiliki login — data ini hanya untuk catatanmu sendiri.</p>
+          <div class="field-row two">
+            <div class="field"><label>Nama Klien (yang pesan via WA)</label><input name="client_name" /></div>
+            <div class="field"><label>No. WhatsApp Klien</label><input name="client_phone" placeholder="08xxxxxxxxxx" /></div>
+          </div>
+          <div class="field"><label>Catatan Internal</label><textarea name="internal_notes" rows="2" placeholder="cth: DP 50% sudah masuk, sisa pelunasan H-7"></textarea></div>
+          <div class="field">
+            <label>Paket</label>
+            <select name="package">
+              <option value="basic">Basic</option>
+              <option value="premium">Premium</option>
+              <option value="exclusive">Exclusive</option>
+            </select>
+          </div>
+        </div>
 
         <div class="card">
           <h3 class="card-title">Mempelai Pria</h3>
@@ -115,7 +135,7 @@
 <script src="../../engine/supabase-client.js"></script>
 <script src="../js/admin-common.js"></script>
 <script>
-  let invitationId = null;
+  let invitationId = window.getInvitationIdFromUrl();
   const client0 = () => window.getVinviteClient();
 
   function storyItemHtml(s = {}) {
@@ -193,24 +213,27 @@
   }
 
   function slugify(str) {
-    return str.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    return (str || "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
   }
 
   (async function () {
     const auth = await window.requireAuth("..");
     if (!auth) return;
-    window.renderAdminSidebar("editor", "..", auth.profile);
+    window.renderAdminSidebar("dashboard", "..", auth.profile);
     window.initMobileSidebarToggle();
 
     const client = client0();
     const form = document.getElementById("inv-form");
+    let existing = null;
 
-    const { data: existing } = await client
-      .from("invitations").select("*").eq("user_id", auth.user.id)
-      .order("created_at", { ascending: false }).limit(1).maybeSingle();
-
-    if (existing) {
-      invitationId = existing.id;
+    if (invitationId) {
+      const { data, error } = await client.from("invitations").select("*").eq("id", invitationId).single();
+      if (error || !data) {
+        window.vinviteToast("Undangan tidak ditemukan.");
+        window.location.href = "../dashboard.html";
+        return;
+      }
+      existing = data;
       Object.entries(existing).forEach(([key, val]) => {
         const input = form.querySelector(`[name="${key}"]`);
         if (input && val !== null && typeof val !== "object") input.value = val;
@@ -224,6 +247,9 @@
       bindRemove(document);
     }
 
+    window.renderClientSubnav("editor", invitationId,
+      existing ? `${existing.groom_nickname || existing.groom_name} & ${existing.bride_nickname || existing.bride_name}` : "Klien Baru");
+
     document.getElementById("save-btn").addEventListener("click", async () => {
       if (!form.checkValidity()) { form.reportValidity(); return; }
       const fd = new FormData(form);
@@ -231,18 +257,19 @@
       payload.love_story = collectStory();
       payload.gallery = collectGallery();
       payload.gift_accounts = collectGift();
-      payload.user_id = auth.user.id;
-
-      if (!existing) {
-        payload.slug = `${slugify(payload.groom_nickname || payload.groom_name)}-${slugify(payload.bride_nickname || payload.bride_name)}-${Date.now().toString().slice(-4)}`;
-      }
 
       let result;
       if (invitationId) {
         result = await client.from("invitations").update(payload).eq("id", invitationId);
       } else {
+        payload.user_id = auth.user.id;
+        payload.slug = `${slugify(payload.groom_nickname || payload.groom_name)}-${slugify(payload.bride_nickname || payload.bride_name)}-${Date.now().toString().slice(-4)}`;
         result = await client.from("invitations").insert(payload).select().single();
-        if (result.data) invitationId = result.data.id;
+        if (result.data) {
+          invitationId = result.data.id;
+          window.history.replaceState({}, "", `invitation-editor.html?id=${invitationId}`);
+          window.renderClientSubnav("editor", invitationId, `${payload.groom_nickname || payload.groom_name} & ${payload.bride_nickname || payload.bride_name}`);
+        }
       }
 
       if (result.error) { window.vinviteToast("Gagal menyimpan: " + result.error.message); return; }

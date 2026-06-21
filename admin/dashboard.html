@@ -20,28 +20,32 @@
   <aside class="sidebar" id="sidebar"></aside>
 
   <div class="main">
-    <div class="topbar"><h1>Dashboard</h1></div>
+    <div class="topbar">
+      <h1 id="dash-title">Dashboard</h1>
+      <a class="btn btn-primary" href="pages/invitation-editor.html">+ Tambah Klien Baru</a>
+    </div>
     <div class="content">
 
       <div class="stat-grid" id="stat-grid">
+        <div class="stat-card"><div class="num">—</div><div class="label">Total Klien</div></div>
+        <div class="stat-card"><div class="num">—</div><div class="label">Published</div></div>
+        <div class="stat-card"><div class="num">—</div><div class="label">Draft</div></div>
         <div class="stat-card"><div class="num">—</div><div class="label">Total Tamu</div></div>
-        <div class="stat-card"><div class="num">—</div><div class="label">Konfirmasi Hadir</div></div>
-        <div class="stat-card"><div class="num">—</div><div class="label">Tidak Hadir</div></div>
-        <div class="stat-card"><div class="num">—</div><div class="label">Ucapan Masuk</div></div>
-      </div>
-
-      <div class="card" id="invitation-card">
-        <h3 class="card-title">Undangan Kamu</h3>
-        <p style="color:var(--grey);font-size:.85rem;">Memuat...</p>
       </div>
 
       <div class="card">
-        <h3 class="card-title">Langkah Cepat</h3>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <a class="btn btn-dark" href="pages/invitation-editor.html">Edit Detail Undangan</a>
-          <a class="btn btn-outline" href="pages/themes.html">Pilih Tema</a>
-          <a class="btn btn-outline" href="pages/guests.html">Tambah Tamu</a>
+        <h3 class="card-title" id="list-title">Klien Saya</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Pasangan</th><th>Klien (WA)</th><th>Tema</th><th>Status</th><th id="reseller-col" hidden>Reseller</th><th></th></tr></thead>
+            <tbody id="inv-tbody"></tbody>
+          </table>
         </div>
+        <p class="empty-state" id="inv-empty" hidden>
+          <h3>Belum ada klien</h3>
+          <p>Mulai dengan menambahkan undangan untuk klien pertamamu.</p>
+          <a class="btn btn-primary" style="margin-top:14px;" href="pages/invitation-editor.html">+ Tambah Klien Baru</a>
+        </p>
       </div>
 
     </div>
@@ -53,59 +57,72 @@
 <script src="../engine/supabase-client.js"></script>
 <script src="js/admin-common.js"></script>
 <script>
+  function statusBadge(status) {
+    if (status === "published") return '<span class="badge green">Published</span>';
+    if (status === "archived") return '<span class="badge grey">Archived</span>';
+    return '<span class="badge amber">Draft</span>';
+  }
+
   (async function () {
     const auth = await window.requireAuth(".");
     if (!auth) return;
     window.renderAdminSidebar("dashboard", ".", auth.profile);
     window.initMobileSidebarToggle();
 
+    const isAdmin = auth.profile && auth.profile.role === "admin";
+    document.getElementById("dash-title").textContent = isAdmin ? "Dashboard — Semua Klien" : "Dashboard";
+    document.getElementById("list-title").textContent = isAdmin ? "Semua Klien (Seluruh Reseller)" : "Klien Saya";
+
     const client = window.getVinviteClient();
-    const { data: invitation } = await client
-      .from("invitations")
-      .select("*")
-      .eq("user_id", auth.user.id)
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
 
-    const invCard = document.getElementById("invitation-card");
+    let query = client.from("invitations").select("*").order("created_at", { ascending: false });
+    if (!isAdmin) query = query.eq("user_id", auth.user.id);
+    const { data: invitations } = await query;
 
-    if (!invitation) {
-      invCard.innerHTML = `
-        <h3 class="card-title">Belum ada undangan</h3>
-        <p style="color:var(--grey);font-size:.85rem;margin-bottom:16px;">Mulai dengan mengisi detail undangan pertamamu.</p>
-        <a class="btn btn-primary" href="pages/invitation-editor.html">Buat Undangan</a>`;
-      return;
+    let resellerNames = {};
+    if (isAdmin && invitations && invitations.length) {
+      document.getElementById("reseller-col").hidden = false;
+      const { data: profiles } = await client.from("profiles").select("id, full_name");
+      (profiles || []).forEach(p => resellerNames[p.id] = p.full_name || "—");
     }
 
-    invCard.innerHTML = `
-      <h3 class="card-title">${invitation.groom_name} &amp; ${invitation.bride_name}</h3>
-      <p style="font-size:.85rem;color:var(--grey);margin-bottom:6px;">
-        Tema: <strong style="color:var(--ink);">${invitation.theme_slug}</strong> ·
-        Status: <span class="badge ${invitation.status === "published" ? "green" : "amber"}">${invitation.status}</span>
-      </p>
-      <p style="font-size:.85rem;color:var(--grey);margin-bottom:16px;">
-        Link: <code>?slug=${invitation.slug}</code>
-      </p>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <a class="btn btn-dark btn-sm" href="pages/invitation-editor.html">Edit</a>
-        <a class="btn btn-outline btn-sm" target="_blank" href="../themes/${invitation.theme_slug}/index.html?slug=${invitation.slug}">Pratinjau</a>
-      </div>`;
+    const tbody = document.getElementById("inv-tbody");
+    const empty = document.getElementById("inv-empty");
 
-    const [{ count: guestCount }, { data: rsvps }, { count: wishCount }] = await Promise.all([
-      client.from("guests").select("*", { count: "exact", head: true }).eq("invitation_id", invitation.id),
-      client.from("rsvps").select("attendance").eq("invitation_id", invitation.id),
-      client.from("guestbook").select("*", { count: "exact", head: true }).eq("invitation_id", invitation.id),
-    ]);
+    if (!invitations || !invitations.length) {
+      empty.hidden = false;
+    } else {
+      tbody.innerHTML = invitations.map(inv => `
+        <tr>
+          <td><strong>${inv.groom_nickname || inv.groom_name} &amp; ${inv.bride_nickname || inv.bride_name}</strong></td>
+          <td>${inv.client_name || "—"}${inv.client_phone ? `<br><span style="color:var(--grey);font-size:.78rem;">${inv.client_phone}</span>` : ""}</td>
+          <td style="font-size:.78rem;">${inv.theme_slug}</td>
+          <td>${statusBadge(inv.status)}</td>
+          ${isAdmin ? `<td style="font-size:.78rem;">${resellerNames[inv.user_id] || "—"}</td>` : ""}
+          <td style="display:flex;gap:6px;flex-wrap:wrap;">
+            <a class="btn btn-outline btn-sm" href="pages/invitation-editor.html?id=${inv.id}">Edit</a>
+            <a class="btn btn-outline btn-sm" target="_blank" href="../themes/${inv.theme_slug}/index.html?slug=${inv.slug}">Pratinjau</a>
+          </td>
+        </tr>
+      `).join("");
+    }
 
-    const hadir = (rsvps || []).filter(r => r.attendance === "hadir").length;
-    const tidakHadir = (rsvps || []).filter(r => r.attendance === "tidak_hadir").length;
+    const total = invitations ? invitations.length : 0;
+    const published = (invitations || []).filter(i => i.status === "published").length;
+    const draft = (invitations || []).filter(i => i.status === "draft").length;
+
+    let totalGuests = 0;
+    if (invitations && invitations.length) {
+      const ids = invitations.map(i => i.id);
+      const { count } = await client.from("guests").select("*", { count: "exact", head: true }).in("invitation_id", ids);
+      totalGuests = count || 0;
+    }
 
     document.getElementById("stat-grid").innerHTML = `
-      <div class="stat-card"><div class="num">${guestCount || 0}</div><div class="label">Total Tamu</div></div>
-      <div class="stat-card"><div class="num">${hadir}</div><div class="label">Konfirmasi Hadir</div></div>
-      <div class="stat-card"><div class="num">${tidakHadir}</div><div class="label">Tidak Hadir</div></div>
-      <div class="stat-card"><div class="num">${wishCount || 0}</div><div class="label">Ucapan Masuk</div></div>
+      <div class="stat-card"><div class="num">${total}</div><div class="label">Total Klien</div></div>
+      <div class="stat-card"><div class="num">${published}</div><div class="label">Published</div></div>
+      <div class="stat-card"><div class="num">${draft}</div><div class="label">Draft</div></div>
+      <div class="stat-card"><div class="num">${totalGuests}</div><div class="label">Total Tamu</div></div>
     `;
   })();
 </script>

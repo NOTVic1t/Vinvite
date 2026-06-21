@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Semua Pengguna — Vinvite Admin</title>
+<title>Semua Reseller — Vinvite Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../css/admin.css" />
@@ -19,13 +19,16 @@
 <div class="app-shell">
   <aside class="sidebar" id="sidebar"></aside>
   <div class="main">
-    <div class="topbar"><h1>Semua Pengguna</h1></div>
+    <div class="topbar"><h1>Semua Reseller</h1></div>
     <div class="content">
       <div class="card">
-        <h3 class="card-title">Pengguna Terdaftar</h3>
+        <p style="font-size:.82rem;color:var(--grey);margin-bottom:18px;">
+          Akun reseller baru dibuat lewat Supabase Dashboard → Authentication → Add user.
+          Setelah dibuat, akun otomatis muncul di sini dengan peran "Reseller" — ubah ke "Owner" jika perlu.
+        </p>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Nama</th><th>Peran</th><th>Undangan</th><th>Bergabung</th></tr></thead>
+            <thead><tr><th>Nama</th><th>Peran</th><th>Klien Dikelola</th><th>Bergabung</th><th>Aksi</th></tr></thead>
             <tbody id="users-tbody"></tbody>
           </table>
         </div>
@@ -45,7 +48,7 @@
     if (!auth) return;
 
     if (!auth.profile || auth.profile.role !== "admin") {
-      document.querySelector(".content").innerHTML = `<div class="empty-state"><h3>Akses ditolak</h3><p>Halaman ini khusus untuk admin platform.</p></div>`;
+      document.querySelector(".content").innerHTML = `<div class="empty-state"><h3>Akses ditolak</h3><p>Halaman ini khusus untuk Owner.</p></div>`;
       window.renderAdminSidebar("users", "..", auth.profile);
       window.initMobileSidebarToggle();
       return;
@@ -55,25 +58,46 @@
     window.initMobileSidebarToggle();
 
     const client = window.getVinviteClient();
-    const { data: profiles } = await client.from("profiles").select("*").order("created_at", { ascending: false });
-    const { data: invitations } = await client.from("invitations").select("user_id");
 
-    const countByUser = {};
-    (invitations || []).forEach(i => { countByUser[i.user_id] = (countByUser[i.user_id] || 0) + 1; });
+    async function load() {
+      const { data: profiles } = await client.from("profiles").select("*").order("created_at", { ascending: false });
+      const { data: invitations } = await client.from("invitations").select("user_id");
 
-    const tbody = document.getElementById("users-tbody");
-    if (!profiles || !profiles.length) {
-      document.getElementById("users-empty").hidden = false;
-      return;
+      const countByUser = {};
+      (invitations || []).forEach(i => { countByUser[i.user_id] = (countByUser[i.user_id] || 0) + 1; });
+
+      const tbody = document.getElementById("users-tbody");
+      if (!profiles || !profiles.length) {
+        document.getElementById("users-empty").hidden = false;
+        return;
+      }
+      tbody.innerHTML = profiles.map(p => `
+        <tr>
+          <td>${p.full_name || "—"}</td>
+          <td><span class="badge ${p.role === "admin" ? "green" : "grey"}">${p.role === "admin" ? "Owner" : "Reseller"}</span></td>
+          <td>${countByUser[p.id] || 0}</td>
+          <td>${new Date(p.created_at).toLocaleDateString("id-ID")}</td>
+          <td>
+            ${p.id === auth.user.id
+              ? '<span style="font-size:.75rem;color:var(--grey);">Akun kamu</span>'
+              : `<button class="btn btn-outline btn-sm role-toggle" data-id="${p.id}" data-role="${p.role}">
+                  Jadikan ${p.role === "admin" ? "Reseller" : "Owner"}
+                </button>`}
+          </td>
+        </tr>
+      `).join("");
+
+      tbody.querySelectorAll(".role-toggle").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const newRole = btn.dataset.role === "admin" ? "reseller" : "admin";
+          const { error } = await client.from("profiles").update({ role: newRole }).eq("id", btn.dataset.id);
+          if (error) return window.vinviteToast("Gagal mengubah peran: " + error.message);
+          window.vinviteToast("Peran diperbarui ✓");
+          load();
+        });
+      });
     }
-    tbody.innerHTML = profiles.map(p => `
-      <tr>
-        <td>${p.full_name || "—"}</td>
-        <td><span class="badge ${p.role === "admin" ? "green" : "grey"}">${p.role}</span></td>
-        <td>${countByUser[p.id] || 0}</td>
-        <td>${new Date(p.created_at).toLocaleDateString("id-ID")}</td>
-      </tr>
-    `).join("");
+    load();
   })();
 </script>
 </body>

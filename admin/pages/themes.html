@@ -29,7 +29,7 @@
   <div class="main">
     <div class="topbar"><h1>Pilih Tema</h1></div>
     <div class="content">
-      <p style="color:var(--grey);font-size:.85rem;margin-bottom:20px;">Tema yang dipilih akan langsung digunakan untuk undanganmu.</p>
+      <div id="client-subnav"></div>
       <div class="theme-pick-grid" id="theme-pick-grid"></div>
     </div>
   </div>
@@ -43,32 +43,34 @@
   (async function () {
     const auth = await window.requireAuth("..");
     if (!auth) return;
-    window.renderAdminSidebar("tema", "..", auth.profile);
+    window.renderAdminSidebar("dashboard", "..", auth.profile);
     window.initMobileSidebarToggle();
 
+    const invitationId = window.getInvitationIdFromUrl();
+    if (!invitationId) {
+      document.querySelector(".content").innerHTML = `<div class="empty-state"><h3>Pilih klien terlebih dahulu</h3><p>Buka dari Dashboard untuk memilih tema klien tertentu.</p><a class="btn btn-primary" style="margin-top:14px;" href="../dashboard.html">Ke Dashboard</a></div>`;
+      return;
+    }
+
     const client = window.getVinviteClient();
-    const { data: invitation } = await client
-      .from("invitations").select("id, theme_slug").eq("user_id", auth.user.id)
-      .order("created_at", { ascending: false }).limit(1).maybeSingle();
+    const { data: invitation } = await client.from("invitations").select("id, slug, theme_slug, groom_name, groom_nickname, bride_name, bride_nickname").eq("id", invitationId).single();
+
+    window.renderClientSubnav("tema", invitationId, `${invitation.groom_nickname || invitation.groom_name} & ${invitation.bride_nickname || invitation.bride_name}`);
 
     const res = await fetch("../../themes/themes.json");
     const themes = await res.json();
 
     const grid = document.getElementById("theme-pick-grid");
     grid.innerHTML = themes.map(t => `
-      <div class="theme-pick-card ${invitation && invitation.theme_slug === t.slug ? "current" : ""}" data-slug="${t.slug}">
+      <div class="theme-pick-card ${invitation.theme_slug === t.slug ? "current" : ""}" data-slug="${t.slug}">
         <h4>${t.name}</h4>
         <span class="cat">${t.category} ${t.status === "planned" ? "· Segera Hadir" : ""}</span>
         <div class="theme-pick-actions">
           <a class="btn btn-outline btn-sm" target="_blank" href="../../themes/${t.slug}/index.html">Pratinjau</a>
-          <button class="btn btn-dark btn-sm select-btn" ${!invitation ? "disabled" : ""}>${invitation && invitation.theme_slug === t.slug ? "Dipilih ✓" : "Pilih"}</button>
+          <button class="btn btn-dark btn-sm select-btn">${invitation.theme_slug === t.slug ? "Dipilih ✓" : "Pilih"}</button>
         </div>
       </div>
     `).join("");
-
-    if (!invitation) {
-      window.vinviteToast("Isi data undangan terlebih dahulu sebelum memilih tema.");
-    }
 
     grid.querySelectorAll(".select-btn").forEach(btn => {
       btn.addEventListener("click", async () => {

@@ -5,6 +5,6 @@
 // ============================================================================
 
 window.VINVITE_CONFIG = {
-  SUPABASE_URL: "https://jqdcylsclonbgdwsoslh.supabase.co",
-  SUPABASE_ANON_KEY: "sb_publishable_qHweK5RcR0TR3iZ2G5AAhA_VgyzrsUB",
+  SUPABASE_URL: "YOUR_SUPABASE_PROJECT_URL",
+  SUPABASE_ANON_KEY: "YOUR_SUPABASE_ANON_KEY",
 };

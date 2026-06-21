@@ -8,13 +8,29 @@ This is the refined product spec this repository is built from. It exists so any
 **Vinvite** is a multi-tenant digital wedding invitation SaaS for the Indonesian market — a
 ground-up build in the same product category as Indoinvite, Undanganku, and Datengdong:
 
-- A **public marketing site** where couples discover the product and pick a theme/package.
+- A **public marketing site** where couples discover the product and order via WhatsApp.
 - A **theme library** of fully bespoke, independently designed invitation micro-sites
   (minimum 15), each covering the standard Indonesian wedding-invite feature set.
-- An **admin/customer dashboard** where a couple (or the platform owner) creates an invitation,
-  manages guests, tracks RSVPs, and reads wishes — without touching code.
+- An **Owner/Reseller admin panel** where staff create and manage invitations on behalf of
+  clients — without the client ever needing to touch code or have a login.
 - A **Supabase backend** (Postgres + Auth + Storage) so the whole frontend can be static and
   deployed directly to GitHub Pages with zero build step.
+
+## 1.1 Business model: Owner → Reseller → Client (added after initial build)
+
+The platform pivoted away from self-serve signup. There is no public registration form.
+
+- **Owner (admin role):** sees and manages every invitation across every reseller; can
+  promote/demote reseller accounts.
+- **Reseller (reseller role):** has a login, manages only the clients they personally create.
+- **Client (the couple):** has no account. They order via WhatsApp; the reseller/admin fills
+  in everything for them. `client_name` / `client_phone` / `internal_notes` fields on the
+  `invitations` table hold their contact info for reference only.
+- Reseller accounts are created manually in Supabase Dashboard (Authentication → Add user); a
+  database trigger (`handle_new_user`) auto-creates their `profiles` row with role `reseller`.
+- The admin panel's data model shifted from "one invitation per account" to "many invitations
+  per reseller account" — `dashboard.html` is now a client list, and the editor/theme/guest/
+  RSVP/guestbook pages are all scoped by an `?id=` query param identifying which invitation.
 
 ## 2. Required feature set (per invitation, all themes)
 

@@ -21,6 +21,7 @@
   <div class="main">
     <div class="topbar"><h1>Ucapan &amp; Doa</h1></div>
     <div class="content">
+      <div id="client-subnav"></div>
       <div class="card">
         <h3 class="card-title">Semua Ucapan</h3>
         <div id="wish-list" style="display:flex;flex-direction:column;gap:14px;"></div>
@@ -38,18 +39,22 @@
   (async function () {
     const auth = await window.requireAuth("..");
     if (!auth) return;
-    window.renderAdminSidebar("guestbook", "..", auth.profile);
+    window.renderAdminSidebar("dashboard", "..", auth.profile);
     window.initMobileSidebarToggle();
 
-    const client = window.getVinviteClient();
-    const { data: invitation } = await client
-      .from("invitations").select("id").eq("user_id", auth.user.id)
-      .order("created_at", { ascending: false }).limit(1).maybeSingle();
-
-    if (!invitation) {
-      document.querySelector(".content").innerHTML = `<div class="empty-state"><h3>Buat undangan terlebih dahulu</h3></div>`;
+    const invitationId = window.getInvitationIdFromUrl();
+    if (!invitationId) {
+      document.querySelector(".content").innerHTML = `<div class="empty-state"><h3>Pilih klien terlebih dahulu</h3><p>Buka dari Dashboard untuk melihat ucapan klien tertentu.</p><a class="btn btn-primary" style="margin-top:14px;" href="../dashboard.html">Ke Dashboard</a></div>`;
       return;
     }
+
+    const client = window.getVinviteClient();
+    const { data: invitation, error } = await client.from("invitations").select("*").eq("id", invitationId).single();
+    if (error || !invitation) {
+      document.querySelector(".content").innerHTML = `<div class="empty-state"><h3>Klien tidak ditemukan</h3></div>`;
+      return;
+    }
+    window.renderClientSubnav("guestbook", invitationId, `${invitation.groom_nickname || invitation.groom_name} & ${invitation.bride_nickname || invitation.bride_name}`);
 
     async function load() {
       const { data: wishes } = await client.from("guestbook").select("*").eq("invitation_id", invitation.id).order("created_at", { ascending: false });

@@ -12,7 +12,7 @@ create table if not exists profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   full_name text,
   phone text,
-  role text not null default 'customer' check (role in ('admin', 'customer')),
+  role text not null default 'reseller' check (role in ('admin', 'reseller')),
   created_at timestamptz not null default now()
 );
 
@@ -21,9 +21,13 @@ create table if not exists profiles (
 -- ----------------------------------------------------------------------------
 create table if not exists invitations (
   id uuid primary key default uuid_generate_v4(),
-  user_id uuid references profiles(id) on delete cascade,
+  user_id uuid references profiles(id) on delete cascade, -- the reseller/admin managing this on the client's behalf
   slug text unique not null,
   theme_slug text not null default '01-monstera-minimal',
+
+  client_name text,   -- the couple's own name/contact, since they have no login
+  client_phone text,
+  internal_notes text, -- reseller's private notes (e.g. payment status from WA order)
 
   groom_name text not null,
   groom_nickname text,
@@ -129,12 +133,36 @@ alter table rsvps enable row level security;
 alter table guestbook enable row level security;
 alter table orders enable row level security;
 
--- profiles: a user can read/update their own profile; admins read all
+-- profiles: a user can read/update their own profile; admins read/update all
 create policy "profiles_self_select" on profiles for select using (auth.uid() = id);
 create policy "profiles_self_update" on profiles for update using (auth.uid() = id);
 create policy "profiles_admin_select" on profiles for select using (
   exists (select 1 from profiles p where p.id = auth.uid() and p.role = 'admin')
 );
+create policy "profiles_admin_update" on profiles for update using (
+  exists (select 1 from profiles p where p.id = auth.uid() and p.role = 'admin')
+);
+
+-- Auto-create a profile (default role 'reseller') whenever a new auth user is made.
+-- There is no public sign-up form — the admin creates reseller accounts via
+-- Supabase Dashboard -> Authentication -> Add user, and this trigger sets them up.
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer set search_path = public
+as $$
+begin
+  insert into public.profiles (id, full_name, role)
+  values (new.id, coalesce(new.raw_user_meta_data->>'full_name', new.email), 'reseller')
+  on conflict (id) do nothing;
+  return new;
+end;
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function public.handle_new_user();
 
 -- invitations: public can view PUBLISHED invitations (for guests opening the link);
 -- owners and admins can view/manage all of their own

@@ -13,12 +13,7 @@
 <div class="auth-screen">
   <div class="auth-card">
     <p class="auth-logo">Vinvite</p>
-    <p class="auth-sub">Kelola undangan pernikahan digital kamu</p>
-
-    <div class="auth-tabs">
-      <button class="auth-tab active" data-tab="login">Masuk</button>
-      <button class="auth-tab" data-tab="register">Daftar</button>
-    </div>
+    <p class="auth-sub">Panel khusus Owner &amp; Reseller</p>
 
     <p class="auth-error" id="auth-error"></p>
 
@@ -28,12 +23,9 @@
       <button type="submit" class="btn btn-primary btn-block">Masuk</button>
     </form>
 
-    <form id="register-form" hidden>
-      <div class="field"><label>Nama Lengkap</label><input type="text" name="full_name" required /></div>
-      <div class="field"><label>Email</label><input type="email" name="email" required /></div>
-      <div class="field"><label>Kata Sandi</label><input type="password" name="password" minlength="6" required /></div>
-      <button type="submit" class="btn btn-primary btn-block">Buat Akun</button>
-    </form>
+    <p style="text-align:center;font-size:.76rem;color:var(--grey);margin-top:20px;">
+      Belum punya akun reseller? Hubungi Owner untuk dibuatkan akun.
+    </p>
   </div>
 </div>
 
@@ -42,19 +34,8 @@
 <script src="../engine/supabase-client.js"></script>
 <script src="js/admin-common.js"></script>
 <script>
-  const tabs = document.querySelectorAll(".auth-tab");
   const loginForm = document.getElementById("login-form");
-  const registerForm = document.getElementById("register-form");
   const errorEl = document.getElementById("auth-error");
-
-  tabs.forEach(tab => tab.addEventListener("click", () => {
-    tabs.forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
-    const isLogin = tab.dataset.tab === "login";
-    loginForm.hidden = !isLogin;
-    registerForm.hidden = isLogin;
-    errorEl.classList.remove("visible");
-  }));
 
   function showError(msg) {
     errorEl.textContent = msg;
@@ -70,24 +51,6 @@
       email: fd.get("email"), password: fd.get("password"),
     });
     if (error) return showError(error.message);
-    window.location.href = "dashboard.html";
-  });
-
-  registerForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const client = window.getVinviteClient();
-    if (!client) return showError("Supabase belum dikonfigurasi. Isi engine/config.js terlebih dahulu.");
-    const fd = new FormData(registerForm);
-    const { data, error } = await client.auth.signUp({
-      email: fd.get("email"), password: fd.get("password"),
-    });
-    if (error) return showError(error.message);
-
-    if (data.user) {
-      await client.from("profiles").insert({
-        id: data.user.id, full_name: fd.get("full_name"), role: "customer",
-      });
-    }
     window.location.href = "dashboard.html";
   });
 </script>

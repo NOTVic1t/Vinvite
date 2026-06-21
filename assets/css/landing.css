@@ -34,6 +34,7 @@ a { color: inherit; }
 .nav-links a { text-decoration: none; }
 @media (min-width: 800px) { .nav-links { display: flex; } }
 .nav-cta { background: var(--ink); color: var(--cream); padding: 10px 20px; border-radius: 100px; text-decoration: none; font-size: .85rem; font-weight: 600; }
+.nav-cta-secondary { color: var(--grey); text-decoration: none; font-size: .8rem; border-bottom: 1px solid var(--sand); padding-bottom: 2px; }
 
 /* ---------- HERO ---------- */
 .hero { display: grid; gap: 50px; padding: 50px 6vw 90px; align-items: center; }

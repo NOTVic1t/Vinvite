@@ -1,18 +1,11 @@
 // =============================================================================
-// VINVITE ADMIN — COMMON (auth guard, sidebar, toast)
+// VINVITE ADMIN — COMMON (auth guard, sidebar, client subnav, toast)
 // Requires engine/config.js + engine/supabase-client.js loaded first.
 // =============================================================================
 
 const ADMIN_NAV = [
-  { section: "Undangan", items: [
+  { section: "Klien", items: [
     { key: "dashboard", label: "Dashboard", href: "ROOT/dashboard.html", icon: "▦" },
-    { key: "editor", label: "Edit Undangan", href: "ROOT/pages/invitation-editor.html", icon: "✎" },
-    { key: "tema", label: "Pilih Tema", href: "ROOT/pages/themes.html", icon: "✦" },
-  ]},
-  { section: "Tamu", items: [
-    { key: "guests", label: "Daftar Tamu", href: "ROOT/pages/guests.html", icon: "☰" },
-    { key: "rsvp", label: "RSVP", href: "ROOT/pages/rsvp.html", icon: "✓" },
-    { key: "guestbook", label: "Ucapan & Doa", href: "ROOT/pages/guestbook.html", icon: "✉" },
   ]},
   { section: "Akun", items: [
     { key: "settings", label: "Pengaturan", href: "ROOT/pages/settings.html", icon: "⚙" },
@@ -20,9 +13,9 @@ const ADMIN_NAV = [
 ];
 
 const ADMIN_ONLY_NAV = {
-  section: "Platform Admin", items: [
+  section: "Owner", items: [
     { key: "orders", label: "Semua Pesanan", href: "ROOT/pages/orders.html", icon: "💳" },
-    { key: "users", label: "Semua Pengguna", href: "ROOT/pages/users.html", icon: "👤" },
+    { key: "users", label: "Semua Reseller", href: "ROOT/pages/users.html", icon: "👤" },
   ]
 };
 
@@ -79,6 +72,11 @@ window.renderAdminSidebar = function (activeKey, root, profile) {
 
   mount.innerHTML = `
     <div class="sidebar-logo">Vinvite</div>
+    <div style="padding:0 10px 14px;">
+      <span class="badge ${profile && profile.role === "admin" ? "green" : "grey"}" style="background:rgba(255,255,255,.1);color:#EDE3D0;">
+        ${profile && profile.role === "admin" ? "Owner" : "Reseller"}
+      </span>
+    </div>
     ${linksHtml}
     <div class="sidebar-footer">
       <p class="sidebar-user">${profile && profile.full_name ? profile.full_name : "Akun saya"}</p>
@@ -99,4 +97,45 @@ window.initMobileSidebarToggle = function () {
   const sidebar = document.getElementById("sidebar");
   if (!btn || !sidebar) return;
   btn.addEventListener("click", () => sidebar.classList.toggle("open"));
+};
+
+// ---------------------------------------------------------------------------
+// CLIENT-SCOPED SUBNAV
+// Used on the 5 pages that operate on one specific client invitation
+// (invitation-editor, themes, guests, rsvp, guestbook). All carry ?id=
+// ---------------------------------------------------------------------------
+const CLIENT_SUBNAV_ITEMS = [
+  { key: "editor", label: "Detail", href: "invitation-editor.html" },
+  { key: "tema", label: "Tema", href: "themes.html" },
+  { key: "guests", label: "Tamu", href: "guests.html" },
+  { key: "rsvp", label: "RSVP", href: "rsvp.html" },
+  { key: "guestbook", label: "Ucapan", href: "guestbook.html" },
+];
+
+window.renderClientSubnav = function (activeKey, invitationId, label) {
+  const mount = document.getElementById("client-subnav");
+  if (!mount) return;
+  const idParam = invitationId ? `?id=${invitationId}` : "";
+  mount.innerHTML = `
+    <div style="margin-bottom:18px;">
+      <a href="../dashboard.html" style="font-size:.78rem;color:var(--grey);text-decoration:none;">&larr; Kembali ke Daftar Klien</a>
+      ${label ? `<h2 style="font-size:1.3rem;margin-top:6px;">${label}</h2>` : ""}
+      <div style="display:flex;gap:6px;margin-top:14px;flex-wrap:wrap;border-bottom:1px solid var(--border);padding-bottom:14px;">
+        ${CLIENT_SUBNAV_ITEMS.map(item => `
+          <a href="${item.href}${idParam}"
+             style="padding:8px 14px;border-radius:100px;text-decoration:none;font-size:.82rem;font-weight:600;
+                    background:${item.key === activeKey ? "var(--ink)" : "transparent"};
+                    color:${item.key === activeKey ? "#fff" : "var(--ink)"};
+                    border:1px solid ${item.key === activeKey ? "var(--ink)" : "var(--border)"};">
+            ${item.label}
+          </a>
+        `).join("")}
+      </div>
+    </div>
+  `;
+};
+
+// Reads ?id= from the current URL — used by all client-scoped pages
+window.getInvitationIdFromUrl = function () {
+  return new URLSearchParams(window.location.search).get("id");
 };

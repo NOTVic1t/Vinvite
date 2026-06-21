@@ -21,6 +21,7 @@
   <div class="main">
     <div class="topbar"><h1>Daftar Tamu</h1></div>
     <div class="content">
+      <div id="client-subnav"></div>
 
       <div class="card">
         <h3 class="card-title">Tambah Tamu</h3>
@@ -52,7 +53,7 @@
             <tbody id="guest-tbody"></tbody>
           </table>
         </div>
-        <p class="empty-state" id="guest-empty" hidden><h3>Belum ada tamu</h3><p>Tambahkan tamu pertamamu di atas.</p></p>
+        <p class="empty-state" id="guest-empty" hidden><h3>Belum ada tamu</h3><p>Tambahkan tamu pertama untuk klien ini di atas.</p></p>
       </div>
 
     </div>
@@ -115,21 +116,22 @@
   (async function () {
     const auth = await window.requireAuth("..");
     if (!auth) return;
-    window.renderAdminSidebar("guests", "..", auth.profile);
+    window.renderAdminSidebar("dashboard", "..", auth.profile);
     window.initMobileSidebarToggle();
 
-    const { data: inv } = await client()
-      .from("invitations").select("*").eq("user_id", auth.user.id)
-      .order("created_at", { ascending: false }).limit(1).maybeSingle();
+    const invitationId = window.getInvitationIdFromUrl();
+    if (!invitationId) {
+      document.querySelector(".content").innerHTML = `<div class="empty-state"><h3>Pilih klien terlebih dahulu</h3><p>Buka dari Dashboard untuk mengelola tamu klien tertentu.</p><a class="btn btn-primary" style="margin-top:14px;" href="../dashboard.html">Ke Dashboard</a></div>`;
+      return;
+    }
 
-    if (!inv) {
-      document.querySelector(".content").innerHTML = `
-        <div class="empty-state"><h3>Buat undangan terlebih dahulu</h3>
-        <p>Isi detail undangan sebelum menambahkan tamu.</p>
-        <a class="btn btn-primary" style="margin-top:14px;" href="invitation-editor.html">Buat Undangan</a></div>`;
+    const { data: inv, error } = await client().from("invitations").select("*").eq("id", invitationId).single();
+    if (error || !inv) {
+      document.querySelector(".content").innerHTML = `<div class="empty-state"><h3>Klien tidak ditemukan</h3></div>`;
       return;
     }
     invitation = inv;
+    window.renderClientSubnav("guests", invitationId, `${inv.groom_nickname || inv.groom_name} & ${inv.bride_nickname || inv.bride_name}`);
     loadGuests();
 
     document.getElementById("guest-form").addEventListener("submit", async (e) => {
