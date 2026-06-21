@@ -173,3 +173,13 @@ h1, h2, h3 { font-family: "Cinzel", serif; letter-spacing: .03em; }
 /* ---------- SCROLL SNAP ---------- */
 html { scroll-snap-type: y proximity; }
 .scene, .scene-plain, .cover { scroll-snap-align: start; }
+
+/* ---------- MAP EMBED ---------- */
+.map-embed { margin-top: 14px; border-left: 2px solid var(--amber); overflow: hidden; }
+.map-embed iframe { width: 100%; height: 160px; border: 0; display: block; filter: grayscale(.25) brightness(.85); }
+
+/* ---------- SOCIAL PROOF ---------- */
+.social-proof {
+  display: inline-block; margin: 0 auto 18px; padding: 7px 16px; border: 1px solid var(--amber);
+  color: var(--amber); font-family: "JetBrains Mono", monospace; font-size: .7rem; letter-spacing: .08em;
+}
