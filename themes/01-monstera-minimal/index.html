@@ -11,6 +11,9 @@
 </head>
 <body>
 
+<div id="scroll-progress" class="scroll-progress"></div>
+<div id="particle-field" class="particle-field"></div>
+
 <!-- COVER GATE -->
 <section id="cover-screen" class="cover">
   <div class="cover-leaf-bg"></div>
@@ -26,14 +29,14 @@
   <!-- HERO -->
   <section class="section hero">
     <p class="eyebrow">The Wedding Of</p>
-    <h1 class="hero-names" id="hero-names">Radit &amp; Nindy</h1>
+    <h1 class="hero-names" id="hero-names" data-reveal>Radit &amp; Nindy</h1>
     <div class="divider-leaf" data-leaf></div>
-    <p class="hero-date" id="hero-date">17 Oktober 2026</p>
+    <p class="hero-date" id="hero-date" data-reveal>17 Oktober 2026</p>
   </section>
 
   <!-- INTRO QUOTE -->
   <section class="section quote">
-    <p class="quote-text">&ldquo;Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu cenderung dan merasa tenteram kepadanya.&rdquo;</p>
+    <p class="quote-text" data-reveal>&ldquo;Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu cenderung dan merasa tenteram kepadanya.&rdquo;</p>
     <p class="quote-source">QS. Ar-Rum: 21</p>
   </section>
 
@@ -41,15 +44,15 @@
   <section class="section couple">
     <div class="divider-leaf" data-leaf></div>
     <p class="eyebrow">Mempelai</p>
-    <div class="couple-grid">
+    <div class="couple-grid" data-reveal>
       <div class="couple-card">
-        <div class="couple-photo"><img src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?q=80&w=600&auto=format&fit=crop" alt="" /></div>
+        <div class="couple-photo"><img data-parallax data-parallax-speed="0.08" src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?q=80&w=600&auto=format&fit=crop" alt="" /></div>
         <h3 id="groom-name">Raditya Pradana</h3>
         <p id="groom-parents">Putra dari Bapak Sutrisno &amp; Ibu Wulandari</p>
       </div>
       <div class="couple-amp">&amp;</div>
       <div class="couple-card">
-        <div class="couple-photo"><img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=600&auto=format&fit=crop" alt="" /></div>
+        <div class="couple-photo"><img data-parallax data-parallax-speed="0.08" src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=600&auto=format&fit=crop" alt="" /></div>
         <h3 id="bride-name">Anindya Kirana</h3>
         <p id="bride-parents">Putri dari Bapak Hartono &amp; Ibu Suryani</p>
       </div>
@@ -60,7 +63,7 @@
   <section class="section countdown-section">
     <div class="divider-leaf" data-leaf></div>
     <p class="eyebrow">Menuju Hari Bahagia</p>
-    <div class="countdown">
+    <div class="countdown" data-reveal>
       <div class="cd-item"><span id="cd-d">00</span><label>Hari</label></div>
       <div class="cd-item"><span id="cd-h">00</span><label>Jam</label></div>
       <div class="cd-item"><span id="cd-m">00</span><label>Menit</label></div>
@@ -72,7 +75,7 @@
   <section class="section events">
     <div class="divider-leaf" data-leaf></div>
     <p class="eyebrow">Acara</p>
-    <div class="event-grid">
+    <div class="event-grid" data-reveal>
       <div class="event-card">
         <h3>Akad Nikah</h3>
         <p id="akad-date">Sabtu, 17 Oktober 2026</p>
@@ -96,14 +99,14 @@
   <section class="section story">
     <div class="divider-leaf" data-leaf></div>
     <p class="eyebrow">Kisah Kami</p>
-    <div class="story-timeline" id="story-timeline"></div>
+    <div class="story-timeline" id="story-timeline" data-reveal></div>
   </section>
 
   <!-- GALLERY -->
   <section class="section gallery">
     <div class="divider-leaf" data-leaf></div>
     <p class="eyebrow">Galeri</p>
-    <div class="gallery-grid" id="gallery-grid"></div>
+    <div class="gallery-grid" id="gallery-grid" data-reveal></div>
   </section>
 
   <!-- GIFT -->
@@ -111,14 +114,14 @@
     <div class="divider-leaf" data-leaf></div>
     <p class="eyebrow">Tanda Kasih</p>
     <p class="gift-intro">Doa restu Anda adalah hadiah yang paling berarti. Namun jika ingin memberi tanda kasih, kami menyediakan:</p>
-    <div class="gift-accounts" id="gift-accounts"></div>
+    <div class="gift-accounts" id="gift-accounts" data-reveal></div>
   </section>
 
   <!-- RSVP -->
   <section class="section rsvp">
     <div class="divider-leaf" data-leaf></div>
     <p class="eyebrow">Konfirmasi Kehadiran</p>
-    <form id="rsvp-form" class="form">
+    <form id="rsvp-form" class="form" data-reveal>
       <input type="text" name="guest_name" placeholder="Nama Anda" required />
       <select name="attendance" required>
         <option value="">Konfirmasi Kehadiran</option>
@@ -168,6 +171,8 @@
 <script src="../../engine/gallery.js"></script>
 <script src="../../engine/music-player.js"></script>
 <script src="../../engine/cover-gate.js"></script>
+<script src="../../engine/scroll-fx.js"></script>
+<script src="../../engine/demo-banner.js"></script>
 <script src="script.js"></script>
 <script src="../../engine/data-loader.js"></script>
 </body>

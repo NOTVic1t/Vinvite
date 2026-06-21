@@ -165,3 +165,29 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; }
 @media (prefers-reduced-motion: reduce) {
   .divider-leaf, .gallery-item img, .music-toggle.is-playing { transition: none; animation: none; }
 }
+
+/* ---------- SCROLL REVEAL ---------- */
+[data-reveal] { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s ease; }
+[data-reveal].is-visible { opacity: 1; transform: none; }
+
+/* ---------- PARALLAX ---------- */
+[data-parallax] { will-change: transform; }
+
+/* ---------- SCROLL PROGRESS ---------- */
+.scroll-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: var(--gold); z-index: 70; transition: width .1s linear; }
+
+/* ---------- FLOATING PARTICLES ---------- */
+.particle-field { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 2; }
+.particle-leaf {
+  position: absolute; top: -8%; pointer-events: none; color: var(--sage);
+  animation-name: vinviteFallDrift; animation-timing-function: linear; animation-iteration-count: infinite;
+}
+@keyframes vinviteFallDrift {
+  0% { transform: translateY(0) translateX(0) rotate(0deg); }
+  50% { transform: translateY(55vh) translateX(24px) rotate(160deg); }
+  100% { transform: translateY(112vh) translateX(-12px) rotate(320deg); }
+}
+
+/* ---------- SCROLL SNAP ---------- */
+html { scroll-snap-type: y proximity; }
+.section, .cover { scroll-snap-align: start; }

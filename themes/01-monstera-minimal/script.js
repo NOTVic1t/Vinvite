@@ -101,4 +101,10 @@ window.renderInvitation = function (data) {
     entries.forEach(en => { if (en.isIntersecting) en.target.classList.add("is-visible"); });
   }, { threshold: 0.4 });
   document.querySelectorAll("[data-leaf]").forEach(el => io.observe(el));
+
+  // new scroll fx: reveal, parallax, particles, progress
+  window.initScrollReveal();
+  window.initParallax();
+  window.initFloatingParticles("#particle-field", { symbol: "🍃", count: 9, className: "particle-leaf" });
+  window.initScrollProgress("#scroll-progress");
 };
