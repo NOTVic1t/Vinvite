@@ -95,4 +95,9 @@ window.renderInvitation = function (data) {
   window.initParallax();
   window.initFloatingParticles("#particle-field", { symbol: "✦", count: 16, className: "particle-spark" });
   window.initScrollProgress("#scroll-progress");
+
+  // maps embed + social proof
+  window.injectMapsEmbed("#akad-map", data.akad_venue_address);
+  window.injectMapsEmbed("#resepsi-map", data.resepsi_venue_address);
+  window.initSocialProof("#social-proof", data._invitationId);
 };

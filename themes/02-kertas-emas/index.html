@@ -83,7 +83,8 @@
         <p id="akad-time">08:00 – 10:00 WIB</p>
         <p id="akad-venue">Kediaman Mempelai Wanita</p>
         <p id="akad-address" class="event-address">Jl. Kenanga No. 12, Bandung</p>
-        <a id="akad-maps" href="#" target="_blank" rel="noopener" class="btn-maps">Buka Lokasi</a>
+        <a id="akad-maps" href="#" target="_blank" rel="noopener" class="btn-maps">Buka di Google Maps</a>
+        <div class="map-embed" id="akad-map" hidden></div>
       </div>
       <div class="event-card">
         <h3>Resepsi</h3>
@@ -92,7 +93,8 @@
         <p id="resepsi-time">11:00 – 14:00 WIB</p>
         <p id="resepsi-venue">Gedung Graha Pertiwi</p>
         <p id="resepsi-address" class="event-address">Jl. Asia Afrika No. 88, Bandung</p>
-        <a id="resepsi-maps" href="#" target="_blank" rel="noopener" class="btn-maps">Buka Lokasi</a>
+        <a id="resepsi-maps" href="#" target="_blank" rel="noopener" class="btn-maps">Buka di Google Maps</a>
+        <div class="map-embed" id="resepsi-map" hidden></div>
       </div>
     </div>
   </section>
@@ -119,6 +121,7 @@
   <!-- RSVP -->
   <section class="section rsvp">
     <p class="eyebrow">Konfirmasi Kehadiran</p>
+    <p id="social-proof" class="social-proof" hidden></p>
     <form id="rsvp-form" class="form" data-reveal>
       <input type="text" name="guest_name" placeholder="Nama Anda" required />
       <select name="attendance" required>
@@ -170,6 +173,8 @@
 <script src="../../engine/cover-gate.js"></script>
 <script src="../../engine/scroll-fx.js"></script>
 <script src="../../engine/demo-banner.js"></script>
+<script src="../../engine/maps-embed.js"></script>
+<script src="../../engine/social-proof.js"></script>
 <script src="script.js"></script>
 <script src="../../engine/data-loader.js"></script>
 </body>
