@@ -48,13 +48,13 @@
     <p class="eyebrow">Mempelai</p>
     <div class="couple-grid" data-reveal>
       <div class="couple-card">
-        <div class="couple-photo"><img data-parallax data-parallax-speed="0.08" src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?q=80&w=600&auto=format&fit=crop" alt="" /></div>
+        <div class="couple-photo"><img id="groom-photo" data-parallax data-parallax-speed="0.08" src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?q=80&w=600&auto=format&fit=crop" alt="" /></div>
         <h3 id="groom-name">Raditya Pradana</h3>
         <p id="groom-parents">Putra dari Bapak Sutrisno &amp; Ibu Wulandari</p>
       </div>
       <div class="couple-amp">&amp;</div>
       <div class="couple-card">
-        <div class="couple-photo"><img data-parallax data-parallax-speed="0.08" src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=600&auto=format&fit=crop" alt="" /></div>
+        <div class="couple-photo"><img id="bride-photo" data-parallax data-parallax-speed="0.08" src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=600&auto=format&fit=crop" alt="" /></div>
         <h3 id="bride-name">Anindya Kirana</h3>
         <p id="bride-parents">Putri dari Bapak Hartono &amp; Ibu Suryani</p>
       </div>
@@ -130,9 +130,7 @@
         <option value="tidak_hadir">Tidak Hadir</option>
         <option value="ragu">Masih Ragu</option>
       </select>
-      <input type="number" name="guest_count" min="1" max="5" value="1" placeholder="Jumlah Tamu" />
-      <textarea name="message" placeholder="Ucapan & doa (opsional)" rows="3"></textarea>
-      <button type="submit" class="btn-submit">Kirim Konfirmasi</button>
+      <input type="number" name="guest_count" min="1" max="5" value="1" placeholder="Jumlah Tamu" />      <button type="submit" class="btn-submit">Kirim Konfirmasi</button>
     </form>
     <p id="rsvp-success" class="form-success" hidden>Terima kasih atas konfirmasi Anda 🤍</p>
   </section>
@@ -141,9 +139,7 @@
   <section class="section guestbook">
     <p class="eyebrow">Ucapan &amp; Doa</p>
     <form id="guestbook-form" class="form">
-      <input type="text" name="name" placeholder="Nama Anda" required />
-      <textarea name="message" placeholder="Tulis ucapan & doa Anda" rows="3" required></textarea>
-      <button type="submit" class="btn-submit">Kirim Ucapan</button>
+      <input type="text" name="name" placeholder="Nama Anda" required />      <button type="submit" class="btn-submit">Kirim Ucapan</button>
     </form>
     <div id="guestbook-list" class="wishes-list"></div>
   </section>
