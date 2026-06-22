@@ -16,6 +16,11 @@ window.VINVITE_SAMPLE_DATA = {
   cover_image_url:
     "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop",
 
+  groom_photo_url:
+    "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?q=80&w=600&auto=format&fit=crop",
+  bride_photo_url:
+    "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=600&auto=format&fit=crop",
+
   akad_date: "2026-10-17",
   akad_time: "08:00 – 10:00 WIB",
   akad_venue_name: "Kediaman Mempelai Wanita",

@@ -17,7 +17,7 @@ window.bindRsvpForm = function (formSelector, invitationId) {
       guest_name: fd.get("guest_name"),
       attendance: fd.get("attendance"),
       guest_count: Number(fd.get("guest_count")) || 1,
-      message: fd.get("message") || null,
+      message: fd.get("message") || null, // optional — may not be in form
     };
 
     const submitBtn = form.querySelector('[type="submit"]');
