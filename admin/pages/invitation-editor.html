@@ -61,6 +61,10 @@
         <!-- MEMPELAI -->
         <div class="card">
           <h3 class="card-title">Mempelai Pria</h3>
+          <div class="field">
+            <label>Foto Mempelai Pria</label>
+            <div id="groom-photo-upload"></div>
+          </div>
           <div class="field-row two">
             <div class="field"><label>Nama Lengkap</label><input name="groom_name" required /></div>
             <div class="field"><label>Nama Panggilan</label><input name="groom_nickname" /></div>
@@ -70,6 +74,10 @@
 
         <div class="card">
           <h3 class="card-title">Mempelai Wanita</h3>
+          <div class="field">
+            <label>Foto Mempelai Wanita</label>
+            <div id="bride-photo-upload"></div>
+          </div>
           <div class="field-row two">
             <div class="field"><label>Nama Lengkap</label><input name="bride_name" required /></div>
             <div class="field"><label>Nama Panggilan</label><input name="bride_nickname" /></div>
@@ -169,6 +177,8 @@
   let galleryUrls = [];
   let coverUrl = "";
   let musicUrl = "";
+  let groomPhotoUrl = "";
+  let bridePhotoUrl = "";
   let pkgSettings = {};
   const client = () => window.getVinviteClient();
 
@@ -299,9 +309,11 @@
       galleryUrls = Array.isArray(existing.gallery) ? [...existing.gallery] : JSON.parse(existing.gallery || "[]");
       renderGalleryGrid();
 
-      // Cover & music URLs for upload widgets
+      // Cover, music, groom, bride photo URLs for upload widgets
       coverUrl = existing.cover_image_url || "";
       musicUrl = existing.music_url || "";
+      groomPhotoUrl = existing.groom_photo_url || "";
+      bridePhotoUrl = existing.bride_photo_url || "";
 
       // Gift accounts
       const giftC = document.getElementById("gift-repeater");
@@ -314,20 +326,24 @@
 
     // Render upload widgets
     window.renderUploadWidget(document.getElementById("cover-upload"), {
-      label: "Foto Cover",
-      accept: "image/*",
-      folder: "cover",
-      currentUrl: coverUrl,
-      preview: "image",
+      label: "Foto Cover", accept: "image/*", folder: "cover",
+      currentUrl: coverUrl, preview: "image",
       onUrl: (url) => { coverUrl = url; },
     });
     window.renderUploadWidget(document.getElementById("music-upload"), {
-      label: "Musik (mp3)",
-      accept: "audio/*",
-      folder: "music",
-      currentUrl: musicUrl,
-      preview: "audio",
+      label: "Musik (mp3)", accept: "audio/*", folder: "music",
+      currentUrl: musicUrl, preview: "audio",
       onUrl: (url) => { musicUrl = url; },
+    });
+    window.renderUploadWidget(document.getElementById("groom-photo-upload"), {
+      label: "Foto Mempelai Pria", accept: "image/*", folder: "photos",
+      currentUrl: groomPhotoUrl, preview: "image",
+      onUrl: (url) => { groomPhotoUrl = url; },
+    });
+    window.renderUploadWidget(document.getElementById("bride-photo-upload"), {
+      label: "Foto Mempelai Wanita", accept: "image/*", folder: "photos",
+      currentUrl: bridePhotoUrl, preview: "image",
+      onUrl: (url) => { bridePhotoUrl = url; },
     });
 
     // Apply package enforcement
@@ -369,6 +385,8 @@
       payload.gift_accounts = window.collectGiftAccounts();
       payload.cover_image_url = coverUrl;
       payload.music_url = musicUrl;
+      payload.groom_photo_url = groomPhotoUrl;
+      payload.bride_photo_url = bridePhotoUrl;
 
       // Enforce music restriction
       const s = pkgSettings[payload.package];
