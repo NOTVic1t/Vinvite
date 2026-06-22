@@ -14,6 +14,7 @@ const ADMIN_NAV = [
 
 const ADMIN_ONLY_NAV = {
   section: "Owner", items: [
+    { key: "packages", label: "Pengaturan Paket", href: "ROOT/pages/package-settings.html", icon: "📦" },
     { key: "orders", label: "Semua Pesanan", href: "ROOT/pages/orders.html", icon: "💳" },
     { key: "users", label: "Semua Reseller", href: "ROOT/pages/users.html", icon: "👤" },
   ]
