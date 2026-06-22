@@ -23,6 +23,12 @@ window.renderInvitation = function (data) {
   document.getElementById("bride-name").textContent = data.bride_name;
   document.getElementById("bride-parents").textContent = data.bride_parents || "";
 
+  // couple photos
+  const groomImg = document.querySelector("#groom-photo");
+  const brideImg = document.querySelector("#bride-photo");
+  if (groomImg && data.groom_photo_url) groomImg.src = data.groom_photo_url;
+  if (brideImg && data.bride_photo_url) brideImg.src = data.bride_photo_url;
+
   document.getElementById("akad-date").textContent = formatDateID(data.akad_date);
   document.getElementById("akad-time").textContent = data.akad_time || "";
   document.getElementById("akad-venue").textContent = data.akad_venue_name || "";
