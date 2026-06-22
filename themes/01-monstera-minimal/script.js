@@ -35,7 +35,6 @@ window.renderInvitation = function (data) {
   document.getElementById("resepsi-address").textContent = data.resepsi_venue_address || "";
   document.getElementById("resepsi-maps").href = data.resepsi_maps_url || "#";
 
-  document.getElementById("closing-text") && null;
   document.querySelector(".closing-names").innerHTML = `${data.groom_nickname || data.groom_name} &amp; ${data.bride_nickname || data.bride_name}`;
 
   // love story
@@ -81,8 +80,10 @@ window.renderInvitation = function (data) {
   window.initCoverGate("#cover-screen", "#open-invitation-btn");
   window.initMusicPlayer("#bg-music", "#music-toggle");
   window.initGalleryLightbox(".gallery-item img");
-  window.startCountdown(`${data.resepsi_date || data.akad_date}T${(data.resepsi_time || data.akad_time || "00:00").split(" ")[0]}:00`,
-    { d: "#cd-d", h: "#cd-h", m: "#cd-m", s: "#cd-s" });
+  window.startCountdown(
+    `${data.resepsi_date || data.akad_date}T${(data.resepsi_time || data.akad_time || "00:00").split(" ")[0]}:00`,
+    { d: "#cd-d", h: "#cd-h", m: "#cd-m", s: "#cd-s" }
+  );
   window.bindRsvpForm("#rsvp-form", data._invitationId);
   window.onRsvpSuccess = () => { document.getElementById("rsvp-success").hidden = false; };
   window.initGuestbook({
@@ -102,7 +103,7 @@ window.renderInvitation = function (data) {
   }, { threshold: 0.4 });
   document.querySelectorAll("[data-leaf]").forEach(el => io.observe(el));
 
-  // new scroll fx: reveal, parallax, particles, progress
+  // scroll fx: reveal, parallax, particles, progress bar
   window.initScrollReveal();
   window.initParallax();
   window.initFloatingParticles("#particle-field", { symbol: "🍃", count: 9, className: "particle-leaf" });

@@ -21,8 +21,6 @@ body {
   overflow-x: hidden;
 }
 
-
-
 h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; }
 
 .eyebrow {
@@ -35,15 +33,15 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; }
 }
 
 /* ---------- COVER ---------- */
+/* NOTE: cover hiding is done entirely via inline JS style in cover-gate.js.
+   Do NOT add transition/opacity/visibility here — conflicts with mobile scroll. */
 .cover {
   position: fixed; inset: 0; z-index: 50;
   background: var(--sage);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center; color: var(--ivory); padding: 32px;
-  transition: opacity .8s ease, visibility .8s ease;
   touch-action: none;
 }
-
 .cover-leaf-bg {
   position: absolute; inset: 0; opacity: .08;
   background-image: radial-gradient(circle at 20% 30%, var(--ivory) 0, transparent 40%),
@@ -64,6 +62,9 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; }
 
 /* ---------- SECTIONS ---------- */
 .section { max-width: 640px; margin: 0 auto; padding: 90px 28px; text-align: center; }
+
+#main-content { scroll-snap-type: y proximity; }
+.section { scroll-snap-align: start; }
 
 .divider-leaf {
   width: 60px; height: 36px; margin: 0 auto 22px;
@@ -106,6 +107,10 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; }
 .event-address { color: #837c70 !important; font-size: .78rem !important; }
 .btn-maps { display: inline-block; margin-top: 14px; font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--sage); text-decoration: none; border-bottom: 1px solid var(--sage); padding-bottom: 2px; }
 
+/* ---------- MAP EMBED ---------- */
+.map-embed { margin-top: 14px; border-radius: 6px; overflow: hidden; border: 1px solid var(--sand); }
+.map-embed iframe { width: 100%; height: 160px; border: 0; display: block; }
+
 /* ---------- STORY ---------- */
 .story-timeline { text-align: left; margin-top: 30px; border-left: 1px solid var(--sand); padding-left: 26px; display: flex; flex-direction: column; gap: 30px; }
 .story-item::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--gold); position: absolute; margin-left: -31px; margin-top: 7px; }
@@ -141,6 +146,9 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; }
 .btn-submit:hover { background: #38473d; }
 .form-success { margin-top: 16px; color: var(--sage); font-size: .85rem; }
 
+/* ---------- SOCIAL PROOF ---------- */
+.social-proof { display: inline-block; margin: 0 auto 18px; padding: 7px 16px; border-radius: 100px; background: #F1ECDD; color: var(--sage); font-size: .78rem; font-weight: 500; }
+
 /* ---------- WISHES ---------- */
 .wishes-list { margin-top: 28px; display: flex; flex-direction: column; gap: 16px; text-align: left; max-height: 360px; overflow-y: auto; }
 .wish-item { border-bottom: 1px solid var(--sand); padding-bottom: 14px; }
@@ -162,10 +170,6 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; }
 }
 .music-toggle.is-playing { animation: spin 4s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-@media (prefers-reduced-motion: reduce) {
-  .divider-leaf, .gallery-item img, .music-toggle.is-playing { transition: none; animation: none; }
-}
 
 /* ---------- SCROLL REVEAL ---------- */
 [data-reveal] { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s ease; }
@@ -189,18 +193,10 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; }
   100% { transform: translateY(112vh) translateX(-12px) rotate(320deg); }
 }
 
-/* ---------- SCROLL SNAP ---------- */
-/* Only apply snap AFTER cover is dismissed — body class toggled by cover-gate.js */
-
-#main-content { scroll-snap-type: y proximity; }
-.section { scroll-snap-align: start; }
-
-/* ---------- MAP EMBED ---------- */
-.map-embed { margin-top: 14px; border-radius: 6px; overflow: hidden; border: 1px solid var(--sand); }
-.map-embed iframe { width: 100%; height: 160px; border: 0; display: block; }
-
-/* ---------- SOCIAL PROOF ---------- */
-.social-proof {
-  display: inline-block; margin: 0 auto 18px; padding: 7px 16px; border-radius: 100px;
-  background: #F1ECDD; color: var(--sage); font-size: .78rem; font-weight: 500;
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .divider-leaf { transition: none; }
+  .gallery-item img { transition: none; }
+  .music-toggle.is-playing { animation: none; }
+  .particle-field { display: none; }
 }
