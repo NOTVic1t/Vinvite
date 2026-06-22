@@ -219,19 +219,25 @@
 
   document.getElementById("gallery-file-input").addEventListener("change", async (e) => {
     const files = [...e.target.files];
+    if (!files.length) return;
     const status = document.getElementById("gallery-upload-status");
+    status.textContent = `Mengunggah ${files.length} foto...`;
+
+    let successCount = 0;
     for (let i = 0; i < files.length; i++) {
-      status.textContent = `Mengunggah foto ${i+1} dari ${files.length}...`;
       try {
         const url = await window.uploadInvitationFile(files[i], "gallery");
-        galleryUrls.push(url);
+        galleryUrls = [...galleryUrls, url]; // create new array to trigger re-render
+        successCount++;
+        status.textContent = `${successCount} dari ${files.length} foto diunggah...`;
+        renderGalleryGrid(); // render after EACH successful upload so user sees progress
       } catch (err) {
-        status.textContent = "Gagal: " + err.message;
+        status.textContent = "Gagal upload foto " + (i+1) + ": " + err.message;
       }
     }
-    status.textContent = `${files.length} foto diunggah ✓`;
-    e.target.value = "";
-    renderGalleryGrid();
+
+    status.textContent = `${successCount} foto berhasil diunggah ✓`;
+    e.target.value = ""; // reset input so same file can be re-selected
   });
 
   // --- PACKAGE ENFORCEMENT ---
