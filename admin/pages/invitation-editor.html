@@ -18,18 +18,17 @@
 
 <div class="app-shell">
   <aside class="sidebar" id="sidebar"></aside>
-
   <div class="main">
     <div class="topbar">
       <h1>Edit Undangan</h1>
       <button class="btn btn-primary" id="save-btn">Simpan</button>
     </div>
     <div class="content">
-
       <div id="client-subnav"></div>
 
       <form id="inv-form">
 
+        <!-- KLIEN -->
         <div class="card">
           <h3 class="card-title">Kontak Klien</h3>
           <p style="font-size:.8rem;color:var(--grey);margin-bottom:14px;">Klien tidak memiliki login — data ini hanya untuk catatanmu sendiri.</p>
@@ -38,16 +37,28 @@
             <div class="field"><label>No. WhatsApp Klien</label><input name="client_phone" placeholder="08xxxxxxxxxx" /></div>
           </div>
           <div class="field"><label>Catatan Internal</label><textarea name="internal_notes" rows="2" placeholder="cth: DP 50% sudah masuk, sisa pelunasan H-7"></textarea></div>
-          <div class="field">
-            <label>Paket</label>
-            <select name="package">
-              <option value="basic">Basic</option>
-              <option value="premium">Premium</option>
-              <option value="exclusive">Exclusive</option>
-            </select>
+          <div class="field-row two">
+            <div class="field">
+              <label>Paket</label>
+              <select name="package" id="package-select">
+                <option value="basic">Basic</option>
+                <option value="premium">Premium</option>
+                <option value="exclusive">Exclusive</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Slug URL (link undangan)</label>
+              <div style="display:flex;gap:6px;">
+                <input name="slug" id="slug-input" placeholder="nama-pengantin-1234" style="flex:1;" />
+                <button type="button" id="regenerate-slug" class="btn btn-outline btn-sm" title="Generate ulang">↺</button>
+              </div>
+              <p style="font-size:.72rem;color:var(--grey);margin-top:4px;">Hanya huruf kecil, angka, tanda hubung. Jangan ubah setelah dibagikan ke tamu.</p>
+            </div>
           </div>
+          <div id="pkg-warning" class="auth-error" style="display:none;margin-top:10px;"></div>
         </div>
 
+        <!-- MEMPELAI -->
         <div class="card">
           <h3 class="card-title">Mempelai Pria</h3>
           <div class="field-row two">
@@ -66,6 +77,7 @@
           <div class="field"><label>Putri dari</label><input name="bride_parents" placeholder="Putri dari Bapak ... & Ibu ..." /></div>
         </div>
 
+        <!-- AKAD -->
         <div class="card">
           <h3 class="card-title">Akad Nikah</h3>
           <div class="field-row two">
@@ -77,6 +89,7 @@
           <div class="field"><label>Link Google Maps</label><input name="akad_maps_url" placeholder="https://maps.google.com/..." /></div>
         </div>
 
+        <!-- RESEPSI -->
         <div class="card">
           <h3 class="card-title">Resepsi</h3>
           <div class="field-row two">
@@ -88,30 +101,46 @@
           <div class="field"><label>Link Google Maps</label><input name="resepsi_maps_url" placeholder="https://maps.google.com/..." /></div>
         </div>
 
+        <!-- MEDIA -->
         <div class="card">
           <h3 class="card-title">Media</h3>
-          <div class="field"><label>URL Foto Cover</label><input name="cover_image_url" placeholder="https://..." /></div>
-          <div class="field"><label>URL Musik Latar (mp3)</label><input name="music_url" placeholder="https://..." /></div>
+          <div class="field">
+            <label>Foto Cover</label>
+            <div id="cover-upload"></div>
+          </div>
+          <div class="field" id="music-field">
+            <label>Musik Latar (mp3)</label>
+            <div id="music-upload"></div>
+            <p id="music-locked-note" hidden style="font-size:.78rem;color:var(--grey);margin-top:6px;">⚠ Musik kustom tidak tersedia di paket ini.</p>
+          </div>
         </div>
 
+        <!-- KISAH KAMI -->
         <div class="card">
           <h3 class="card-title">Kisah Kami</h3>
           <div id="story-repeater"></div>
           <button type="button" class="btn btn-outline btn-sm" id="add-story">+ Tambah Cerita</button>
         </div>
 
+        <!-- GALERI -->
         <div class="card">
           <h3 class="card-title">Galeri Foto</h3>
-          <div id="gallery-repeater"></div>
-          <button type="button" class="btn btn-outline btn-sm" id="add-gallery">+ Tambah Foto</button>
+          <div class="gallery-upload-grid" id="gallery-preview-grid"></div>
+          <label class="upload-label" style="margin-top:6px;">
+            <input type="file" id="gallery-file-input" accept="image/*" multiple style="display:none;" />
+            <span class="upload-btn">+ Tambah Foto</span>
+          </label>
+          <p id="gallery-upload-status" style="font-size:.75rem;color:var(--grey);margin-top:6px;"></p>
         </div>
 
+        <!-- AMPLOP DIGITAL -->
         <div class="card">
           <h3 class="card-title">Amplop Digital</h3>
           <div id="gift-repeater"></div>
           <button type="button" class="btn btn-outline btn-sm" id="add-gift">+ Tambah Rekening</button>
         </div>
 
+        <!-- STATUS -->
         <div class="card">
           <h3 class="card-title">Status</h3>
           <div class="field">
@@ -125,7 +154,6 @@
         </div>
 
       </form>
-
     </div>
   </div>
 </div>
@@ -134,10 +162,25 @@
 <script src="../../engine/config.js"></script>
 <script src="../../engine/supabase-client.js"></script>
 <script src="../js/admin-common.js"></script>
+<script src="../js/admin-upload.js"></script>
+<script src="../js/admin-banks.js"></script>
 <script>
   let invitationId = window.getInvitationIdFromUrl();
-  const client0 = () => window.getVinviteClient();
+  let galleryUrls = [];
+  let coverUrl = "";
+  let musicUrl = "";
+  let pkgSettings = {};
+  const client = () => window.getVinviteClient();
 
+  function slugify(str) {
+    return (str || "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  }
+
+  function genSlug(groom, bride) {
+    return `${slugify(groom || "pengantin")}-${slugify(bride || "undangan")}-${Date.now().toString().slice(-4)}`;
+  }
+
+  // --- STORY REPEATER ---
   function storyItemHtml(s = {}) {
     return `
       <div class="repeater-item" data-repeater="story">
@@ -149,50 +192,9 @@
         <div class="field"><label>Cerita</label><textarea class="s-text" rows="2">${s.text || ""}</textarea></div>
       </div>`;
   }
-  function galleryItemHtml(url = "") {
-    return `
-      <div class="repeater-item" data-repeater="gallery">
-        <button type="button" class="repeater-remove">✕ Hapus</button>
-        <div class="field"><label>URL Foto</label><input class="g-url" value="${url}" placeholder="https://..." /></div>
-      </div>`;
+  function bindStoryRemove(c) {
+    c.querySelectorAll(".repeater-remove").forEach(btn => btn.onclick = () => btn.closest(".repeater-item").remove());
   }
-  function giftItemHtml(a = {}) {
-    return `
-      <div class="repeater-item" data-repeater="gift">
-        <button type="button" class="repeater-remove">✕ Hapus</button>
-        <div class="field-row two">
-          <div class="field"><label>Jenis</label><input class="a-type" value="${a.type || ""}" placeholder="Bank Transfer / E-Wallet" /></div>
-          <div class="field"><label>Nama Bank/E-Wallet</label><input class="a-bank" value="${a.bank_name || ""}" /></div>
-        </div>
-        <div class="field-row two">
-          <div class="field"><label>Nomor Rekening</label><input class="a-number" value="${a.account_number || ""}" /></div>
-          <div class="field"><label>Atas Nama</label><input class="a-holder" value="${a.account_holder || ""}" /></div>
-        </div>
-      </div>`;
-  }
-
-  function bindRemove(container) {
-    container.querySelectorAll(".repeater-remove").forEach(btn => {
-      btn.onclick = () => btn.closest(".repeater-item").remove();
-    });
-  }
-
-  document.getElementById("add-story").onclick = () => {
-    const c = document.getElementById("story-repeater");
-    c.insertAdjacentHTML("beforeend", storyItemHtml());
-    bindRemove(c);
-  };
-  document.getElementById("add-gallery").onclick = () => {
-    const c = document.getElementById("gallery-repeater");
-    c.insertAdjacentHTML("beforeend", galleryItemHtml());
-    bindRemove(c);
-  };
-  document.getElementById("add-gift").onclick = () => {
-    const c = document.getElementById("gift-repeater");
-    c.insertAdjacentHTML("beforeend", giftItemHtml());
-    bindRemove(c);
-  };
-
   function collectStory() {
     return [...document.querySelectorAll('[data-repeater="story"]')].map(el => ({
       date: el.querySelector(".s-date").value,
@@ -200,34 +202,77 @@
       text: el.querySelector(".s-text").value,
     }));
   }
-  function collectGallery() {
-    return [...document.querySelectorAll('[data-repeater="gallery"]')].map(el => el.querySelector(".g-url").value).filter(Boolean);
-  }
-  function collectGift() {
-    return [...document.querySelectorAll('[data-repeater="gift"]')].map(el => ({
-      type: el.querySelector(".a-type").value,
-      bank_name: el.querySelector(".a-bank").value,
-      account_number: el.querySelector(".a-number").value,
-      account_holder: el.querySelector(".a-holder").value,
-    }));
+
+  // --- GALLERY ---
+  function renderGalleryGrid() {
+    const grid = document.getElementById("gallery-preview-grid");
+    grid.innerHTML = galleryUrls.map((url, i) => `
+      <div class="gallery-upload-item">
+        <img src="${url}" />
+        <button type="button" class="gallery-upload-remove" data-i="${i}">✕</button>
+      </div>
+    `).join("");
+    grid.querySelectorAll(".gallery-upload-remove").forEach(btn => {
+      btn.onclick = () => { galleryUrls.splice(parseInt(btn.dataset.i), 1); renderGalleryGrid(); };
+    });
   }
 
-  function slugify(str) {
-    return (str || "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  document.getElementById("gallery-file-input").addEventListener("change", async (e) => {
+    const files = [...e.target.files];
+    const status = document.getElementById("gallery-upload-status");
+    for (let i = 0; i < files.length; i++) {
+      status.textContent = `Mengunggah foto ${i+1} dari ${files.length}...`;
+      try {
+        const url = await window.uploadInvitationFile(files[i], "gallery");
+        galleryUrls.push(url);
+      } catch (err) {
+        status.textContent = "Gagal: " + err.message;
+      }
+    }
+    status.textContent = `${files.length} foto diunggah ✓`;
+    e.target.value = "";
+    renderGalleryGrid();
+  });
+
+  // --- PACKAGE ENFORCEMENT ---
+  async function loadPkgSettings() {
+    const { data } = await client().from("package_settings").select("*");
+    (data || []).forEach(s => pkgSettings[s.package] = s);
   }
 
+  function applyPkgEnforcement(pkg) {
+    const s = pkgSettings[pkg];
+    if (!s) return;
+    const musicField = document.getElementById("music-field");
+    const musicNote = document.getElementById("music-locked-note");
+    const musicUploadDiv = document.getElementById("music-upload");
+    if (s.music_enabled) {
+      musicUploadDiv.style.display = "";
+      musicNote.hidden = true;
+    } else {
+      musicUploadDiv.style.display = "none";
+      musicNote.hidden = false;
+    }
+  }
+
+  document.getElementById("package-select").addEventListener("change", (e) => {
+    applyPkgEnforcement(e.target.value);
+  });
+
+  // --- MAIN INIT ---
   (async function () {
     const auth = await window.requireAuth("..");
     if (!auth) return;
     window.renderAdminSidebar("dashboard", "..", auth.profile);
     window.initMobileSidebarToggle();
 
-    const client = client0();
+    await loadPkgSettings();
+
     const form = document.getElementById("inv-form");
     let existing = null;
 
     if (invitationId) {
-      const { data, error } = await client.from("invitations").select("*").eq("id", invitationId).single();
+      const { data, error } = await client().from("invitations").select("*").eq("id", invitationId).single();
       if (error || !data) {
         window.vinviteToast("Undangan tidak ditemukan.");
         window.location.href = "../dashboard.html";
@@ -238,33 +283,98 @@
         const input = form.querySelector(`[name="${key}"]`);
         if (input && val !== null && typeof val !== "object") input.value = val;
       });
+
+      // Load story
       const storyC = document.getElementById("story-repeater");
       (existing.love_story || []).forEach(s => storyC.insertAdjacentHTML("beforeend", storyItemHtml(s)));
-      const galC = document.getElementById("gallery-repeater");
-      (existing.gallery || []).forEach(u => galC.insertAdjacentHTML("beforeend", galleryItemHtml(u)));
+      bindStoryRemove(storyC);
+
+      // Gallery
+      galleryUrls = Array.isArray(existing.gallery) ? [...existing.gallery] : JSON.parse(existing.gallery || "[]");
+      renderGalleryGrid();
+
+      // Cover & music URLs for upload widgets
+      coverUrl = existing.cover_image_url || "";
+      musicUrl = existing.music_url || "";
+
+      // Gift accounts
       const giftC = document.getElementById("gift-repeater");
-      (existing.gift_accounts || []).forEach(a => giftC.insertAdjacentHTML("beforeend", giftItemHtml(a)));
-      bindRemove(document);
+      const accounts = Array.isArray(existing.gift_accounts) ? existing.gift_accounts : JSON.parse(existing.gift_accounts || "[]");
+      accounts.forEach(a => {
+        giftC.insertAdjacentHTML("beforeend", window.giftItemHtml(a));
+      });
+      window.bindAllGiftItems();
     }
 
+    // Render upload widgets
+    window.renderUploadWidget(document.getElementById("cover-upload"), {
+      label: "Foto Cover",
+      accept: "image/*",
+      folder: "cover",
+      currentUrl: coverUrl,
+      preview: "image",
+      onUrl: (url) => { coverUrl = url; },
+    });
+    window.renderUploadWidget(document.getElementById("music-upload"), {
+      label: "Musik (mp3)",
+      accept: "audio/*",
+      folder: "music",
+      currentUrl: musicUrl,
+      preview: "audio",
+      onUrl: (url) => { musicUrl = url; },
+    });
+
+    // Apply package enforcement
+    const currentPkg = form.querySelector('[name="package"]').value || "basic";
+    applyPkgEnforcement(currentPkg);
+
+    // Sub-navigation
     window.renderClientSubnav("editor", invitationId,
       existing ? `${existing.groom_nickname || existing.groom_name} & ${existing.bride_nickname || existing.bride_name}` : "Klien Baru");
 
+    // Story add button
+    document.getElementById("add-story").onclick = () => {
+      const c = document.getElementById("story-repeater");
+      c.insertAdjacentHTML("beforeend", storyItemHtml());
+      bindStoryRemove(c);
+    };
+
+    // Gift add button
+    document.getElementById("add-gift").onclick = () => {
+      const c = document.getElementById("gift-repeater");
+      c.insertAdjacentHTML("beforeend", window.giftItemHtml());
+      window.bindGiftItem(c.lastElementChild);
+    };
+
+    // Slug regenerate
+    document.getElementById("regenerate-slug").onclick = () => {
+      const groom = form.querySelector('[name="groom_nickname"]').value || form.querySelector('[name="groom_name"]').value;
+      const bride = form.querySelector('[name="bride_nickname"]').value || form.querySelector('[name="bride_name"]').value;
+      form.querySelector('[name="slug"]').value = genSlug(groom, bride);
+    };
+
+    // SAVE
     document.getElementById("save-btn").addEventListener("click", async () => {
       if (!form.checkValidity()) { form.reportValidity(); return; }
       const fd = new FormData(form);
       const payload = Object.fromEntries(fd.entries());
       payload.love_story = collectStory();
-      payload.gallery = collectGallery();
-      payload.gift_accounts = collectGift();
+      payload.gallery = galleryUrls;
+      payload.gift_accounts = window.collectGiftAccounts();
+      payload.cover_image_url = coverUrl;
+      payload.music_url = musicUrl;
+
+      // Enforce music restriction
+      const s = pkgSettings[payload.package];
+      if (s && !s.music_enabled) payload.music_url = "";
 
       let result;
       if (invitationId) {
-        result = await client.from("invitations").update(payload).eq("id", invitationId);
+        result = await client().from("invitations").update(payload).eq("id", invitationId);
       } else {
         payload.user_id = auth.user.id;
-        payload.slug = `${slugify(payload.groom_nickname || payload.groom_name)}-${slugify(payload.bride_nickname || payload.bride_name)}-${Date.now().toString().slice(-4)}`;
-        result = await client.from("invitations").insert(payload).select().single();
+        if (!payload.slug) payload.slug = genSlug(payload.groom_nickname || payload.groom_name, payload.bride_nickname || payload.bride_name);
+        result = await client().from("invitations").insert(payload).select().single();
         if (result.data) {
           invitationId = result.data.id;
           window.history.replaceState({}, "", `invitation-editor.html?id=${invitationId}`);

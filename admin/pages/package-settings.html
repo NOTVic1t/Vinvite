@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pengaturan Paket — Vinvite Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/admin.css" />
+<style>
+  .pkg-grid { display: grid; gap: 20px; }
+  @media (min-width: 700px) { .pkg-grid { grid-template-columns: repeat(3, 1fr); } }
+  .pkg-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+  .pkg-card h3 { font-size: 1.15rem; margin-bottom: 16px; }
+  .pkg-card.basic h3 { color: var(--grey); }
+  .pkg-card.premium h3 { color: var(--emerald); }
+  .pkg-card.exclusive h3 { color: var(--coral); }
+  .toggle-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: .88rem; }
+  .toggle { position: relative; width: 44px; height: 24px; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider { position: absolute; inset: 0; background: var(--border); border-radius: 12px; cursor: pointer; transition: background .2s; }
+  .toggle-slider::before { content: ""; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform .2s; }
+  .toggle input:checked + .toggle-slider { background: var(--emerald); }
+  .toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
+  .theme-list { max-height: 200px; overflow-y: auto; margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+  .theme-check-item { display: flex; align-items: center; gap: 8px; font-size: .82rem; }
+  .theme-check-item input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--emerald); }
+  .all-themes-note { font-size: .75rem; color: var(--grey); font-style: italic; margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<div class="mobile-topbar">
+  <button id="sidebar-toggle">☰</button>
+  <span class="auth-logo" style="margin:0;">Vinvite</span>
+  <span></span>
+</div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <div class="topbar">
+      <h1>Pengaturan Paket</h1>
+      <button class="btn btn-primary" id="save-pkg-btn">Simpan Semua</button>
+    </div>
+    <div class="content">
+      <p style="color:var(--grey);font-size:.85rem;margin-bottom:24px;">
+        Atur batasan fitur per paket. Perubahan langsung berlaku ke semua klien baru maupun yang sudah ada.
+      </p>
+      <div class="pkg-grid" id="pkg-grid">
+        <p style="color:var(--grey);">Memuat...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../../engine/config.js"></script>
+<script src="../../engine/supabase-client.js"></script>
+<script src="../js/admin-common.js"></script>
+<script>
+  const PACKAGES = [
+    { key: "basic", label: "Basic", price: "Rp 99.000" },
+    { key: "premium", label: "Premium", price: "Rp 179.000" },
+    { key: "exclusive", label: "Exclusive", price: "Rp 299.000" },
+  ];
+
+  let themes = [];
+  let settings = {};
+
+  function renderCard(pkg, setting) {
+    const allowedThemes = setting.allowed_themes;
+    const allAllowed = allowedThemes === null;
+
+    return `
+      <div class="pkg-card ${pkg.key}" data-pkg="${pkg.key}">
+        <h3>${pkg.label} <small style="font-size:.75rem;color:var(--grey);font-weight:400;">${pkg.price}</small></h3>
+
+        <div class="field" style="margin-bottom:14px;">
+          <label>Maks. Tamu</label>
+          <input type="number" class="pkg-max-guests" value="${setting.max_guests}" min="1" max="99999"
+            style="padding:8px 10px;border:1px solid var(--border);border-radius:8px;width:100%;font-family:inherit;" />
+        </div>
+
+        <div class="toggle-row">
+          <span>Musik Kustom</span>
+          <label class="toggle">
+            <input type="checkbox" class="pkg-music" ${setting.music_enabled ? "checked" : ""} />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div>
+          <div class="toggle-row" style="margin-bottom:6px;">
+            <span>Akses Tema</span>
+            <label class="toggle">
+              <input type="checkbox" class="pkg-all-themes" ${allAllowed ? "checked" : ""} />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <p class="all-themes-note">Toggle ON = semua tema boleh diakses</p>
+          <div class="theme-list pkg-theme-list" ${allAllowed ? 'style="opacity:.4;pointer-events:none;"' : ""}>
+            ${themes.map(t => `
+              <label class="theme-check-item">
+                <input type="checkbox" data-slug="${t.slug}"
+                  ${allAllowed || (allowedThemes && allowedThemes.includes(t.slug)) ? "checked" : ""} />
+                ${t.name}
+              </label>`).join("")}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function collectCardData(card) {
+    const allThemes = card.querySelector(".pkg-all-themes").checked;
+    const checkedSlugs = [...card.querySelectorAll(".pkg-theme-list input:checked")].map(i => i.dataset.slug);
+    return {
+      max_guests: parseInt(card.querySelector(".pkg-max-guests").value) || 100,
+      music_enabled: card.querySelector(".pkg-music").checked,
+      allowed_themes: allThemes ? null : checkedSlugs,
+    };
+  }
+
+  function bindCard(card) {
+    const allToggle = card.querySelector(".pkg-all-themes");
+    const themeList = card.querySelector(".pkg-theme-list");
+    allToggle.addEventListener("change", () => {
+      themeList.style.opacity = allToggle.checked ? ".4" : "1";
+      themeList.style.pointerEvents = allToggle.checked ? "none" : "";
+    });
+  }
+
+  (async function () {
+    const auth = await window.requireAuth("..");
+    if (!auth) return;
+    if (!auth.profile || auth.profile.role !== "admin") {
+      document.querySelector(".content").innerHTML = `<div class="empty-state"><h3>Akses ditolak</h3><p>Halaman ini khusus untuk Owner.</p></div>`;
+      window.renderAdminSidebar("packages", "..", auth.profile);
+      window.initMobileSidebarToggle();
+      return;
+    }
+    window.renderAdminSidebar("packages", "..", auth.profile);
+    window.initMobileSidebarToggle();
+
+    const client = window.getVinviteClient();
+
+    // Load themes list and package settings in parallel
+    const [themesRes, pkgRes] = await Promise.all([
+      fetch("../../themes/themes.json").then(r => r.json()),
+      client.from("package_settings").select("*"),
+    ]);
+
+    themes = themesRes;
+    (pkgRes.data || []).forEach(s => { settings[s.package] = s; });
+
+    const grid = document.getElementById("pkg-grid");
+    grid.innerHTML = PACKAGES.map(pkg => renderCard(pkg, settings[pkg.key] || { max_guests: 100, music_enabled: false, allowed_themes: null })).join("");
+    grid.querySelectorAll(".pkg-card").forEach(bindCard);
+
+    document.getElementById("save-pkg-btn").addEventListener("click", async () => {
+      const updates = [];
+      grid.querySelectorAll(".pkg-card").forEach(card => {
+        updates.push({ package: card.dataset.pkg, ...collectCardData(card), updated_at: new Date().toISOString() });
+      });
+
+      const { error } = await client.from("package_settings").upsert(updates, { onConflict: "package" });
+      if (error) return window.vinviteToast("Gagal menyimpan: " + error.message);
+      window.vinviteToast("Pengaturan paket disimpan ✓");
+    });
+  })();
+</script>
+</body>
+</html>
