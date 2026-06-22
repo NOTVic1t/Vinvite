@@ -40,8 +40,9 @@ h1, h2, h3 { font-family: "Playfair Display", serif; }
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center; color: var(--ivory); padding: 32px;
   transition: opacity .9s ease, visibility .9s ease;
+  touch-action: none;
 }
-.cover.is-closing { opacity: 0; visibility: hidden; pointer-events: none; }
+.cover.is-closing { opacity: 0; visibility: hidden; pointer-events: none; touch-action: none; }
 .crest { font-size: 2.2rem; color: var(--gold); margin-bottom: 18px; }
 .crest.small { font-size: 1.4rem; margin-bottom: 12px; }
 .cover-eyebrow { font-family: "Cormorant SC", serif; letter-spacing: .25em; text-transform: uppercase; font-size: .78rem; color: var(--bronze); }
@@ -190,8 +191,9 @@ h1, h2, h3 { font-family: "Playfair Display", serif; }
 }
 
 /* ---------- SCROLL SNAP ---------- */
-html { scroll-snap-type: y proximity; }
-.section, .cover { scroll-snap-align: start; }
+html { scroll-snap-type: none; }
+body:not(.vinvite-locked) #main-content { scroll-snap-type: y proximity; }
+.section { scroll-snap-align: start; }
 
 /* ---------- MAP EMBED ---------- */
 .map-embed { margin-top: 14px; border: 1px solid var(--bronze); overflow: hidden; }
