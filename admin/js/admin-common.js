@@ -97,7 +97,27 @@ window.initMobileSidebarToggle = function () {
   const btn = document.getElementById("sidebar-toggle");
   const sidebar = document.getElementById("sidebar");
   if (!btn || !sidebar) return;
-  btn.addEventListener("click", () => sidebar.classList.toggle("open"));
+
+  // Create overlay for tap-outside-to-close
+  let overlay = document.getElementById("sidebar-overlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "sidebar-overlay";
+    overlay.style.cssText = "display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:39;";
+    document.body.appendChild(overlay);
+  }
+
+  function open() {
+    sidebar.classList.add("open");
+    overlay.style.display = "block";
+  }
+  function close() {
+    sidebar.classList.remove("open");
+    overlay.style.display = "none";
+  }
+
+  btn.addEventListener("click", () => sidebar.classList.contains("open") ? close() : open());
+  overlay.addEventListener("click", close);
 };
 
 // ---------------------------------------------------------------------------
