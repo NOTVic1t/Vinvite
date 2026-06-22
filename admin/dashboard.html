@@ -20,8 +20,7 @@
   <aside class="sidebar" id="sidebar"></aside>
 
   <div class="main">
-    <div class="topbar">
-      <h1 id="dash-title">Dashboard</h1>
+    <div class="topbar"><h1 id="dash-title">Dashboard</h1>
       <a class="btn btn-primary" href="pages/invitation-editor.html">+ Tambah Klien Baru</a>
     </div>
     <div class="content">
@@ -34,7 +33,10 @@
       </div>
 
       <div class="card">
-        <h3 class="card-title" id="list-title">Klien Saya</h3>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+          <h3 class="card-title" id="list-title" style="margin-bottom:0;">Klien Saya</h3>
+          <input id="search-input" type="search" placeholder="Cari nama pasangan / klien..." style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:.85rem;width:220px;" />
+        </div>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Pasangan</th><th>Klien (WA)</th><th>Tema</th><th>Status</th><th id="reseller-col" hidden>Reseller</th><th></th></tr></thead>
@@ -93,7 +95,7 @@
       empty.hidden = false;
     } else {
       tbody.innerHTML = invitations.map(inv => `
-        <tr>
+        <tr data-search="${(inv.groom_name + inv.bride_name + (inv.client_name||'')).toLowerCase()}">
           <td><strong>${inv.groom_nickname || inv.groom_name} &amp; ${inv.bride_nickname || inv.bride_name}</strong></td>
           <td>${inv.client_name || "—"}${inv.client_phone ? `<br><span style="color:var(--grey);font-size:.78rem;">${inv.client_phone}</span>` : ""}</td>
           <td style="font-size:.78rem;">${inv.theme_slug}</td>
@@ -102,9 +104,34 @@
           <td style="display:flex;gap:6px;flex-wrap:wrap;">
             <a class="btn btn-outline btn-sm" href="pages/invitation-editor.html?id=${inv.id}">Edit</a>
             <a class="btn btn-outline btn-sm" target="_blank" href="../themes/${inv.theme_slug}/index.html?slug=${inv.slug}">Pratinjau</a>
+            <button class="btn btn-outline btn-sm dup-btn" data-id="${inv.id}">Duplikat</button>
           </td>
         </tr>
       `).join("");
+
+      // Duplicate handler
+      tbody.querySelectorAll(".dup-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const { data: src } = await client.from("invitations").select("*").eq("id", btn.dataset.id).single();
+          if (!src) return;
+          const { id, created_at, updated_at, ...copy } = src;
+          copy.slug = `${src.slug}-copy-${Date.now().toString().slice(-4)}`;
+          copy.status = "draft";
+          copy.client_name = (src.client_name || "") + " (Duplikat)";
+          const { error } = await client.from("invitations").insert(copy);
+          if (error) return window.vinviteToast("Gagal duplikat: " + error.message);
+          window.vinviteToast("Undangan diduplikat ✓");
+          location.reload();
+        });
+      });
+
+      // Search filter
+      document.getElementById("search-input").addEventListener("input", (e) => {
+        const q = e.target.value.toLowerCase();
+        tbody.querySelectorAll("tr[data-search]").forEach(row => {
+          row.style.display = row.dataset.search.includes(q) ? "" : "none";
+        });
+      });
     }
 
     const total = invitations ? invitations.length : 0;
