@@ -28,6 +28,15 @@ window.renderInvitation = function (data) {
   if (groomImg && data.groom_photo_url) groomImg.src = data.groom_photo_url;
   if (brideImg && data.bride_photo_url) brideImg.src = data.bride_photo_url;
 
+  // dynamic cover background
+  if (data.cover_image_url) {
+    const coverBg = document.querySelector(".cover-bg");
+    if (coverBg) coverBg.style.backgroundImage = `url('${data.cover_image_url}')`;
+    const heroBg = document.querySelector(".hero-bg-layer");
+    if (heroBg) heroBg.style.backgroundImage =
+      `linear-gradient(180deg, var(--indigo), var(--black)), url('${data.cover_image_url}')`;
+  }
+
   document.getElementById("akad-date").textContent = formatDateID(data.akad_date);
   document.getElementById("akad-time").textContent = data.akad_time || "";
   document.getElementById("akad-venue").textContent = data.akad_venue_name || "";
