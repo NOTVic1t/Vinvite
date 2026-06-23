@@ -77,11 +77,14 @@
           <td><span class="badge ${p.role === "admin" ? "green" : "grey"}">${p.role === "admin" ? "Owner" : "Reseller"}</span></td>
           <td>${countByUser[p.id] || 0}</td>
           <td>${new Date(p.created_at).toLocaleDateString("id-ID")}</td>
-          <td>
+          <td style="display:flex;gap:6px;flex-wrap:wrap;">
             ${p.id === auth.user.id
               ? '<span style="font-size:.75rem;color:var(--grey);">Akun kamu</span>'
               : `<button class="btn btn-outline btn-sm role-toggle" data-id="${p.id}" data-role="${p.role}">
                   Jadikan ${p.role === "admin" ? "Reseller" : "Owner"}
+                </button>
+                <button class="btn btn-danger btn-sm del-user" data-id="${p.id}" data-name="${p.full_name || p.id}">
+                  Hapus
                 </button>`}
           </td>
         </tr>
@@ -93,6 +96,18 @@
           const { error } = await client.from("profiles").update({ role: newRole }).eq("id", btn.dataset.id);
           if (error) return window.vinviteToast("Gagal mengubah peran: " + error.message);
           window.vinviteToast("Peran diperbarui ✓");
+          load();
+        });
+      });
+
+      tbody.querySelectorAll(".del-user").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          if (!confirm(`Hapus akun "${btn.dataset.name}"? Undangan milik reseller ini tidak akan ikut terhapus.`)) return;
+          // Delete from profiles (auth user must be deleted from Supabase Dashboard manually,
+          // or via the admin API — we only delete the profile row here)
+          const { error } = await client.from("profiles").delete().eq("id", btn.dataset.id);
+          if (error) return window.vinviteToast("Gagal hapus: " + error.message);
+          window.vinviteToast("Akun dihapus dari daftar ✓");
           load();
         });
       });
