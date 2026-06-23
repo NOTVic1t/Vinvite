@@ -28,13 +28,13 @@ window.renderInvitation = function (data) {
   if (groomImg && data.groom_photo_url) groomImg.src = data.groom_photo_url;
   if (brideImg && data.bride_photo_url) brideImg.src = data.bride_photo_url;
 
-  // dynamic cover background
-  if (data.cover_image_url) {
-    const coverBg = document.querySelector(".cover-bg");
-    if (coverBg) coverBg.style.backgroundImage = `url('${data.cover_image_url}')`;
-    const heroBg = document.querySelector(".hero-bg-layer");
-    if (heroBg) heroBg.style.backgroundImage =
-      `linear-gradient(180deg, var(--indigo), var(--black)), url('${data.cover_image_url}')`;
+  // dynamic cover background — use uploaded photo or keep default
+  const coverBg = document.getElementById("cover-bg");
+  const bgUrl = data.cover_image_url || (coverBg && coverBg.dataset.defaultBg) || "";
+  if (coverBg && bgUrl) coverBg.style.backgroundImage = `url('${bgUrl}')`;
+  const heroBg = document.querySelector(".hero-bg-layer");
+  if (heroBg && bgUrl) {
+    heroBg.style.cssText = `background:linear-gradient(180deg,var(--indigo),var(--black)),url('${bgUrl}') center/cover;background-blend-mode:multiply;`;
   }
 
   document.getElementById("akad-date").textContent = formatDateID(data.akad_date);

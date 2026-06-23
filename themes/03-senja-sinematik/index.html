@@ -18,7 +18,7 @@
 <section id="cover-screen" class="cover">
   <div class="bar bar-top"></div>
   <div class="bar bar-bottom"></div>
-  <div class="cover-bg" data-parallax data-parallax-speed="0.12" style="background-image:url('https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1400&auto=format&fit=crop')"></div>
+  <div class="cover-bg" id="cover-bg" data-parallax data-parallax-speed="0.12" data-default-bg="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1400&auto=format&fit=crop" style="background-image:url('https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1400&auto=format&fit=crop')"></div>
   <div class="cover-grain"></div>
   <div class="cover-content">
     <p class="slate">ADEGAN 00 — PEMBUKA</p>
@@ -145,7 +145,9 @@
   <section class="scene-plain guestbook">
     <p class="slate">ADEGAN 08 — UCAPAN &amp; DOA</p>
     <form id="guestbook-form" class="form">
-      <input type="text" name="name" placeholder="Nama Anda" required />      <button type="submit" class="btn-submit">Kirim Ucapan</button>
+      <input type="text" name="name" placeholder="Nama Anda" required />
+      <textarea name="message" placeholder="Tulis ucapan & doa Anda" rows="3" required></textarea>
+      <button type="submit" class="btn-submit">Kirim Ucapan</button>
     </form>
     <div id="guestbook-list" class="wishes-list"></div>
   </section>
