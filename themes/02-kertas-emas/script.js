@@ -28,6 +28,16 @@ window.renderInvitation = function (data) {
   if (groomImg && data.groom_photo_url) groomImg.src = data.groom_photo_url;
   if (brideImg && data.bride_photo_url) brideImg.src = data.bride_photo_url;
 
+  // dynamic cover background
+  if (data.cover_image_url) {
+    const cover = document.getElementById("cover-screen");
+    if (cover) {
+      cover.style.backgroundImage = `linear-gradient(rgba(10,4,2,.72), rgba(58,14,18,.85)), url('${data.cover_image_url}')`;
+      cover.style.backgroundSize = "cover";
+      cover.style.backgroundPosition = "center";
+    }
+  }
+
   document.getElementById("akad-date").textContent = formatDateID(data.akad_date);
   document.getElementById("akad-time").textContent = data.akad_time || "";
   document.getElementById("akad-venue").textContent = data.akad_venue_name || "";
