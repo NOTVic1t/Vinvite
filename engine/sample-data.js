@@ -21,12 +21,38 @@ window.VINVITE_SAMPLE_DATA = {
   bride_photo_url:
     "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=600&auto=format&fit=crop",
 
+  events: [
+    {
+      name: "Akad Nikah",
+      date: "2026-10-17",
+      time_start: "08:00",
+      time_end: "10:00",
+      venue_name: "Kediaman Mempelai Wanita",
+      venue_address: "Jl. Kenanga No. 12, Bandung, Jawa Barat",
+      maps_url: "https://maps.google.com",
+    },
+    {
+      name: "Resepsi",
+      date: "2026-10-17",
+      time_start: "11:00",
+      time_end: "14:00",
+      venue_name: "Gedung Graha Pertiwi",
+      venue_address: "Jl. Asia Afrika No. 88, Bandung, Jawa Barat",
+      maps_url: "https://maps.google.com",
+    },
+  ],
+
+  hidden_sections: [],
+  section_labels: {},
+  quote_text: "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu cenderung dan merasa tenteram kepadanya.",
+  quote_source: "QS. Ar-Rum: 21",
+
+  // Legacy fields kept for backward compat
   akad_date: "2026-10-17",
   akad_time: "08:00 – 10:00 WIB",
   akad_venue_name: "Kediaman Mempelai Wanita",
   akad_venue_address: "Jl. Kenanga No. 12, Bandung, Jawa Barat",
   akad_maps_url: "https://maps.google.com",
-
   resepsi_date: "2026-10-17",
   resepsi_time: "11:00 – 14:00 WIB",
   resepsi_venue_name: "Gedung Graha Pertiwi",
