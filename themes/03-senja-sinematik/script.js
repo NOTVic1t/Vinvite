@@ -2,33 +2,37 @@
 // VINVITE — THEME 03: SENJA SINEMATIK — render logic
 // =============================================================================
 
-function formatDateID(dateStr) {
-  if (!dateStr) return "";
-  const d = new Date(dateStr);
-  if (isNaN(d)) return dateStr;
-  return d.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
-}
-
 window.renderInvitation = function (data) {
   document.getElementById("cover-guest-name").textContent = data.guest_name || "Bapak/Ibu Tamu Undangan";
 
   const shortNames = `${data.groom_nickname || data.groom_name} & ${data.bride_nickname || data.bride_name}`;
   document.querySelector(".cover-names").innerHTML = `${data.groom_nickname || data.groom_name} <span>&amp;</span> ${data.bride_nickname || data.bride_name}`;
   document.getElementById("hero-names").innerHTML = `${data.groom_nickname || data.groom_name} &amp; ${data.bride_nickname || data.bride_name}`;
-  document.getElementById("hero-date").textContent = formatDateID(data.resepsi_date || data.akad_date);
   document.title = `Undangan Pernikahan ${shortNames}`;
+
+  // hero date — use first event
+  const events = Array.isArray(data.events) ? data.events : JSON.parse(data.events || "[]");
+  const firstEvent = events[0];
+  const heroDateStr = firstEvent ? firstEvent.date : (data.resepsi_date || data.akad_date);
+  if (heroDateStr) {
+    const d = new Date(heroDateStr);
+    if (!isNaN(d)) document.getElementById("hero-date").textContent =
+      d.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  }
 
   document.getElementById("groom-name").textContent = data.groom_name;
   document.getElementById("groom-parents").textContent = data.groom_parents || "";
   document.getElementById("bride-name").textContent = data.bride_name;
   document.getElementById("bride-parents").textContent = data.bride_parents || "";
+  document.querySelector(".closing-names").innerHTML = `${data.groom_nickname || data.groom_name} &amp; ${data.bride_nickname || data.bride_name}`;
 
-  const groomImg = document.querySelector("#groom-photo");
-  const brideImg = document.querySelector("#bride-photo");
+  // couple photos
+  const groomImg = document.getElementById("groom-photo");
+  const brideImg = document.getElementById("bride-photo");
   if (groomImg && data.groom_photo_url) groomImg.src = data.groom_photo_url;
   if (brideImg && data.bride_photo_url) brideImg.src = data.bride_photo_url;
 
-  // dynamic cover background — use uploaded photo or keep default
+  // cover + hero background
   const coverBg = document.getElementById("cover-bg");
   const bgUrl = data.cover_image_url || (coverBg && coverBg.dataset.defaultBg) || "";
   if (coverBg && bgUrl) coverBg.style.backgroundImage = `url('${bgUrl}')`;
@@ -37,20 +41,25 @@ window.renderInvitation = function (data) {
     heroBg.style.cssText = `background:linear-gradient(180deg,var(--indigo),var(--black)),url('${bgUrl}') center/cover;background-blend-mode:multiply;`;
   }
 
-  document.getElementById("akad-date").textContent = formatDateID(data.akad_date);
-  document.getElementById("akad-time").textContent = data.akad_time || "";
-  document.getElementById("akad-venue").textContent = data.akad_venue_name || "";
-  document.getElementById("akad-address").textContent = data.akad_venue_address || "";
-  document.getElementById("akad-maps").href = data.akad_maps_url || "#";
+  // quote
+  const qt = document.getElementById("quote-text");
+  const qs = document.getElementById("quote-source");
+  if (qt && data.quote_text) qt.innerHTML = `&ldquo;${data.quote_text}&rdquo;`;
+  if (qs && data.quote_source) qs.textContent = data.quote_source;
 
-  document.getElementById("resepsi-date").textContent = formatDateID(data.resepsi_date);
-  document.getElementById("resepsi-time").textContent = data.resepsi_time || "";
-  document.getElementById("resepsi-venue").textContent = data.resepsi_venue_name || "";
-  document.getElementById("resepsi-address").textContent = data.resepsi_venue_address || "";
-  document.getElementById("resepsi-maps").href = data.resepsi_maps_url || "#";
+  // events repeater
+  window.renderEvents(data, "#events-container");
 
-  document.querySelector(".closing-names").innerHTML = `${data.groom_nickname || data.groom_name} &amp; ${data.bride_nickname || data.bride_name}`;
+  // countdown from first event
+  if (firstEvent && firstEvent.date) {
+    window.startCountdown(`${firstEvent.date}T${firstEvent.time_start || "00:00"}:00`,
+      { d: "#cd-d", h: "#cd-h", m: "#cd-m", s: "#cd-s" });
+  } else if (data.resepsi_date || data.akad_date) {
+    window.startCountdown(`${data.resepsi_date || data.akad_date}T00:00:00`,
+      { d: "#cd-d", h: "#cd-h", m: "#cd-m", s: "#cd-s" });
+  }
 
+  // love story
   const story = Array.isArray(data.love_story) ? data.love_story : JSON.parse(data.love_story || "[]");
   document.getElementById("story-timeline").innerHTML = story.map((s, i) => `
     <div class="story-item">
@@ -60,11 +69,13 @@ window.renderInvitation = function (data) {
     </div>
   `).join("");
 
+  // gallery
   const gallery = Array.isArray(data.gallery) ? data.gallery : JSON.parse(data.gallery || "[]");
   document.getElementById("gallery-grid").innerHTML = gallery.map(url => `
     <div class="gallery-item"><img src="${url}" loading="lazy" alt="" /></div>
   `).join("");
 
+  // gift
   const accounts = Array.isArray(data.gift_accounts) ? data.gift_accounts : JSON.parse(data.gift_accounts || "[]");
   document.getElementById("gift-accounts").innerHTML = accounts.map(a => `
     <div class="gift-account">
@@ -89,8 +100,6 @@ window.renderInvitation = function (data) {
   window.initCoverGate("#cover-screen", "#open-invitation-btn");
   window.initMusicPlayer("#bg-music", "#music-toggle");
   window.initGalleryLightbox(".gallery-item img");
-  window.startCountdown(`${data.resepsi_date || data.akad_date}T${(data.resepsi_time || data.akad_time || "00:00").split(" ")[0]}:00`,
-    { d: "#cd-d", h: "#cd-h", m: "#cd-m", s: "#cd-s" });
   window.bindRsvpForm("#rsvp-form", data._invitationId);
   window.onRsvpSuccess = () => { document.getElementById("rsvp-success").hidden = false; };
   window.initGuestbook({
@@ -103,15 +112,12 @@ window.renderInvitation = function (data) {
         <p class="wish-message">${e.message}</p>
       </div>`
   });
-
-  // new scroll fx: reveal, parallax, particles, progress
   window.initScrollReveal();
   window.initParallax();
   window.initFloatingParticles("#particle-field", { symbol: "●", count: 12, className: "particle-ember" });
   window.initScrollProgress("#scroll-progress");
-
-  // maps embed + social proof
-  window.injectMapsEmbed("#akad-map", data.akad_venue_address);
-  window.injectMapsEmbed("#resepsi-map", data.resepsi_venue_address);
   window.initSocialProof("#social-proof", data._invitationId);
+
+  // section control last
+  window.applySectionControl(data);
 };
