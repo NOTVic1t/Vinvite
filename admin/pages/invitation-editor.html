@@ -93,6 +93,14 @@
           <button type="button" class="btn btn-outline btn-sm" id="add-event">+ Tambah Acara</button>
         </div>
 
+        <!-- SUSUNAN ACARA (rundown repeater) -->
+        <div class="card">
+          <h3 class="card-title">Susunan Acara</h3>
+          <p style="font-size:.8rem;color:var(--grey);margin-bottom:14px;">Rundown jam per jam (opsional). Bisa dimatikan lewat "Tampilkan / Sembunyikan Section" di bawah jika tidak dipakai.</p>
+          <div id="rundown-repeater"></div>
+          <button type="button" class="btn btn-outline btn-sm" id="add-rundown">+ Tambah Item Acara</button>
+        </div>
+
         <!-- MEDIA -->
         <div class="card">
           <h3 class="card-title">Media</h3>
@@ -191,6 +199,7 @@
     { key: "quote",     label: "Kutipan / Quote" },
     { key: "countdown", label: "Hitung Mundur" },
     { key: "events",    label: "Tempat Acara" },
+    { key: "rundown",   label: "Susunan Acara" },
     { key: "story",     label: "Kisah Kami" },
     { key: "gallery",   label: "Galeri" },
     { key: "gift",      label: "Tanda Kasih" },
@@ -236,6 +245,29 @@
       venue_address: el.querySelector(".ev-address").value,
       maps_url: el.querySelector(".ev-maps").value,
     })).filter(ev => ev.name || ev.date);
+  }
+
+  // --- RUNDOWN REPEATER (Susunan Acara) ---
+  function rundownItemHtml(r = {}) {
+    return `
+      <div class="repeater-item" data-repeater="rundown">
+        <button type="button" class="repeater-remove">✕ Hapus</button>
+        <div class="field-row two">
+          <div class="field"><label>Jam</label><input class="rd-time" value="${r.time || ""}" placeholder="08.00 WIB" /></div>
+          <div class="field"><label>Judul</label><input class="rd-title" value="${r.title || ""}" placeholder="Akad Nikah" /></div>
+        </div>
+        <div class="field"><label>Deskripsi (opsional)</label><textarea class="rd-desc" rows="2">${r.desc || ""}</textarea></div>
+      </div>`;
+  }
+  function bindRundownRemove(c) {
+    c.querySelectorAll(".repeater-remove").forEach(btn => btn.onclick = () => btn.closest(".repeater-item").remove());
+  }
+  function collectRundown() {
+    return [...document.querySelectorAll('[data-repeater="rundown"]')].map(el => ({
+      time: el.querySelector(".rd-time").value,
+      title: el.querySelector(".rd-title").value,
+      desc: el.querySelector(".rd-desc").value,
+    })).filter(r => r.title || r.time);
   }
 
   // --- SECTION TOGGLES ---
@@ -396,6 +428,12 @@
       evList.forEach(ev => evC.insertAdjacentHTML("beforeend", eventItemHtml(ev)));
       bindEventRemove(evC);
 
+      // Rundown repeater
+      const rdC = document.getElementById("rundown-repeater");
+      const rdList = Array.isArray(existing.rundown) ? existing.rundown : JSON.parse(existing.rundown || "[]");
+      rdList.forEach(r => rdC.insertAdjacentHTML("beforeend", rundownItemHtml(r)));
+      bindRundownRemove(rdC);
+
       // Gallery
       galleryUrls = Array.isArray(existing.gallery) ? [...existing.gallery] : JSON.parse(existing.gallery || "[]");
       renderGalleryGrid();
@@ -469,6 +507,13 @@
       bindEventRemove(c);
     };
 
+    // Rundown add button
+    document.getElementById("add-rundown").onclick = () => {
+      const c = document.getElementById("rundown-repeater");
+      c.insertAdjacentHTML("beforeend", rundownItemHtml());
+      bindRundownRemove(c);
+    };
+
     // Gift add button
     document.getElementById("add-gift").onclick = () => {
       const c = document.getElementById("gift-repeater");
@@ -490,6 +535,7 @@
       const payload = Object.fromEntries(fd.entries());
       payload.love_story = collectStory();
       payload.events = collectEvents();
+      payload.rundown = collectRundown();
       payload.gallery = galleryUrls;
       payload.gift_accounts = window.collectGiftAccounts();
       payload.cover_image_url = coverUrl;
