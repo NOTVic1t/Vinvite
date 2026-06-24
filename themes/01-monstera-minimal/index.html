@@ -35,9 +35,9 @@
   </section>
 
   <!-- INTRO QUOTE -->
-  <section class="section quote">
-    <p class="quote-text" data-reveal>&ldquo;Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu cenderung dan merasa tenteram kepadanya.&rdquo;</p>
-    <p class="quote-source">QS. Ar-Rum: 21</p>
+  <section class="section quote" data-section="quote">
+    <p class="quote-text" id="quote-text" data-reveal>&ldquo;Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu cenderung dan merasa tenteram kepadanya.&rdquo;</p>
+    <p class="quote-source" id="quote-source">QS. Ar-Rum: 21</p>
   </section>
 
   <!-- COUPLE -->
@@ -60,9 +60,9 @@
   </section>
 
   <!-- COUNTDOWN -->
-  <section class="section countdown-section">
+  <section class="section countdown-section" data-section="countdown">
     <div class="divider-leaf" data-leaf></div>
-    <p class="eyebrow">Menuju Hari Bahagia</p>
+    <p class="eyebrow" data-section-label="countdown">Menuju Hari Bahagia</p>
     <div class="countdown" data-reveal>
       <div class="cd-item"><span id="cd-d">00</span><label>Hari</label></div>
       <div class="cd-item"><span id="cd-h">00</span><label>Jam</label></div>
@@ -72,55 +72,36 @@
   </section>
 
   <!-- EVENTS -->
-  <section class="section events">
+  <section class="section events-section" data-section="events">
     <div class="divider-leaf" data-leaf></div>
-    <p class="eyebrow">Acara</p>
-    <div class="event-grid" data-reveal>
-      <div class="event-card">
-        <h3>Akad Nikah</h3>
-        <p id="akad-date">Sabtu, 17 Oktober 2026</p>
-        <p id="akad-time">08:00 – 10:00 WIB</p>
-        <p id="akad-venue">Kediaman Mempelai Wanita</p>
-        <p id="akad-address" class="event-address">Jl. Kenanga No. 12, Bandung</p>
-        <a id="akad-maps" href="#" target="_blank" rel="noopener" class="btn-maps">Buka di Google Maps</a>
-        <div class="map-embed" id="akad-map" hidden></div>
-      </div>
-      <div class="event-card">
-        <h3>Resepsi</h3>
-        <p id="resepsi-date">Sabtu, 17 Oktober 2026</p>
-        <p id="resepsi-time">11:00 – 14:00 WIB</p>
-        <p id="resepsi-venue">Gedung Graha Pertiwi</p>
-        <p id="resepsi-address" class="event-address">Jl. Asia Afrika No. 88, Bandung</p>
-        <a id="resepsi-maps" href="#" target="_blank" rel="noopener" class="btn-maps">Buka di Google Maps</a>
-        <div class="map-embed" id="resepsi-map" hidden></div>
-      </div>
-    </div>
+    <p class="eyebrow" data-section-label="events">Acara</p>
+    <div class="event-grid" id="events-container" data-reveal></div>
   </section>
 
   <!-- LOVE STORY -->
-  <section class="section story">
+  <section class="section story" data-section="story">
     <div class="divider-leaf" data-leaf></div>
-    <p class="eyebrow">Kisah Kami</p>
+    <p class="eyebrow" data-section-label="story">Kisah Kami</p>
     <div class="story-timeline" id="story-timeline" data-reveal></div>
   </section>
 
   <!-- GALLERY -->
-  <section class="section gallery">
+  <section class="section gallery" data-section="gallery">
     <div class="divider-leaf" data-leaf></div>
-    <p class="eyebrow">Galeri</p>
+    <p class="eyebrow" data-section-label="gallery">Galeri</p>
     <div class="gallery-grid" id="gallery-grid" data-reveal></div>
   </section>
 
   <!-- GIFT -->
-  <section class="section gift">
+  <section class="section gift" data-section="gift">
     <div class="divider-leaf" data-leaf></div>
-    <p class="eyebrow">Tanda Kasih</p>
+    <p class="eyebrow" data-section-label="gift">Tanda Kasih</p>
     <p class="gift-intro">Doa restu Anda adalah hadiah yang paling berarti. Namun jika ingin memberi tanda kasih, kami menyediakan:</p>
     <div class="gift-accounts" id="gift-accounts" data-reveal></div>
   </section>
 
   <!-- RSVP -->
-  <section class="section rsvp">
+  <section class="section rsvp" data-section="rsvp">
     <div class="divider-leaf" data-leaf></div>
     <p class="eyebrow">Konfirmasi Kehadiran</p>
     <p id="social-proof" class="social-proof" hidden></p>
@@ -139,7 +120,7 @@
   </section>
 
   <!-- GUESTBOOK -->
-  <section class="section guestbook">
+  <section class="section guestbook" data-section="guestbook">
     <div class="divider-leaf" data-leaf></div>
     <p class="eyebrow">Ucapan &amp; Doa</p>
     <form id="guestbook-form" class="form">
@@ -177,6 +158,7 @@
 <script src="../../engine/demo-banner.js"></script>
 <script src="../../engine/maps-embed.js"></script>
 <script src="../../engine/social-proof.js"></script>
+<script src="../../engine/section-control.js"></script>
 <script src="script.js"></script>
 <script src="../../engine/data-loader.js"></script>
 </body>
