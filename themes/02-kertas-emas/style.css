@@ -101,8 +101,9 @@ h1, h2, h3 { font-family: "Playfair Display", serif; }
 .event-grid { display: grid; gap: 24px; margin-top: 10px; }
 @media (min-width: 600px) { .event-grid { grid-template-columns: 1fr 1fr; } }
 .event-card { border: 1px solid var(--bronze); padding: 30px 20px; }
-.event-card h3 { font-style: italic; font-size: 1.35rem; }
-.event-card p { font-size: .85rem; margin-bottom: 4px; color: var(--ivory); }
+.event-card h3, .event-name { font-style: italic; font-size: 1.35rem; }
+.event-divider { width: 70px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 12px auto; }
+.event-card p, .event-date, .event-time, .event-venue { font-size: .85rem; margin-bottom: 4px; color: var(--ivory); }
 .event-address { color: var(--bronze) !important; font-size: .78rem !important; }
 .btn-maps { display: inline-block; margin-top: 14px; font-family: "Cormorant SC"; font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 2px; }
 
