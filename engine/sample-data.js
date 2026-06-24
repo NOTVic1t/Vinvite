@@ -65,6 +65,13 @@ window.VINVITE_SAMPLE_DATA = {
     { date: "2025", title: "Lamaran", text: "Radit melamar Nindy di tempat pertama kali mereka bertemu." },
   ],
 
+  rundown: [
+    { time: "08.00 WIB", title: "Persiapan & Kedatangan Tamu", desc: "Pengantin dan keluarga bersiap menyambut tamu yang hadir." },
+    { time: "10.00 WIB", title: "Akad Nikah", desc: "Ijab kabul disaksikan keluarga dan kerabat terdekat." },
+    { time: "11.00 WIB", title: "Resepsi Pernikahan", desc: "Sungkeman, sambutan keluarga, dan ramah tamah bersama tamu." },
+    { time: "14.00 WIB", title: "Acara Puncak & Penutup", desc: "Hiburan, makan bersama, dan foto dengan kedua mempelai." },
+  ],
+
   gallery: [
     "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=900&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=900&auto=format&fit=crop",

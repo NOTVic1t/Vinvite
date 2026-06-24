@@ -14,6 +14,7 @@ window.VINVITE_DEFAULT_LABELS = {
   quote:     "Kutipan",
   countdown: "Menuju Hari Bahagia",
   events:    "Acara",
+  rundown:   "Susunan Acara",
   story:     "Kisah Kami",
   gallery:   "Galeri",
   gift:      "Tanda Kasih",
@@ -85,6 +86,31 @@ window.renderEvents = function (data, containerSelector, opts = {}) {
       window.injectMapsEmbed(`#map-embed-${i}`, ev.venue_address);
     }
   });
+};
+
+// Renders the "Susunan Acara" (rundown) timeline into a container element.
+// Each item: { time, title, desc }. Optional, additive section — themes that
+// don't call this or don't have a matching container simply skip it.
+// containerSelector: CSS selector for the rundown wrapper
+window.renderRundown = function (data, containerSelector) {
+  const container = document.querySelector(containerSelector);
+  if (!container) return;
+
+  const items = Array.isArray(data.rundown)
+    ? data.rundown
+    : (data.rundown ? JSON.parse(data.rundown) : []);
+
+  if (!items.length) { container.innerHTML = ""; return; }
+
+  container.innerHTML = items.map((r, i) => `
+    <div class="rundown-item" data-rundown-index="${i}">
+      <span class="rundown-time">${r.time || ""}</span>
+      <span class="rundown-index">${String(i + 1).padStart(2, "0")}</span>
+      <div class="rundown-body">
+        <h3 class="rundown-title">${r.title || ""}</h3>
+        ${r.desc ? `<p class="rundown-desc">${r.desc}</p>` : ""}
+      </div>
+    </div>`).join("");
 };
 
 function _formatDateID(dateStr) {
