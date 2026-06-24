@@ -1,5 +1,5 @@
 // =============================================================================
-// VINVITE — THEME 01: MONSTERA MINIMAL — render logic
+// VINVITE — THEME 01: ELEGAN GREY — render logic
 // =============================================================================
 
 window.renderInvitation = function (data) {
@@ -34,7 +34,7 @@ window.renderInvitation = function (data) {
   if (data.cover_image_url) {
     const cover = document.getElementById("cover-screen");
     if (cover) {
-      cover.style.backgroundImage = `linear-gradient(rgba(70,89,76,.88), rgba(38,36,32,.92)), url('${data.cover_image_url}')`;
+      cover.style.backgroundImage = `linear-gradient(rgba(20,18,16,.82), rgba(20,18,16,.92)), url('${data.cover_image_url}')`;
       cover.style.backgroundSize = "cover";
       cover.style.backgroundPosition = "center";
     }
@@ -47,6 +47,7 @@ window.renderInvitation = function (data) {
   if (qs && data.quote_source) qs.textContent = data.quote_source;
 
   window.renderEvents(data, "#events-container");
+  window.renderRundown(data, "#rundown-container");
 
   if (firstEvent && firstEvent.date) {
     window.startCountdown(`${firstEvent.date}T${firstEvent.time_start || "00:00"}:00`,
@@ -94,6 +95,7 @@ window.renderInvitation = function (data) {
   window.initCoverGate("#cover-screen", "#open-invitation-btn");
   window.initMusicPlayer("#bg-music", "#music-toggle");
   window.initGalleryLightbox(".gallery-item img");
+  // RSVP: kontrak data tetap 3 field (guest_name, attendance, guest_count) — tidak diubah.
   window.bindRsvpForm("#rsvp-form", data._invitationId);
   window.onRsvpSuccess = () => { document.getElementById("rsvp-success").hidden = false; };
   window.initGuestbook({
@@ -107,15 +109,94 @@ window.renderInvitation = function (data) {
       </div>`
   });
 
+  // Hairline draw-in rules (signature device — replaces the old leaf divider)
   const io = new IntersectionObserver((entries) => {
     entries.forEach(en => { if (en.isIntersecting) en.target.classList.add("is-visible"); });
   }, { threshold: 0.4 });
-  document.querySelectorAll("[data-leaf]").forEach(el => io.observe(el));
+  document.querySelectorAll("[data-rule]").forEach(el => io.observe(el));
 
   window.initScrollReveal();
   window.initParallax();
-  window.initFloatingParticles("#particle-field", { symbol: "🍃", count: 9, className: "particle-leaf" });
   window.initScrollProgress("#scroll-progress");
   window.initSocialProof("#social-proof", data._invitationId);
   window.applySectionControl(data);
+
+  initQuickNav();
+  initAutoScroll();
 };
+
+// -----------------------------------------------------------------------------
+// QUICK NAV — floating bottom pill, highlights the section currently in view.
+// Theme-only chrome (always on, not tied to hidden_sections).
+// -----------------------------------------------------------------------------
+function initQuickNav() {
+  const links = [...document.querySelectorAll(".quicknav-link")];
+  if (!links.length) return;
+
+  const targets = links
+    .map(a => ({ link: a, el: document.querySelector(a.getAttribute("href")) }))
+    .filter(t => t.el);
+
+  if (!targets.length) return;
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const match = targets.find(t => t.el === entry.target);
+        if (match) links.forEach(a => a.classList.toggle("is-active", a === match.link));
+      }
+    });
+  }, { rootMargin: "-42% 0px -42% 0px" });
+
+  targets.forEach(t => io.observe(t.el));
+
+  links.forEach(a => {
+    a.addEventListener("click", (e) => {
+      const target = document.querySelector(a.getAttribute("href"));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  });
+}
+
+// -----------------------------------------------------------------------------
+// AUTO-SCROLL TOGGLE — smooth, cancellable auto-scroll down the page.
+// Theme-only chrome (always on, not tied to hidden_sections).
+// -----------------------------------------------------------------------------
+function initAutoScroll() {
+  const btn = document.getElementById("autoscroll-toggle");
+  if (!btn) return;
+
+  let active = false;
+  let raf = null;
+
+  function step() {
+    window.scrollBy(0, 1.1);
+    const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    if (atBottom) { stop(); return; }
+    raf = requestAnimationFrame(step);
+  }
+
+  function start() {
+    active = true;
+    btn.classList.add("is-active");
+    btn.setAttribute("aria-label", "Hentikan scroll otomatis");
+    step();
+  }
+
+  function stop() {
+    active = false;
+    if (raf) cancelAnimationFrame(raf);
+    btn.classList.remove("is-active");
+    btn.setAttribute("aria-label", "Mulai scroll otomatis");
+  }
+
+  btn.addEventListener("click", () => (active ? stop() : start()));
+
+  // Stop politely if the visitor takes manual control of the scroll.
+  ["wheel", "touchstart"].forEach(evt => {
+    window.addEventListener(evt, () => { if (active) stop(); }, { passive: true });
+  });
+}

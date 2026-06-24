@@ -1,19 +1,20 @@
 {
   "slug": "01-monstera-minimal",
-  "name": "Monstera Minimal",
-  "category": "Minimalist Modern",
+  "name": "Elegan Grey",
+  "category": "Elegant Monochrome",
   "status": "built",
   "palette": {
-    "ivory": "#FBF8F3",
-    "sage": "#46594C",
-    "sand": "#DCD0B8",
-    "ink": "#262420",
-    "gold": "#B08C4F"
+    "ivory": "#F6F4EF",
+    "charcoal": "#1E1C1A",
+    "graphite": "#3F3C38",
+    "stone": "#8C887F",
+    "line": "#D7D2C7",
+    "bronze": "#95764B"
   },
   "type": {
-    "display": "Cormorant Garamond",
-    "body": "Jost"
+    "display": "Italiana",
+    "body": "Karla"
   },
-  "signature": "A hand-drawn monstera-leaf line that draws itself across each section's divider as it scrolls into view.",
-  "brief": "Clean, airy, botanical-minimal. For couples who want something modern and uncluttered rather than ornate. Generous whitespace, thin hairline rules, a circular monogram, restrained motion."
+  "signature": "A hairline double-rule that draws itself beneath every section label, framed by open corner-bracket marks on the cover names and bridal portraits — like a wax-sealed, formally engraved invitation.",
+  "brief": "Monochrome, gallery-quiet, and formal. For couples who want the gravity of an engraved invitation rather than a botanical or playful theme. Hairline rules, corner brackets, a numbered Susunan Acara timeline, and a floating quick-nav with auto-scroll."
 }
