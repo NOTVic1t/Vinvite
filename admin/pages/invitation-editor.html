@@ -85,28 +85,12 @@
           <div class="field"><label>Putri dari</label><input name="bride_parents" placeholder="Putri dari Bapak ... & Ibu ..." /></div>
         </div>
 
-        <!-- AKAD -->
+        <!-- TEMPAT ACARA (repeater) -->
         <div class="card">
-          <h3 class="card-title">Akad Nikah</h3>
-          <div class="field-row two">
-            <div class="field"><label>Tanggal</label><input type="date" name="akad_date" /></div>
-            <div class="field"><label>Waktu</label><input name="akad_time" placeholder="08:00 – 10:00 WIB" /></div>
-          </div>
-          <div class="field"><label>Nama Lokasi</label><input name="akad_venue_name" /></div>
-          <div class="field"><label>Alamat</label><input name="akad_venue_address" /></div>
-          <div class="field"><label>Link Google Maps</label><input name="akad_maps_url" placeholder="https://maps.google.com/..." /></div>
-        </div>
-
-        <!-- RESEPSI -->
-        <div class="card">
-          <h3 class="card-title">Resepsi</h3>
-          <div class="field-row two">
-            <div class="field"><label>Tanggal</label><input type="date" name="resepsi_date" /></div>
-            <div class="field"><label>Waktu</label><input name="resepsi_time" placeholder="11:00 – 14:00 WIB" /></div>
-          </div>
-          <div class="field"><label>Nama Lokasi</label><input name="resepsi_venue_name" /></div>
-          <div class="field"><label>Alamat</label><input name="resepsi_venue_address" /></div>
-          <div class="field"><label>Link Google Maps</label><input name="resepsi_maps_url" placeholder="https://maps.google.com/..." /></div>
+          <h3 class="card-title">Tempat Acara</h3>
+          <p style="font-size:.8rem;color:var(--grey);margin-bottom:14px;">Tambah satu atau lebih acara (Akad Nikah, Resepsi, dll). Bisa dihapus jika tidak ada.</p>
+          <div id="events-repeater"></div>
+          <button type="button" class="btn btn-outline btn-sm" id="add-event">+ Tambah Acara</button>
         </div>
 
         <!-- MEDIA -->
@@ -121,6 +105,13 @@
             <div id="music-upload"></div>
             <p id="music-locked-note" hidden style="font-size:.78rem;color:var(--grey);margin-top:6px;">⚠ Musik kustom tidak tersedia di paket ini.</p>
           </div>
+        </div>
+
+        <!-- KUTIPAN -->
+        <div class="card">
+          <h3 class="card-title">Kutipan / Quote</h3>
+          <div class="field"><label>Teks Kutipan</label><textarea name="quote_text" rows="3" placeholder="Dan di antara tanda-tanda kekuasaan-Nya..."></textarea></div>
+          <div class="field"><label>Sumber</label><input name="quote_source" placeholder="QS. Ar-Rum: 21" /></div>
         </div>
 
         <!-- KISAH KAMI -->
@@ -146,6 +137,20 @@
           <h3 class="card-title">Amplop Digital</h3>
           <div id="gift-repeater"></div>
           <button type="button" class="btn btn-outline btn-sm" id="add-gift">+ Tambah Rekening</button>
+        </div>
+
+        <!-- KONTROL SECTION -->
+        <div class="card">
+          <h3 class="card-title">Tampilkan / Sembunyikan Section</h3>
+          <p style="font-size:.8rem;color:var(--grey);margin-bottom:16px;">Section yang dimatikan tidak akan tampil di undangan tamu.</p>
+          <div id="section-toggles" style="display:flex;flex-direction:column;gap:10px;"></div>
+        </div>
+
+        <!-- LABEL SECTION -->
+        <div class="card">
+          <h3 class="card-title">Nama Section (Opsional)</h3>
+          <p style="font-size:.8rem;color:var(--grey);margin-bottom:14px;">Kosongkan = gunakan nama default. Isi untuk mengubah, misal "Our Story" atau "Lokasi".</p>
+          <div id="section-labels-fields"></div>
         </div>
 
         <!-- STATUS -->
@@ -182,12 +187,92 @@
   let pkgSettings = {};
   const client = () => window.getVinviteClient();
 
+  const SECTION_KEYS = [
+    { key: "quote",     label: "Kutipan / Quote" },
+    { key: "countdown", label: "Hitung Mundur" },
+    { key: "events",    label: "Tempat Acara" },
+    { key: "story",     label: "Kisah Kami" },
+    { key: "gallery",   label: "Galeri" },
+    { key: "gift",      label: "Tanda Kasih" },
+    { key: "rsvp",      label: "Konfirmasi Kehadiran" },
+    { key: "guestbook", label: "Ucapan & Doa" },
+  ];
+
   function slugify(str) {
     return (str || "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
   }
-
   function genSlug(groom, bride) {
     return `${slugify(groom || "pengantin")}-${slugify(bride || "undangan")}-${Date.now().toString().slice(-4)}`;
+  }
+
+  // --- EVENTS REPEATER ---
+  function eventItemHtml(ev = {}) {
+    return `
+      <div class="repeater-item" data-repeater="event">
+        <button type="button" class="repeater-remove">✕ Hapus</button>
+        <div class="field"><label>Nama Acara</label><input class="ev-name" value="${ev.name || ""}" placeholder="Akad Nikah / Resepsi / dll" /></div>
+        <div class="field-row two">
+          <div class="field"><label>Tanggal</label><input type="date" class="ev-date" value="${ev.date || ""}" /></div>
+          <div class="field-row two" style="grid-template-columns:1fr 1fr;">
+            <div class="field"><label>Mulai</label><input type="time" class="ev-start" value="${ev.time_start || ""}" /></div>
+            <div class="field"><label>Selesai</label><input type="time" class="ev-end" value="${ev.time_end || ""}" /></div>
+          </div>
+        </div>
+        <div class="field"><label>Nama Lokasi</label><input class="ev-venue" value="${ev.venue_name || ""}" /></div>
+        <div class="field"><label>Alamat</label><input class="ev-address" value="${ev.venue_address || ""}" /></div>
+        <div class="field"><label>Link Google Maps</label><input class="ev-maps" value="${ev.maps_url || ""}" placeholder="https://maps.google.com/..." /></div>
+      </div>`;
+  }
+  function bindEventRemove(c) {
+    c.querySelectorAll(".repeater-remove").forEach(btn => btn.onclick = () => btn.closest(".repeater-item").remove());
+  }
+  function collectEvents() {
+    return [...document.querySelectorAll('[data-repeater="event"]')].map(el => ({
+      name: el.querySelector(".ev-name").value,
+      date: el.querySelector(".ev-date").value,
+      time_start: el.querySelector(".ev-start").value,
+      time_end: el.querySelector(".ev-end").value,
+      venue_name: el.querySelector(".ev-venue").value,
+      venue_address: el.querySelector(".ev-address").value,
+      maps_url: el.querySelector(".ev-maps").value,
+    })).filter(ev => ev.name || ev.date);
+  }
+
+  // --- SECTION TOGGLES ---
+  function renderSectionToggles(hiddenSections) {
+    const container = document.getElementById("section-toggles");
+    container.innerHTML = SECTION_KEYS.map(s => `
+      <div class="toggle-row" style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:.88rem;">${s.label}</span>
+        <label class="toggle">
+          <input type="checkbox" class="section-toggle" data-key="${s.key}" ${!hiddenSections.includes(s.key) ? "checked" : ""} />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    `).join("");
+  }
+  function collectHiddenSections() {
+    return [...document.querySelectorAll(".section-toggle")]
+      .filter(cb => !cb.checked)
+      .map(cb => cb.dataset.key);
+  }
+
+  // --- SECTION LABELS ---
+  function renderSectionLabels(labels) {
+    const container = document.getElementById("section-labels-fields");
+    container.innerHTML = SECTION_KEYS.map(s => `
+      <div class="field">
+        <label style="font-size:.75rem;">${s.label} <span style="color:var(--grey);">(default)</span></label>
+        <input class="section-label-input" data-key="${s.key}" value="${labels[s.key] || ""}" placeholder="${s.label}" />
+      </div>
+    `).join("");
+  }
+  function collectSectionLabels() {
+    const out = {};
+    document.querySelectorAll(".section-label-input").forEach(inp => {
+      if (inp.value.trim()) out[inp.dataset.key] = inp.value.trim();
+    });
+    return out;
   }
 
   // --- STORY REPEATER ---
@@ -305,6 +390,12 @@
       (existing.love_story || []).forEach(s => storyC.insertAdjacentHTML("beforeend", storyItemHtml(s)));
       bindStoryRemove(storyC);
 
+      // Events repeater
+      const evC = document.getElementById("events-repeater");
+      const evList = Array.isArray(existing.events) ? existing.events : JSON.parse(existing.events || "[]");
+      evList.forEach(ev => evC.insertAdjacentHTML("beforeend", eventItemHtml(ev)));
+      bindEventRemove(evC);
+
       // Gallery
       galleryUrls = Array.isArray(existing.gallery) ? [...existing.gallery] : JSON.parse(existing.gallery || "[]");
       renderGalleryGrid();
@@ -322,6 +413,16 @@
         giftC.insertAdjacentHTML("beforeend", window.giftItemHtml(a));
       });
       window.bindAllGiftItems();
+
+      // Section toggles & labels
+      const hiddenSections = Array.isArray(existing.hidden_sections) ? existing.hidden_sections : JSON.parse(existing.hidden_sections || "[]");
+      renderSectionToggles(hiddenSections);
+      const sectionLabels = existing.section_labels ? (typeof existing.section_labels === "object" ? existing.section_labels : JSON.parse(existing.section_labels)) : {};
+      renderSectionLabels(sectionLabels);
+    } else {
+      // New invitation defaults
+      renderSectionToggles([]);
+      renderSectionLabels({});
     }
 
     // Render upload widgets
@@ -361,6 +462,13 @@
       bindStoryRemove(c);
     };
 
+    // Event add button
+    document.getElementById("add-event").onclick = () => {
+      const c = document.getElementById("events-repeater");
+      c.insertAdjacentHTML("beforeend", eventItemHtml());
+      bindEventRemove(c);
+    };
+
     // Gift add button
     document.getElementById("add-gift").onclick = () => {
       const c = document.getElementById("gift-repeater");
@@ -381,12 +489,15 @@
       const fd = new FormData(form);
       const payload = Object.fromEntries(fd.entries());
       payload.love_story = collectStory();
+      payload.events = collectEvents();
       payload.gallery = galleryUrls;
       payload.gift_accounts = window.collectGiftAccounts();
       payload.cover_image_url = coverUrl;
       payload.music_url = musicUrl;
       payload.groom_photo_url = groomPhotoUrl;
       payload.bride_photo_url = bridePhotoUrl;
+      payload.hidden_sections = collectHiddenSections();
+      payload.section_labels = collectSectionLabels();
 
       // Enforce music restriction
       const s = pkgSettings[payload.package];
