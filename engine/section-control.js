@@ -1,25 +1,31 @@
 // =============================================================================
 // VINVITE ENGINE — SECTION CONTROL
 // Applies hidden_sections and section_labels from invitation data to the DOM.
-//
-// Usage: window.applySectionControl(data)
-// Call this inside renderInvitation(data) after the DOM is built.
-//
-// Each section must have data-section="key" on its element.
-// Labels: elements with data-section-label="key" get their textContent replaced.
 // =============================================================================
 
-// Default label text for each section key
+const RUNDOWN_ICONS = {
+  ceremony: "⛪",
+  rings:    "💍",
+  dinner:   "🍽",
+  photo:    "📸",
+  music:    "🎵",
+  flowers:  "💐",
+  party:    "🎉",
+  custom:   "✦",
+};
+
 window.VINVITE_DEFAULT_LABELS = {
-  quote:     "Kutipan",
-  countdown: "Menuju Hari Bahagia",
-  events:    "Acara",
-  rundown:   "Susunan Acara",
-  story:     "Kisah Kami",
-  gallery:   "Galeri",
-  gift:      "Tanda Kasih",
-  rsvp:      "Konfirmasi Kehadiran",
-  guestbook: "Ucapan & Doa",
+  quote:      "Kutipan",
+  countdown:  "Menuju Hari Bahagia",
+  events:     "Acara",
+  rundown:    "Susunan Acara",
+  story:      "Kisah Kami",
+  gallery:    "Galeri",
+  gift:       "Tanda Kasih",
+  dress_code: "Dress Code",
+  hashtag:    "Tagar & Instagram",
+  rsvp:       "Konfirmasi Kehadiran",
+  guestbook:  "Ucapan & Doa",
 };
 
 window.applySectionControl = function (data) {
@@ -31,37 +37,32 @@ window.applySectionControl = function (data) {
     ? (typeof data.section_labels === "object" ? data.section_labels : JSON.parse(data.section_labels))
     : {};
 
-  // Hide sections
   document.querySelectorAll("[data-section]").forEach(el => {
-    const key = el.dataset.section;
-    if (hidden.includes(key)) {
-      el.style.display = "none";
-    }
+    if (hidden.includes(el.dataset.section)) el.style.display = "none";
   });
 
-  // Apply custom labels
   document.querySelectorAll("[data-section-label]").forEach(el => {
     const key = el.dataset.sectionLabel;
-    if (labels[key]) {
-      el.textContent = labels[key];
+    if (labels[key]) el.textContent = labels[key];
+  });
+
+  // Sync bottom nav visibility
+  document.querySelectorAll("[data-nav-section]").forEach(btn => {
+    if (hidden.includes(btn.dataset.navSection)) {
+      btn.style.display = "none";
     }
   });
 };
 
-// Renders events (new repeater format) into a container element
-// containerSelector: CSS selector for the events wrapper
-// mapEmbedFn: optional function(id, address) to inject a map embed
-window.renderEvents = function (data, containerSelector, opts = {}) {
+// Renders events repeater
+window.renderEvents = function (data, containerSelector) {
   const container = document.querySelector(containerSelector);
   if (!container) return;
 
   const events = Array.isArray(data.events)
     ? data.events
     : (data.events ? JSON.parse(data.events) : []);
-
-  // Fallback to legacy akad/resepsi fields if events array is empty
   const list = events.length > 0 ? events : _legacyEvents(data);
-
   if (!list.length) { container.innerHTML = ""; return; }
 
   container.innerHTML = list.map((ev, i) => {
@@ -80,7 +81,6 @@ window.renderEvents = function (data, containerSelector, opts = {}) {
       </div>`;
   }).join("");
 
-  // Inject maps
   list.forEach((ev, i) => {
     if (ev.venue_address && typeof window.injectMapsEmbed === "function") {
       window.injectMapsEmbed(`#map-embed-${i}`, ev.venue_address);
@@ -88,10 +88,7 @@ window.renderEvents = function (data, containerSelector, opts = {}) {
   });
 };
 
-// Renders the "Susunan Acara" (rundown) timeline into a container element.
-// Each item: { time, title, desc }. Optional, additive section — themes that
-// don't call this or don't have a matching container simply skip it.
-// containerSelector: CSS selector for the rundown wrapper
+// Renders susunan acara (rundown) — rich visual with icons
 window.renderRundown = function (data, containerSelector) {
   const container = document.querySelector(containerSelector);
   if (!container) return;
@@ -99,18 +96,80 @@ window.renderRundown = function (data, containerSelector) {
   const items = Array.isArray(data.rundown)
     ? data.rundown
     : (data.rundown ? JSON.parse(data.rundown) : []);
-
   if (!items.length) { container.innerHTML = ""; return; }
 
-  container.innerHTML = items.map((r, i) => `
-    <div class="rundown-item" data-rundown-index="${i}">
-      <span class="rundown-time">${r.time || ""}</span>
-      <span class="rundown-index">${String(i + 1).padStart(2, "0")}</span>
-      <div class="rundown-body">
-        <h3 class="rundown-title">${r.title || ""}</h3>
-        ${r.desc ? `<p class="rundown-desc">${r.desc}</p>` : ""}
-      </div>
-    </div>`).join("");
+  container.innerHTML = items.map((r, i) => {
+    const icon = RUNDOWN_ICONS[r.icon] || RUNDOWN_ICONS.custom;
+    return `
+      <div class="rundown-item" data-rundown-index="${i}">
+        <div class="rundown-left">
+          <span class="rundown-time">${r.time || ""}</span>
+        </div>
+        <div class="rundown-center">
+          <div class="rundown-icon">${icon}</div>
+          <div class="rundown-line ${i === items.length - 1 ? 'last' : ''}"></div>
+        </div>
+        <div class="rundown-right">
+          <h3 class="rundown-title">${r.title || ""}</h3>
+          ${r.desc ? `<p class="rundown-desc">${r.desc}</p>` : ""}
+        </div>
+      </div>`;
+  }).join("");
+};
+
+// Renders dress code section
+window.renderDressCode = function (data, containerSelector) {
+  const container = document.querySelector(containerSelector);
+  if (!container) return;
+
+  const label = data.dress_code_label || "";
+  const colors = Array.isArray(data.dress_code_colors)
+    ? data.dress_code_colors
+    : JSON.parse(data.dress_code_colors || "[]");
+
+  container.innerHTML = `
+    ${label ? `<p class="dress-code-label">${label}</p>` : ""}
+    ${colors.length ? `
+      <div class="dress-code-colors">
+        ${colors.map(c => `
+          <div class="dress-color-item">
+            <div class="dress-color-swatch" style="background:${c.hex}"></div>
+            <span class="dress-color-name">${c.name || ""}</span>
+          </div>`).join("")}
+      </div>` : ""}
+  `;
+};
+
+// Renders hashtag/instagram section
+window.renderHashtag = function (data, containerSelector) {
+  const container = document.querySelector(containerSelector);
+  if (!container) return;
+
+  const hashtag = data.hashtag || "";
+  const instagram = data.instagram || "";
+  if (!hashtag && !instagram) { container.innerHTML = ""; return; }
+
+  container.innerHTML = `
+    ${hashtag ? `
+      <div class="hashtag-item">
+        <span class="hashtag-icon">🏷</span>
+        <span class="hashtag-text">${hashtag}</span>
+        <button class="btn-copy-hashtag" data-copy="${hashtag}">Salin</button>
+      </div>` : ""}
+    ${instagram ? `
+      <div class="hashtag-item">
+        <span class="hashtag-icon">📷</span>
+        <span class="hashtag-text">${instagram}</span>
+      </div>` : ""}
+  `;
+
+  container.querySelectorAll(".btn-copy-hashtag").forEach(btn => {
+    btn.addEventListener("click", () => {
+      navigator.clipboard.writeText(btn.dataset.copy);
+      btn.textContent = "Tersalin!";
+      setTimeout(() => (btn.textContent = "Salin"), 1500);
+    });
+  });
 };
 
 function _formatDateID(dateStr) {

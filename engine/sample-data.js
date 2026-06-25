@@ -47,6 +47,23 @@ window.VINVITE_SAMPLE_DATA = {
   quote_text: "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu cenderung dan merasa tenteram kepadanya.",
   quote_source: "QS. Ar-Rum: 21",
 
+  dress_code_label: "Formal Elegan",
+  dress_code_colors: [
+    { hex: "#C9A227", name: "Gold" },
+    { hex: "#46594C", name: "Sage Green" },
+    { hex: "#DCD0B8", name: "Sand" },
+  ],
+  hashtag: "#VictorDanNindy2026",
+  instagram: "@vinvite.id",
+
+  rundown: [
+    { time: "08:00", title: "Persiapan & Kedatangan Tamu", desc: "Pengantin dan keluarga bersiap menyambut tamu.", icon: "flowers" },
+    { time: "10:00", title: "Akad Nikah", desc: "Ijab kabul disaksikan keluarga dan kerabat.", icon: "rings" },
+    { time: "11:00", title: "Resepsi", desc: "Sungkeman, sambutan, dan ramah tamah.", icon: "ceremony" },
+    { time: "13:00", title: "Makan Bersama", desc: "Hidangan spesial dari kedua keluarga.", icon: "dinner" },
+    { time: "14:00", title: "Foto Bersama & Penutup", desc: "Sesi foto dan perpisahan.", icon: "photo" },
+  ],
+
   // Legacy fields kept for backward compat
   akad_date: "2026-10-17",
   akad_time: "08:00 – 10:00 WIB",
@@ -63,13 +80,6 @@ window.VINVITE_SAMPLE_DATA = {
     { date: "2019", title: "Pertama Bertemu", text: "Dipertemukan di sebuah acara kampus yang sama sekali tidak terduga." },
     { date: "2021", title: "Mulai Dekat", text: "Persahabatan perlahan tumbuh menjadi kasih sayang yang tulus." },
     { date: "2025", title: "Lamaran", text: "Radit melamar Nindy di tempat pertama kali mereka bertemu." },
-  ],
-
-  rundown: [
-    { time: "08.00 WIB", title: "Persiapan & Kedatangan Tamu", desc: "Pengantin dan keluarga bersiap menyambut tamu yang hadir." },
-    { time: "10.00 WIB", title: "Akad Nikah", desc: "Ijab kabul disaksikan keluarga dan kerabat terdekat." },
-    { time: "11.00 WIB", title: "Resepsi Pernikahan", desc: "Sungkeman, sambutan keluarga, dan ramah tamah bersama tamu." },
-    { time: "14.00 WIB", title: "Acara Puncak & Penutup", desc: "Hiburan, makan bersama, dan foto dengan kedua mempelai." },
   ],
 
   gallery: [
