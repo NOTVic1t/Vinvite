@@ -185,3 +185,51 @@ h1, h2, h3 { font-family: "Cinzel", serif; letter-spacing: .03em; }
   display: inline-block; margin: 0 auto 18px; padding: 7px 16px; border: 1px solid var(--amber);
   color: var(--amber); font-family: "JetBrains Mono", monospace; font-size: .7rem; letter-spacing: .08em;
 }
+
+/* =============================================================================
+   ADDITIVE — fitur dari Tema 1 (Elegan Grey) yang dipindahkan ke Senja Sinematik.
+   Tidak ada rule di atas yang diubah; semua di bawah ini murni tambahan baru.
+============================================================================= */
+
+/* ---------- SUSUNAN ACARA (rundown) — kartu indigo + amber rail, ngikut
+   motif timecode yang udah ada di Kisah Cinta (TC 01, TC 02...) ---------- */
+.rundown-timeline { margin-top: 8px; display: flex; flex-direction: column; gap: 12px; text-align: left; }
+.rundown-item { background: var(--indigo); border-left: 2px solid var(--amber); padding: 18px 20px; display: grid; grid-template-columns: 76px 40px 1fr; gap: 14px; align-items: start; }
+.rundown-time { font-family: "JetBrains Mono", monospace; font-size: .68rem; letter-spacing: .06em; color: var(--amber); padding-top: 3px; white-space: nowrap; }
+.rundown-index { font-family: "JetBrains Mono", monospace; font-size: .64rem; color: var(--smoke); padding-top: 3px; }
+.rundown-index::before { content: "TC"; display: block; font-size: .55rem; opacity: .7; }
+.rundown-title { font-family: "Cinzel", serif; font-size: 1.1rem; margin-bottom: 5px; color: var(--cream); }
+.rundown-desc { font-size: .82rem; color: var(--smoke); line-height: 1.6; }
+
+/* ---------- QUICK NAV ---------- */
+.quicknav {
+  position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 45;
+  display: flex; gap: 6px; padding: 8px; background: var(--black);
+  border: 1px solid var(--amber); border-radius: 999px; box-shadow: 0 8px 24px rgba(0,0,0,.45);
+}
+.quicknav-link {
+  width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  color: var(--smoke); transition: color .25s, background .25s;
+}
+.quicknav-link svg { width: 17px; height: 17px; }
+.quicknav-link.is-active { color: var(--black); background: var(--amber); }
+
+/* ---------- AUTO-SCROLL TOGGLE ---------- */
+#autoscroll-toggle {
+  position: fixed; bottom: 78px; right: 22px; z-index: 40;
+  width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--amber);
+  background: var(--black); color: var(--amber); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+#autoscroll-toggle svg { width: 18px; height: 18px; }
+#autoscroll-toggle.is-active { background: var(--amber); color: var(--black); }
+#autoscroll-toggle.is-active svg { animation: nudgeAmber 1.1s ease-in-out infinite; }
+@keyframes nudgeAmber { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(2px); } }
+
+@media (max-width: 480px) {
+  .quicknav { gap: 2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #autoscroll-toggle.is-active svg { animation: none; }
+}
