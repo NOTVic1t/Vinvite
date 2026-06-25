@@ -205,3 +205,50 @@ h1, h2, h3 { font-family: "Playfair Display", serif; }
   display: inline-block; margin: 0 auto 18px; padding: 7px 16px; border: 1px solid var(--bronze);
   color: var(--gold); font-family: "Cormorant SC"; font-size: .75rem; letter-spacing: .08em;
 }
+
+/* =============================================================================
+   ADDITIVE — fitur dari Tema 1 (Elegan Grey) yang dipindahkan ke Kertas Emas.
+   Tidak ada rule di atas yang diubah; semua di bawah ini murni tambahan baru.
+============================================================================= */
+
+/* ---------- SUSUNAN ACARA (rundown) ---------- */
+.rundown-timeline { margin-top: 10px; text-align: left; }
+.rundown-item { display: grid; grid-template-columns: 86px 34px 1fr; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--bronze); }
+.rundown-item:last-child { border-bottom: none; }
+.rundown-time { font-family: "Cormorant SC"; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--bronze); padding-top: 5px; white-space: nowrap; }
+.rundown-index { font-family: "Playfair Display", serif; font-style: italic; font-size: 1.2rem; color: var(--gold); text-align: center; }
+.rundown-title { font-family: "Playfair Display", serif; font-style: italic; font-size: 1.2rem; margin-bottom: 5px; color: var(--ivory); }
+.rundown-desc { font-size: .84rem; color: var(--bronze); line-height: 1.6; }
+
+/* ---------- QUICK NAV ---------- */
+.quicknav {
+  position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 45;
+  display: flex; gap: 6px; padding: 8px; background: var(--black);
+  border: 1px solid var(--gold); border-radius: 999px; box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+.quicknav-link {
+  width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  color: var(--bronze); transition: color .25s, background .25s;
+}
+.quicknav-link svg { width: 17px; height: 17px; }
+.quicknav-link.is-active { color: var(--black); background: var(--gold); }
+
+/* ---------- AUTO-SCROLL TOGGLE ---------- */
+#autoscroll-toggle {
+  position: fixed; bottom: 78px; right: 22px; z-index: 40;
+  width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--gold);
+  background: var(--black); color: var(--gold); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+#autoscroll-toggle svg { width: 18px; height: 18px; }
+#autoscroll-toggle.is-active { background: var(--gold); color: var(--black); }
+#autoscroll-toggle.is-active svg { animation: nudgeGold 1.1s ease-in-out infinite; }
+@keyframes nudgeGold { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(2px); } }
+
+@media (max-width: 480px) {
+  .quicknav { gap: 2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #autoscroll-toggle.is-active svg { animation: none; }
+}

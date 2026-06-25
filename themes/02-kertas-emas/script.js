@@ -47,6 +47,7 @@ window.renderInvitation = function (data) {
   if (qs && data.quote_source) qs.textContent = `— ${data.quote_source} —`;
 
   window.renderEvents(data, "#events-container");
+  window.renderRundown(data, "#rundown-container");
 
   if (firstEvent && firstEvent.date) {
     window.startCountdown(`${firstEvent.date}T${firstEvent.time_start || "00:00"}:00`,
@@ -112,4 +113,83 @@ window.renderInvitation = function (data) {
   window.initScrollProgress("#scroll-progress");
   window.initSocialProof("#social-proof", data._invitationId);
   window.applySectionControl(data);
+
+  initQuickNav();
+  initAutoScroll();
 };
+
+// -----------------------------------------------------------------------------
+// QUICK NAV — floating bottom pill, highlights the section currently in view.
+// Theme-only chrome (always on, not tied to hidden_sections). Added without
+// touching any existing markup: targets selectors that already exist
+// (#cover-screen, .couple, [data-section=...]) via data-target.
+// -----------------------------------------------------------------------------
+function initQuickNav() {
+  const links = [...document.querySelectorAll(".quicknav-link")];
+  if (!links.length) return;
+
+  const targets = links
+    .map(a => ({ link: a, el: document.querySelector(a.dataset.target) }))
+    .filter(t => t.el);
+
+  if (!targets.length) return;
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const match = targets.find(t => t.el === entry.target);
+        if (match) links.forEach(a => a.classList.toggle("is-active", a === match.link));
+      }
+    });
+  }, { rootMargin: "-42% 0px -42% 0px" });
+
+  targets.forEach(t => io.observe(t.el));
+
+  links.forEach(a => {
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      const target = document.querySelector(a.dataset.target);
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+}
+
+// -----------------------------------------------------------------------------
+// AUTO-SCROLL TOGGLE — smooth, cancellable auto-scroll down the page.
+// Theme-only chrome (always on, not tied to hidden_sections).
+// -----------------------------------------------------------------------------
+function initAutoScroll() {
+  const btn = document.getElementById("autoscroll-toggle");
+  if (!btn) return;
+
+  let active = false;
+  let raf = null;
+
+  function step() {
+    window.scrollBy(0, 1.1);
+    const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    if (atBottom) { stop(); return; }
+    raf = requestAnimationFrame(step);
+  }
+
+  function start() {
+    active = true;
+    btn.classList.add("is-active");
+    btn.setAttribute("aria-label", "Hentikan scroll otomatis");
+    step();
+  }
+
+  function stop() {
+    active = false;
+    if (raf) cancelAnimationFrame(raf);
+    btn.classList.remove("is-active");
+    btn.setAttribute("aria-label", "Mulai scroll otomatis");
+  }
+
+  btn.addEventListener("click", () => (active ? stop() : start()));
+
+  // Stop politely if the visitor takes manual control of the scroll.
+  ["wheel", "touchstart"].forEach(evt => {
+    window.addEventListener(evt, () => { if (active) stop(); }, { passive: true });
+  });
+}
