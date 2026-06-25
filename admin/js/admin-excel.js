@@ -69,13 +69,10 @@ window.mapRowsToGuests = function (rows) {
     .map((row) => {
       const name = pick(row, ["nama", "name"]);
       if (!name) return null;
-      let session = pick(row, ["sesi", "session", "invited_session"]).toLowerCase();
-      if (!validSessions.includes(session)) session = "both";
       return {
         name,
         phone: pick(row, ["whatsapp", "wa", "phone", "no. whatsapp", "no whatsapp"]),
         group_label: pick(row, ["grup", "group", "group_label"]),
-        invited_session: session,
       };
     })
     .filter(Boolean);
