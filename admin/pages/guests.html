@@ -48,17 +48,7 @@
             <div class="field"><label>Nama Tamu</label><input name="name" required /></div>
             <div class="field"><label>No. WhatsApp</label><input name="phone" placeholder="08xxxxxxxxxx" /></div>
           </div>
-          <div class="field-row two">
-            <div class="field"><label>Grup</label><input name="group_label" placeholder="Keluarga, Kantor, Kampus..." /></div>
-            <div class="field">
-              <label>Diundang ke</label>
-              <select name="invited_session">
-                <option value="both">Akad & Resepsi</option>
-                <option value="akad">Akad saja</option>
-                <option value="resepsi">Resepsi saja</option>
-              </select>
-            </div>
-          </div>
+          <div class="field"><label>Grup</label><input name="group_label" placeholder="Keluarga, Kantor, Kampus..." /></div>
           <button type="submit" class="btn btn-primary">Tambah Tamu</button>
         </form>
       </div>
@@ -70,7 +60,7 @@
         </div>
         <div class="table-wrap">
           <table id="guest-table">
-            <thead><tr><th>Nama</th><th>WhatsApp</th><th>Grup</th><th>Sesi</th><th>Link Undangan</th><th></th></tr></thead>
+            <thead><tr><th>Nama</th><th>WhatsApp</th><th>Grup</th><th>Link Undangan</th><th></th></tr></thead>
             <tbody id="guest-tbody"></tbody>
           </table>
         </div>
@@ -168,7 +158,6 @@
         <td>${g.name}</td>
         <td>${g.phone || "—"}</td>
         <td>${g.group_label || "—"}</td>
-        <td><span class="badge grey">${g.invited_session}</span></td>
         <td><a href="${guestLink(g)}" target="_blank" style="font-size:.78rem;">Buka Link</a></td>
         <td style="display:flex;gap:6px;">
           <a class="btn btn-outline btn-sm" target="_blank" href="https://wa.me/?text=${waText(g)}">WA</a>
