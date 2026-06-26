@@ -179,7 +179,7 @@
           <div id="section-labels-fields"></div>
         </div>
 
-        <!-- STATUS -->
+        <!-- FOTO BACKGROUND PER SECTION -->\n        <div class=\"card\">\n          <h3 class=\"card-title\">Foto Background per Section</h3>\n          <p style=\"font-size:.8rem;color:var(--grey);margin-bottom:14px;\">Opsional. Upload foto lalu aktifkan checkbox-nya untuk menampilkan foto sebagai background section tersebut (fade-in saat discroll). Tidak ada foto/checkbox off = section tetap polos seperti biasa. Independen dari toggle \"Tampilkan/Sembunyikan Section\" di atas.</p>\n          <div id=\"section-bg-fields\"></div>\n        </div>\n\n        <!-- STATUS -->
         <div class="card">
           <h3 class="card-title">Status</h3>
           <div class="field">
@@ -210,6 +210,7 @@
   let musicUrl = "";
   let groomPhotoUrl = "";
   let bridePhotoUrl = "";
+  let sectionBgState = {}; // { [key]: { url, enabled } }
   let pkgSettings = {};
   const client = () => window.getVinviteClient();
 
@@ -225,6 +226,23 @@
     { key: "hashtag",    label: "Tagar & Instagram" },
     { key: "rsvp",       label: "Konfirmasi Kehadiran" },
     { key: "guestbook",  label: "Ucapan & Doa" },
+  ];
+
+  // Superset of SECTION_KEYS — also includes hero/couple/footer, which have
+  // no content-visibility toggle of their own but can still carry a photo.
+  const SECTION_BG_KEYS = [
+    { key: "hero",      label: "Hero / Nama Pengantin" },
+    { key: "quote",     label: "Kutipan" },
+    { key: "couple",    label: "Mempelai" },
+    { key: "countdown", label: "Hitung Mundur" },
+    { key: "events",    label: "Tempat Acara" },
+    { key: "rundown",   label: "Susunan Acara" },
+    { key: "story",     label: "Kisah Kami" },
+    { key: "gallery",   label: "Galeri" },
+    { key: "gift",      label: "Tanda Kasih" },
+    { key: "rsvp",      label: "Konfirmasi Kehadiran" },
+    { key: "guestbook", label: "Ucapan & Doa" },
+    { key: "footer",    label: "Penutup" },
   ];
 
   function slugify(str) {
@@ -327,6 +345,47 @@
       venue_address: el.querySelector(".ev-address").value,
       maps_url: el.querySelector(".ev-maps").value,
     })).filter(ev => ev.name || ev.date);
+  }
+
+  // --- SECTION BACKGROUND PHOTOS ---
+  function sectionBgRowHtml(key, label) {
+    return `
+      <div class="field" style="border:1px solid var(--border-color,#e5e1d8); border-radius:8px; padding:12px; margin-bottom:10px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <label style="margin:0;">${label}</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:.8rem;font-weight:400;">
+            <input type="checkbox" class="section-bg-enabled" data-key="${key}" />
+            Aktifkan foto
+          </label>
+        </div>
+        <div id="section-bg-upload-${key}"></div>
+      </div>`;
+  }
+  function renderSectionBgFields(bg) {
+    const container = document.getElementById("section-bg-fields");
+    container.innerHTML = SECTION_BG_KEYS.map(s => sectionBgRowHtml(s.key, s.label)).join("");
+
+    SECTION_BG_KEYS.forEach(s => {
+      const cfg = bg[s.key] || {};
+      sectionBgState[s.key] = { url: cfg.url || "", enabled: !!cfg.enabled };
+
+      const checkbox = container.querySelector(`.section-bg-enabled[data-key="${s.key}"]`);
+      checkbox.checked = !!cfg.enabled;
+      checkbox.addEventListener("change", () => { sectionBgState[s.key].enabled = checkbox.checked; });
+
+      window.renderUploadWidget(document.getElementById(`section-bg-upload-${s.key}`), {
+        label: `Foto ${s.label}`, accept: "image/*", folder: "section-bg",
+        currentUrl: cfg.url || "", preview: "image",
+        onUrl: (url) => { sectionBgState[s.key].url = url; },
+      });
+    });
+  }
+  function collectSectionBackgrounds() {
+    const out = {};
+    Object.entries(sectionBgState).forEach(([key, cfg]) => {
+      if (cfg.url) out[key] = { url: cfg.url, enabled: !!cfg.enabled };
+    });
+    return out;
   }
 
   // --- SECTION TOGGLES ---
@@ -522,10 +581,17 @@
       renderSectionToggles(hiddenSections);
       const sectionLabels = existing.section_labels ? (typeof existing.section_labels === "object" ? existing.section_labels : JSON.parse(existing.section_labels)) : {};
       renderSectionLabels(sectionLabels);
+
+      // Section background photos
+      const sectionBg = existing.section_backgrounds
+        ? (typeof existing.section_backgrounds === "object" ? existing.section_backgrounds : JSON.parse(existing.section_backgrounds))
+        : {};
+      renderSectionBgFields(sectionBg);
     } else {
       // New invitation defaults
       renderSectionToggles([]);
       renderSectionLabels({});
+      renderSectionBgFields({});
     }
 
     // Render upload widgets
@@ -615,6 +681,7 @@
       payload.bride_photo_url = bridePhotoUrl;
       payload.hidden_sections = collectHiddenSections();
       payload.section_labels = collectSectionLabels();
+      payload.section_backgrounds = collectSectionBackgrounds();
       payload.rundown = collectRundown();
       payload.dress_code_colors = collectDressColors();
 
