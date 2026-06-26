@@ -162,11 +162,16 @@ function initQuickNav() {
 
   links.forEach(a => {
     a.addEventListener("click", (e) => {
-      const target = document.querySelector(a.getAttribute("href"));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      e.preventDefault();
+      // "Beranda" points at #cover-screen, which is fixed-position and
+      // hidden once the invitation is opened — scrollIntoView on it does
+      // nothing. Scroll to the literal top of the page instead.
+      if (a.getAttribute("href") === "#cover-screen") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
       }
+      const target = document.querySelector(a.getAttribute("href"));
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
 }
