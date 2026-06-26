@@ -1,5 +1,5 @@
 -- =============================================================================
--- VINVITE — MIGRATION 009: SECTION BACKGROUND PHOTOS
+-- VINVITE — MIGRATION 010: SECTION BACKGROUND PHOTOS
 -- Optional per-section background photo, independently togglable from the
 -- section's content visibility (hidden_sections).
 -- =============================================================================
