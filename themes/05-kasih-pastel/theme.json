@@ -2,9 +2,9 @@
   "slug": "05-kasih-pastel",
   "name": "Kasih Pastel",
   "category": "Romantic Pastel",
-  "status": "planned",
+  "status": "built",
   "palette": { "blush": "#F6DEE0", "lavender": "#E7DEF2", "cream": "#FBF6F0", "mauve": "#9C7C82", "ink": "#4A3F42" },
-  "type": { "display": "a soft script/handwriting display face", "body": "a rounded humanist sans" },
-  "signature": "Soft watercolor-blob shapes that drift gently behind each section, like Korean pre-wedding studio photography pages.",
-  "brief": "Soft Korean-pastel aesthetic — blush and lavender, rounded shapes, dreamy and youthful rather than ceremonial."
+  "type": { "display": "Caveat", "body": "Nunito" },
+  "signature": "Soft watercolor-blob shapes that drift gently behind every section, like Korean pre-wedding studio photography pages. Couple photos sit in organic blob-shaped frames rather than a circle or square.",
+  "brief": "Soft Korean-pastel aesthetic — blush and lavender, rounded shapes, dreamy and youthful rather than ceremonial. Includes the full standard section set (Susunan Acara with icons, Dress Code, Hashtag & Instagram, quick-nav, auto-scroll, per-section background photos)."
 }
