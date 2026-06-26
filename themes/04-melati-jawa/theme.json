@@ -2,9 +2,9 @@
   "slug": "04-melati-jawa",
   "name": "Melati Jawa",
   "category": "Traditional Javanese",
-  "status": "planned",
+  "status": "built",
   "palette": { "cream": "#F2E8D5", "batik_brown": "#5B3A29", "maroon": "#7A2424", "gold": "#BF9B3A", "ink": "#2B1F16" },
   "type": { "display": "Cormorant Garamond", "body": "Source Sans 3" },
-  "signature": "A kawung batik motif border etched along section edges, with a gunungan (wayang mountain) silhouette as the cover centerpiece.",
-  "brief": "Traditional Central/East Javanese wedding aesthetic — batik patterning, maroon and gold ceremonial palette, formal and culturally rooted."
+  "signature": "A kawung batik motif rendered as a recurring divider beneath every section label, with a gunungan (wayang mountain) silhouette as the cover centerpiece.",
+  "brief": "Traditional Central/East Javanese wedding aesthetic — batik patterning, maroon and gold ceremonial palette, formal and culturally rooted. Includes the full standard section set (Susunan Acara, quick-nav, auto-scroll) alongside the gunungan cover and kawung dividers."
 }
