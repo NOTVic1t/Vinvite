@@ -30,8 +30,16 @@ window.renderInvitation = function (data) {
   if (groomImg && data.groom_photo_url) groomImg.src = data.groom_photo_url;
   if (brideImg && data.bride_photo_url) brideImg.src = data.bride_photo_url;
 
-  // cover background stays solid ink — gunungan silhouette is the centerpiece,
-  // so we don't overlay a photo here (keeps the motif legible).
+  // cover background photo (optional) — dark overlay keeps the gunungan
+  // silhouette legible on top, same pattern as the other built themes.
+  if (data.cover_image_url) {
+    const cover = document.getElementById("cover-screen");
+    if (cover) {
+      cover.style.backgroundImage = `linear-gradient(rgba(43,31,22,.86), rgba(43,31,22,.93)), url('${data.cover_image_url}')`;
+      cover.style.backgroundSize = "cover";
+      cover.style.backgroundPosition = "center";
+    }
+  }
 
   const qt = document.getElementById("quote-text");
   const qs = document.getElementById("quote-source");

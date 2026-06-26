@@ -60,9 +60,9 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 600; color: 
 .cover-names { font-size: 2.6rem; margin: 6px 0 22px; color: var(--cream); }
 .cover-names span { color: var(--gold); padding: 0 6px; }
 .cover-to { font-size: .8rem; opacity: .8; margin-top: 18px; letter-spacing: .05em; }
-.cover-guest { font-size: 1.05rem; font-family: "Cormorant Garamond", serif; margin-top: 8px; border-bottom: 1px solid rgba(191,155,58,.4); padding-bottom: 10px; display: inline-block; }
+.cover-guest { font-size: 1.05rem; font-family: "Cormorant Garamond", serif; margin: 8px auto 0; border-bottom: 1px solid rgba(191,155,58,.4); padding-bottom: 10px; display: block; width: max-content; max-width: 100%; }
 .btn-open {
-  margin-top: 36px; padding: 14px 40px; background: transparent;
+  display: block; margin: 36px auto 0; padding: 14px 40px; background: transparent;
   border: 1px solid var(--gold); color: var(--gold);
   font-family: "Source Sans 3"; letter-spacing: .2em; text-transform: uppercase; font-size: .72rem;
   cursor: pointer; transition: background .3s, color .3s;
