@@ -10,6 +10,18 @@ window.renderInvitation = function (data) {
   document.getElementById("hero-names").innerHTML = `${data.groom_nickname || data.groom_name} &amp; ${data.bride_nickname || data.bride_name}`;
   document.title = `Undangan Pernikahan ${shortNames}`;
 
+  // Cover background photo (optional). Same gradient/colors as the CSS
+  // default — just made translucent so a photo can show through it when
+  // the admin sets one. No photo set = looks exactly like before.
+  if (data.cover_image_url) {
+    const cover = document.getElementById("cover-screen");
+    if (cover) {
+      cover.style.backgroundImage = `linear-gradient(160deg, rgba(246,222,224,.55) 0%, rgba(251,246,240,.7) 55%, rgba(231,222,242,.55) 100%), url('${data.cover_image_url}')`;
+      cover.style.backgroundSize = "cover";
+      cover.style.backgroundPosition = "center";
+    }
+  }
+
   const events = Array.isArray(data.events) ? data.events : JSON.parse(data.events || "[]");
   const firstEvent = events[0];
   const heroDateStr = firstEvent ? firstEvent.date : (data.resepsi_date || data.akad_date);
@@ -155,11 +167,16 @@ function initQuickNav() {
 
   links.forEach(a => {
     a.addEventListener("click", (e) => {
-      const target = document.querySelector(a.getAttribute("href"));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      e.preventDefault();
+      // "Beranda" points at #cover-screen, which is fixed-position and
+      // hidden once the invitation is opened — scrollIntoView on it does
+      // nothing. Scroll to the literal top of the page instead.
+      if (a.getAttribute("href") === "#cover-screen") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
       }
+      const target = document.querySelector(a.getAttribute("href"));
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
 }
