@@ -145,15 +145,26 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 600; color: 
 .map-embed { margin-top: 16px; overflow: hidden; border: 1px solid var(--gold); border-radius: 4px; }
 .map-embed iframe { width: 100%; height: 160px; border: 0; display: block; }
 
-/* ---------- SUSUNAN ACARA (rundown) ---------- */
+/* ---------- SUSUNAN ACARA (rundown) ----------
+   NOTE: markup comes from engine/section-control.js's icon-based renderRundown
+   (rundown-left/center/right + rundown-icon). Card look kept per request;
+   the connector line is hidden here since it pokes oddly out of bordered cards. */
 .rundown-timeline { margin-top: 10px; text-align: left; display: flex; flex-direction: column; gap: 14px; }
 .rundown-item {
-  display: grid; grid-template-columns: 78px 30px 1fr; gap: 16px;
+  display: grid; grid-template-columns: 70px 44px 1fr; gap: 14px; align-items: flex-start;
   padding: 18px 20px; background: var(--cream); border: 1px solid var(--gold); border-radius: 4px;
   box-shadow: 0 8px 20px rgba(43,31,22,.10);
 }
-.rundown-time { font-size: .76rem; letter-spacing: .03em; color: var(--maroon); padding-top: 4px; white-space: nowrap; }
-.rundown-index { font-family: "Cormorant Garamond", serif; font-size: 1.15rem; color: var(--gold); text-align: center; }
+.rundown-left { padding-top: 7px; }
+.rundown-time { font-size: .76rem; letter-spacing: .03em; color: var(--maroon); white-space: nowrap; }
+.rundown-center { display: flex; flex-direction: column; align-items: center; }
+.rundown-icon {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(191,155,58,.14); border: 1px solid var(--gold);
+  display: flex; align-items: center; justify-content: center; font-size: 1rem;
+}
+.rundown-line { display: none; }
+.rundown-right { padding-top: 2px; }
 .rundown-title { font-family: "Cormorant Garamond", serif; font-size: 1.18rem; margin-bottom: 5px; color: var(--maroon); }
 .rundown-desc { font-size: .84rem; color: var(--batik-brown); line-height: 1.6; }
 
