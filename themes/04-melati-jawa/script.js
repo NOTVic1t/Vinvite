@@ -115,6 +115,23 @@ window.renderInvitation = function (data) {
   window.initSocialProof("#social-proof", data._invitationId);
   window.applySectionControl(data);
 
+  // Optional per-section background photos (admin-controlled, independent
+  // of section content visibility).
+  window.applySectionBackgrounds(data, {
+    hero: "#section-hero",
+    quote: '[data-section="quote"]',
+    couple: "#section-couple",
+    countdown: "#section-countdown",
+    events: "#section-acara",
+    rundown: '[data-section="rundown"]',
+    story: '[data-section="story"]',
+    gallery: "#section-galeri",
+    gift: '[data-section="gift"]',
+    rsvp: "#section-rsvp",
+    guestbook: '[data-section="guestbook"]',
+    footer: ".footer",
+  });
+
   initQuickNav();
   initAutoScroll();
 };

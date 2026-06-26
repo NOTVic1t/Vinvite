@@ -75,6 +75,21 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 600; color: 
 /* ---------- SECTIONS ---------- */
 .section { max-width: 640px; margin: 0 auto; padding: 90px 28px; text-align: center; position: relative; }
 
+/* ---------- SECTION BACKGROUND PHOTO (optional, admin-controlled) ----------
+   Injected by engine/section-backgrounds.js as the first child of a
+   .section. z-index:-1 keeps it behind all normal in-flow content within
+   this section's stacking context (the section itself is position:relative). */
+.section-bg-photo {
+  position: absolute; inset: 0; z-index: -1;
+  background-size: cover; background-position: center;
+  opacity: 0; transition: opacity 1.4s ease;
+}
+.section-bg-photo::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(rgba(242,232,213,.87), rgba(242,232,213,.93));
+}
+.section-bg-photo.is-visible { opacity: 1; }
+
 /* ---------- CORNER VINE (sulur/lung-lungan ornament) ---------- */
 .corner-vine {
   position: absolute; width: 44px; height: 44px;
@@ -98,8 +113,13 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 600; color: 
 /* ---------- COUPLE ---------- */
 .couple-grid { display: flex; align-items: flex-start; justify-content: center; gap: 36px; flex-wrap: wrap; margin-top: 26px; }
 .couple-card { max-width: 220px; }
-.couple-photo { width: 160px; height: 190px; overflow: hidden; margin: 0 auto 20px; border: 3px solid var(--gold); border-radius: 4px; }
-.couple-photo img { width: 100%; height: 100%; object-fit: cover; }
+.couple-photo { width: 168px; height: 168px; overflow: visible; margin: 0 auto 26px; position: relative; }
+.couple-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid var(--gold); box-shadow: 0 10px 24px rgba(43,31,22,.16), inset 0 0 0 5px rgba(242,232,213,.9); display: block; }
+.bloom { position: absolute; width: 34px; height: 34px; fill: var(--cream); stroke: var(--gold); stroke-width: 1; filter: drop-shadow(0 2px 4px rgba(43,31,22,.18)); }
+.bloom .bloom-center { fill: var(--gold); stroke: none; }
+.bloom-1 { top: -8px; right: 6px; }
+.bloom-2 { bottom: 2px; left: -8px; width: 26px; height: 26px; }
+.bloom-3 { bottom: -6px; right: -4px; width: 28px; height: 28px; }
 .couple-card h3 { font-size: 1.5rem; margin-bottom: 8px; }
 .couple-card p { font-size: .8rem; line-height: 1.55; color: var(--batik-brown); }
 .couple-amp { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 2rem; color: var(--gold); align-self: center; margin-top: 70px; }
