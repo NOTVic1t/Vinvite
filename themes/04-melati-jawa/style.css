@@ -15,7 +15,10 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  background: var(--cream);
+  background-color: var(--cream);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%235B3A29' stroke-width='0.7' opacity='0.10'%3E%3Cpath d='M0 32 L32 0 L64 32 L32 64 Z'/%3E%3Ccircle cx='32' cy='32' r='3.2'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-attachment: fixed;
   color: var(--batik-brown);
   font-family: "Source Sans 3", sans-serif;
   font-weight: 300;
@@ -70,7 +73,19 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 600; color: 
 .btn-open:hover { background: var(--gold); color: var(--ink); }
 
 /* ---------- SECTIONS ---------- */
-.section { max-width: 640px; margin: 0 auto; padding: 90px 28px; text-align: center; }
+.section { max-width: 640px; margin: 0 auto; padding: 90px 28px; text-align: center; position: relative; }
+
+/* ---------- CORNER VINE (sulur/lung-lungan ornament) ---------- */
+.corner-vine {
+  position: absolute; width: 44px; height: 44px;
+  stroke: var(--gold); stroke-width: 1.4; fill: none; opacity: .5;
+  pointer-events: none;
+}
+.corner-vine.tl { top: 18px; left: 14px; }
+.corner-vine.tr { top: 18px; right: 14px; transform: scaleX(-1); }
+@media (max-width: 480px) {
+  .corner-vine { width: 30px; height: 30px; opacity: .4; }
+}
 
 /* ---------- HERO ---------- */
 .hero-names { font-size: 3rem; margin: 8px 0 2px; }
@@ -91,14 +106,15 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 600; color: 
 
 /* ---------- COUNTDOWN ---------- */
 .countdown { display: flex; justify-content: center; gap: 22px; margin-top: 26px; }
-.cd-item { display: flex; flex-direction: column; align-items: center; min-width: 64px; padding: 10px 4px; border: 1px solid var(--gold); border-radius: 4px; background: rgba(191,155,58,.06); }
+.cd-item { display: flex; flex-direction: column; align-items: center; min-width: 64px; padding: 10px 4px; border: 1px solid var(--gold); border-radius: 4px; background: rgba(191,155,58,.06); box-shadow: 0 6px 16px rgba(43,31,22,.10); }
 .cd-item span { font-family: "Cormorant Garamond", serif; font-size: 2.1rem; color: var(--maroon); }
 .cd-item label { font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; margin-top: 4px; color: var(--batik-brown); }
 
 /* ---------- EVENTS ---------- */
 .event-grid { display: grid; gap: 22px; margin-top: 12px; }
 @media (min-width: 600px) { .event-grid { grid-template-columns: 1fr 1fr; } }
-.event-card { background: rgba(191,155,58,.06); border: 1px solid var(--gold); padding: 32px 24px; border-radius: 4px; }
+.event-card { background: var(--cream); border: 1px solid var(--gold); padding: 32px 24px; border-radius: 4px; box-shadow: 0 10px 26px rgba(43,31,22,.12); transition: transform .25s, box-shadow .25s; }
+.event-card:hover { transform: translateY(-3px); box-shadow: 0 14px 32px rgba(43,31,22,.16); }
 .event-card h3, .event-name { font-size: 1.32rem; margin-bottom: 10px; }
 .event-divider { width: 34px; height: 2px; background: var(--maroon); margin: 0 auto 14px; }
 .event-card p, .event-date, .event-time, .event-venue { font-size: .84rem; margin-bottom: 5px; color: var(--batik-brown); }
@@ -110,9 +126,12 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 600; color: 
 .map-embed iframe { width: 100%; height: 160px; border: 0; display: block; }
 
 /* ---------- SUSUNAN ACARA (rundown) ---------- */
-.rundown-timeline { margin-top: 10px; text-align: left; }
-.rundown-item { display: grid; grid-template-columns: 78px 30px 1fr; gap: 16px; padding: 18px 0; border-bottom: 1px solid rgba(191,155,58,.4); }
-.rundown-item:last-child { border-bottom: none; }
+.rundown-timeline { margin-top: 10px; text-align: left; display: flex; flex-direction: column; gap: 14px; }
+.rundown-item {
+  display: grid; grid-template-columns: 78px 30px 1fr; gap: 16px;
+  padding: 18px 20px; background: var(--cream); border: 1px solid var(--gold); border-radius: 4px;
+  box-shadow: 0 8px 20px rgba(43,31,22,.10);
+}
 .rundown-time { font-size: .76rem; letter-spacing: .03em; color: var(--maroon); padding-top: 4px; white-space: nowrap; }
 .rundown-index { font-family: "Cormorant Garamond", serif; font-size: 1.15rem; color: var(--gold); text-align: center; }
 .rundown-title { font-family: "Cormorant Garamond", serif; font-size: 1.18rem; margin-bottom: 5px; color: var(--maroon); }
@@ -135,7 +154,7 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 600; color: 
 /* ---------- GIFT ---------- */
 .gift-intro { font-size: .84rem; color: var(--batik-brown); line-height: 1.65; margin-bottom: 24px; }
 .gift-accounts { display: flex; flex-direction: column; gap: 14px; }
-.gift-account { background: rgba(191,155,58,.06); border: 1px solid var(--gold); border-radius: 4px; padding: 18px 22px; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.gift-account { background: var(--cream); border: 1px solid var(--gold); border-radius: 4px; padding: 18px 22px; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 12px; box-shadow: 0 8px 20px rgba(43,31,22,.10); }
 .gift-account-info p:first-child { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
 .gift-account-info p:last-child { font-size: .78rem; color: var(--batik-brown); }
 .gift-account-info strong { font-family: "Cormorant Garamond", serif; font-size: 1.2rem; display: block; color: var(--maroon); }
