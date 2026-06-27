@@ -2,9 +2,9 @@
   "slug": "06-zaitun-islami",
   "name": "Zaitun Islami",
   "category": "Islamic Elegant",
-  "status": "planned",
+  "status": "built",
   "palette": { "olive": "#4A5D3A", "gold": "#C9A227", "cream": "#F5F0E1", "deep_green": "#2C3A22", "ink": "#26261E" },
-  "type": { "display": "an Arabic-influenced calligraphic display face", "body": "Lora" },
-  "signature": "An islimi (Islamic geometric) lattice pattern framing the cover, with a hilal (crescent) and star motif marking the countdown.",
-  "brief": "Elegant Islamic wedding invite — olive and gold, geometric arabesque framing, opens with a Qur'anic verse as the centerpiece rather than an afterthought."
+  "type": { "display": "Reem Kufi", "body": "Lora", "arabic": "Amiri" },
+  "signature": "A mihrab-arch silhouette frames the cover and clips every couple photo; an islimi (8-point star) lattice border draws itself in around the cover; a gold shimmer sweeps across the couple's names once on open; a hilal (crescent) with twinkling stars marks the countdown; and a symmetric unwan medallion (manuscript-headpiece style) replaces the plain divider line between every section. The Qur'anic verse is shown in its original Arabic script alongside the Indonesian translation, rather than translation only.",
+  "brief": "Elegant Islamic wedding invite — olive and gold, geometric arabesque framing, opens with a Qur'anic verse as the centerpiece rather than an afterthought. Includes the full standard section set (Susunan Acara with icons, Dress Code, Hashtag & Instagram, quick-nav, auto-scroll, per-section background photos)."
 }
