@@ -144,7 +144,7 @@ h1, h2, h3 { font-family: "Fraunces", serif; font-weight: 600; color: var(--fore
    instead of a plain fade. Driven by initCoverReveal() in script.js,
    which deliberately replaces the engine's default fade for this theme. */
 .curtain {
-  position: absolute; top: 0; bottom: 0; z-index: 5;
+  position: absolute; top: 0; bottom: 0; z-index: 0;
   background: var(--forest); transition: transform 1.05s cubic-bezier(.76,0,.24,1);
 }
 .curtain-left { left: 0; width: 58%; clip-path: polygon(0% 0%, 100% 0%, 84% 8%, 100% 16%, 81% 24%, 100% 32%, 85% 40%, 100% 48%, 79% 56%, 100% 64%, 85% 72%, 100% 80%, 81% 88%, 100% 96%, 89% 100%, 0% 100%); border-right: 1px solid rgba(184,146,74,.5); }
