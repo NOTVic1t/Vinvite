@@ -1,10 +1,10 @@
 {
   "slug": "07-rimba-tropis",
   "name": "Rimba Tropis",
-  "category": "Rustic Tropical Garden",
-  "status": "planned",
-  "palette": { "forest": "#2F4730", "terracotta": "#B5654A", "cream": "#F3EDE0", "moss": "#7C8B5C", "ink": "#26281F" },
+  "category": "Luxury Tropical Resort",
+  "status": "built",
+  "palette": { "forest": "#2F4730", "terracotta": "#B5654A", "cream": "#F3EDE0", "moss": "#7C8B5C", "ink": "#26281F", "brass": "#B8924A" },
   "type": { "display": "Fraunces", "body": "Work Sans" },
-  "signature": "Layered monstera and palm-leaf silhouettes that overlap section corners like an open-air garden pavilion.",
-  "brief": "Outdoor garden-party wedding — organic leaf shapes, warm earthy palette, relaxed rather than ceremonial."
+  "signature": "Layered monstera and palm-leaf silhouettes — each traced with fine brass vein lines — drift in parallax depth behind every section like an open-air resort pavilion's jungle canopy. A botanical wreath frames the couple's monogram on the cover, brass corner-tick framing dresses photos and cards like pavilion joinery, and a warm faux-marble texture marks the countdown and RSVP.",
+  "brief": "Outdoor garden-party wedding elevated to luxury resort territory — gold-veined botanical illustration rather than flat leaf shapes, brass pavilion framing, warm marble accents. Includes the full standard section set (Susunan Acara with icons, Dress Code, Hashtag & Instagram, quick-nav, auto-scroll, per-section background photos)."
 }
