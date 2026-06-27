@@ -113,7 +113,7 @@ h1, h2, h3 { font-family: "Fraunces", serif; font-weight: 600; color: var(--fore
 }
 .cover-frame { max-width: 380px; position: relative; z-index: 1; }
 .cover-eyebrow { letter-spacing: .3em; text-transform: uppercase; font-size: .66rem; color: var(--brass); }
-.cover-names { font-size: 2.6rem; margin: 18px 0 6px; font-style: italic; }
+.cover-names { font-size: 2.6rem; margin: 18px 0 6px; font-style: italic; color: var(--cream); text-shadow: 0 2px 14px rgba(0,0,0,.4); }
 .cover-names span { color: var(--brass); padding: 0 6px; font-style: normal; }
 .cover-to { font-size: .8rem; color: var(--cream); opacity: .75; margin-top: 18px; }
 .cover-guest { font-family: "Fraunces", serif; font-size: 1.05rem; margin-top: 6px; color: var(--cream); }
