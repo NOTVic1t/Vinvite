@@ -101,7 +101,10 @@ window.renderInvitation = function (data) {
 
   if (data.music_url) document.getElementById("bg-music").src = data.music_url;
 
-  window.initCoverGate("#cover-screen", "#open-invitation-btn");
+  // This theme uses a custom leaf-curtain reveal instead of the engine's
+  // default fade — see initCoverReveal() below. window.initCoverGate is
+  // intentionally NOT called here.
+  initCoverReveal();
   window.initMusicPlayer("#bg-music", "#music-toggle");
   window.initGalleryLightbox(".gallery-item img");
   // RSVP: kontrak data tetap 3 field (guest_name, attendance, guest_count).
@@ -129,7 +132,6 @@ window.renderInvitation = function (data) {
   window.initScrollProgress("#scroll-progress");
   window.initSocialProof("#social-proof", data._invitationId);
   window.applySectionControl(data);
-
   // Optional per-section background photos (admin-controlled, independent
   // of section content visibility).
   window.applySectionBackgrounds(data, {
@@ -152,6 +154,43 @@ window.renderInvitation = function (data) {
   initQuickNav();
   initAutoScroll();
 };
+
+// -----------------------------------------------------------------------------
+// COVER REVEAL — leaf-edged curtain parting, replacing the engine's plain
+// fade for this theme. Sequence: fade out the cover text, then make the
+// cover section itself transparent (the two .curtain panels carry the solid
+// color from here on) and slide them apart, then remove the cover entirely.
+// -----------------------------------------------------------------------------
+function initCoverReveal() {
+  const cover = document.getElementById("cover-screen");
+  const btn = document.getElementById("open-invitation-btn");
+  const frame = document.querySelector(".cover-frame");
+  if (!cover || !btn) return;
+
+  document.body.style.overflow = "hidden";
+  document.body.style.height = "100vh";
+
+  btn.addEventListener("click", () => {
+    frame.style.transition = "opacity .3s ease, transform .3s ease";
+    frame.style.opacity = "0";
+    frame.style.transform = "scale(.97)";
+
+    setTimeout(() => {
+      // From this point on the two .curtain divs (same color as the cover)
+      // are what's visually covering the page — the section itself goes
+      // transparent so parting them actually reveals the content behind.
+      cover.style.background = "transparent";
+      cover.classList.add("is-opening");
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+      if (typeof window.vinviteTryAutoplayMusic === "function") {
+        window.vinviteTryAutoplayMusic();
+      }
+    }, 300);
+
+    setTimeout(() => { cover.style.display = "none"; }, 300 + 1100);
+  }, { once: true });
+}
 
 // -----------------------------------------------------------------------------
 // QUICK NAV — floating bottom pill, highlights the section currently in view.

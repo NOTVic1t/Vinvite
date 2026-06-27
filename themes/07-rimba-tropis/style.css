@@ -48,7 +48,14 @@ h1, h2, h3 { font-family: "Fraunces", serif; font-weight: 600; color: var(--fore
    (medium, sharper, faster), front (small accent, sharpest — used
    sparingly via layer-back-2 on the cover only). Reuses the engine's
    existing initParallax via data-parallax / data-parallax-speed. */
-.canopy-leaf { position: absolute; z-index: -2; pointer-events: none; }
+.canopy-leaf { position: absolute; z-index: -2; pointer-events: none; animation: ambientSway 16s ease-in-out infinite alternate; }
+.layer-mid { animation-duration: 13s; }
+.layer-back-2 { animation-duration: 19s; animation-direction: alternate-reverse; }
+@keyframes ambientSway {
+  0%   { transform: translate(0,0) rotate(0deg); }
+  50%  { transform: translate(6px,-8px) rotate(2deg); }
+  100% { transform: translate(-5px,6px) rotate(-1.5deg); }
+}
 .canopy-leaf .leaf-instance { width: 100%; height: 100%; display: block; }
 .layer-back { width: 220px; height: 260px; top: -50px; left: -60px; opacity: .22; filter: blur(2px); }
 .layer-back-2 { width: 140px; height: 280px; top: -40px; right: -30px; left: auto; opacity: .18; filter: blur(2px); }
@@ -119,11 +126,70 @@ h1, h2, h3 { font-family: "Fraunces", serif; font-weight: 600; color: var(--fore
 .cover-guest { font-family: "Fraunces", serif; font-size: 1.05rem; margin-top: 6px; color: var(--cream); }
 .btn-open {
   margin-top: 34px; padding: 14px 38px; background: transparent;
-  border: 1px solid var(--brass); color: var(--brass);
+  border: 1px solid var(--brass); color: var(--brass); position: relative; overflow: hidden;
   font-family: "Work Sans"; letter-spacing: .18em; text-transform: uppercase; font-size: .7rem;
   cursor: pointer; transition: background .3s, color .3s;
 }
+.btn-open::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.5) 50%, transparent 60%);
+  transform: translateX(-150%); transition: transform .6s ease;
+}
+.btn-open:hover::before { transform: translateX(150%); }
 .btn-open:hover { background: var(--brass); color: var(--forest); }
+
+/* ---------- CURTAIN REVEAL (premium open animation) ----------
+   Two leaf-edged panels, same color as the cover, that part like double
+   doors when "Buka Undangan" is pressed — revealing the page behind
+   instead of a plain fade. Driven by initCoverReveal() in script.js,
+   which deliberately replaces the engine's default fade for this theme. */
+.curtain {
+  position: absolute; top: 0; bottom: 0; z-index: 5;
+  background: var(--forest); transition: transform 1.05s cubic-bezier(.76,0,.24,1);
+}
+.curtain-left { left: 0; width: 58%; clip-path: polygon(0% 0%, 100% 0%, 84% 8%, 100% 16%, 81% 24%, 100% 32%, 85% 40%, 100% 48%, 79% 56%, 100% 64%, 85% 72%, 100% 80%, 81% 88%, 100% 96%, 89% 100%, 0% 100%); border-right: 1px solid rgba(184,146,74,.5); }
+.curtain-right { right: 0; width: 58%; clip-path: polygon(100% 0%, 0% 0%, 16% 8%, 0% 16%, 19% 24%, 0% 32%, 15% 40%, 0% 48%, 21% 56%, 0% 64%, 15% 72%, 0% 80%, 19% 88%, 0% 96%, 11% 100%, 100% 100%); border-left: 1px solid rgba(184,146,74,.5); }
+.cover.is-opening .curtain-left { transform: translateX(-100%); }
+.cover.is-opening .curtain-right { transform: translateX(100%); }
+
+/* ---------- STAGGERED CASCADE ----------
+   Grouped items (cards, gallery tiles, rundown rows, dress swatches) reveal
+   one after another instead of popping in all at once. */
+.event-grid > .event-card,
+.gallery-grid > .gallery-item,
+.rundown-timeline > .rundown-item,
+.dress-code-colors > .dress-color-item {
+  opacity: 0; transform: translateY(14px);
+  transition: opacity .55s ease, transform .55s ease;
+}
+[data-reveal].is-visible .event-card,
+[data-reveal].is-visible .gallery-item,
+[data-reveal].is-visible .rundown-item,
+[data-reveal].is-visible .dress-color-item {
+  opacity: 1; transform: none;
+}
+.event-grid > .event-card:nth-child(2),
+.gallery-grid > .gallery-item:nth-child(2),
+.rundown-timeline > .rundown-item:nth-child(2),
+.dress-code-colors > .dress-color-item:nth-child(2) { transition-delay: .08s; }
+.event-grid > .event-card:nth-child(3),
+.gallery-grid > .gallery-item:nth-child(3),
+.rundown-timeline > .rundown-item:nth-child(3),
+.dress-code-colors > .dress-color-item:nth-child(3) { transition-delay: .16s; }
+.event-grid > .event-card:nth-child(4),
+.gallery-grid > .gallery-item:nth-child(4),
+.rundown-timeline > .rundown-item:nth-child(4),
+.dress-code-colors > .dress-color-item:nth-child(4) { transition-delay: .24s; }
+.event-grid > .event-card:nth-child(5),
+.gallery-grid > .gallery-item:nth-child(5),
+.rundown-timeline > .rundown-item:nth-child(5),
+.dress-code-colors > .dress-color-item:nth-child(5) { transition-delay: .32s; }
+.rundown-timeline > .rundown-item:nth-child(6) { transition-delay: .4s; }
+.rundown-timeline > .rundown-item:nth-child(n+7) { transition-delay: .48s; }
+
+/* ---------- COUNTDOWN — live tick pulse ---------- */
+#cd-s { display: inline-block; animation: tickPulse 1s ease-in-out infinite; }
+@keyframes tickPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
 
 /* ---------- SECTIONS ---------- */
 .section { max-width: 640px; margin: 0 auto; padding: 88px 28px; text-align: center; }
@@ -139,8 +205,9 @@ h1, h2, h3 { font-family: "Fraunces", serif; font-weight: 600; color: var(--fore
 /* ---------- COUPLE ---------- */
 .couple-grid { display: flex; align-items: flex-start; justify-content: center; gap: 34px; flex-wrap: wrap; margin-top: 10px; }
 .couple-card { max-width: 220px; }
-.couple-photo { width: 168px; height: 196px; margin: 0 auto 18px; padding: 7px; }
-.couple-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.couple-photo { width: 168px; height: 196px; margin: 0 auto 18px; padding: 7px; overflow: hidden; }
+.couple-photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
+.couple-photo:hover img { transform: scale(1.07); }
 .couple-card h3 { font-size: 1.5rem; margin-bottom: 8px; font-style: italic; }
 .couple-card p { font-size: .8rem; line-height: 1.55; color: var(--ink); opacity: .8; }
 .couple-amp { font-family: "Fraunces", serif; font-style: italic; font-size: 2rem; color: var(--brass); align-self: center; margin-top: 76px; }
@@ -154,7 +221,14 @@ h1, h2, h3 { font-family: "Fraunces", serif; font-weight: 600; color: var(--fore
 /* ---------- EVENTS ---------- */
 .event-grid { display: grid; gap: 20px; margin-top: 10px; }
 @media (min-width: 600px) { .event-grid { grid-template-columns: 1fr 1fr; } }
-.event-card { background: var(--cream); border: 1px solid var(--brass); padding: 30px 24px; position: relative; box-shadow: 0 10px 24px rgba(38,40,31,.10); }
+.event-card { background: var(--cream); border: 1px solid var(--brass); padding: 30px 24px; position: relative; overflow: hidden; box-shadow: 0 10px 24px rgba(38,40,31,.10); transition: transform .35s ease, box-shadow .35s ease; }
+.event-card::before, .gift-account::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.45) 50%, transparent 60%);
+  transform: translateX(-150%); transition: transform .7s ease;
+}
+.event-card:hover { transform: translateY(-5px); box-shadow: 0 16px 32px rgba(38,40,31,.16); }
+.event-card:hover::before, .gift-account:hover::before { transform: translateX(150%); }
 .event-card h3, .event-name { font-style: italic; font-size: 1.3rem; margin-bottom: 10px; }
 .event-divider { width: 30px; height: 2px; background: var(--brass); margin: 0 auto 14px; }
 .event-card p, .event-date, .event-time, .event-venue { font-size: .84rem; margin-bottom: 4px; color: var(--ink); }
@@ -195,7 +269,8 @@ h1, h2, h3 { font-family: "Fraunces", serif; font-weight: 600; color: var(--fore
 /* ---------- GIFT ---------- */
 .gift-intro { font-size: .84rem; color: var(--ink); opacity: .8; line-height: 1.65; margin-bottom: 22px; }
 .gift-accounts { display: flex; flex-direction: column; gap: 12px; }
-.gift-account { background: var(--cream); border: 1px solid var(--brass); padding: 16px 20px; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.gift-account { background: var(--cream); border: 1px solid var(--brass); padding: 16px 20px; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 12px; position: relative; overflow: hidden; transition: transform .3s ease, box-shadow .3s ease; }
+.gift-account:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(38,40,31,.14); }
 .gift-account-info p:first-child { font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--brass); margin-bottom: 4px; }
 .gift-account-info p:last-child { font-size: .76rem; color: var(--ink); opacity: .75; }
 .gift-account-info strong { font-family: "Fraunces", serif; font-style: italic; font-size: 1.15rem; display: block; color: var(--forest); }
@@ -298,8 +373,12 @@ h1, h2, h3 { font-family: "Fraunces", serif; font-weight: 600; color: var(--fore
 
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .event-card, .gift-account, .gallery-item, .rundown-item, .dress-color-item { opacity: 1 !important; transform: none !important; transition: none !important; }
   .frond-divider { opacity: 1; transform: none; transition: none; }
   .gallery-item img { transition: none; }
   .music-toggle.is-playing { animation: none; }
   #autoscroll-toggle.is-active svg { animation: none; }
+  .canopy-leaf { animation: none; }
+  #cd-s { animation: none; }
+  .curtain { transition: none; }
 }
