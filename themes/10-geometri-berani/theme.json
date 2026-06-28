@@ -1,10 +1,10 @@
 {
   "slug": "10-geometri-berani",
   "name": "Geometri Berani",
-  "category": "Modern Bold Geometric",
-  "status": "planned",
+  "category": "Bold Editorial Geometric",
+  "status": "built",
   "palette": { "navy": "#1B2A4A", "coral": "#E8593B", "mustard": "#E8B339", "cream": "#F7F4EC", "ink": "#16151A" },
   "type": { "display": "Space Grotesk", "body": "Inter" },
-  "signature": "An asymmetric grid of hard-edged color blocks behind the couple's initials, shifting layout per section instead of a repeating centered column.",
-  "brief": "For couples who explicitly do not want anything floral or ceremonial — bold contrasting color blocking, confident asymmetric layout, editorial energy."
+  "signature": "Solid color blocks slide sharply away to unveil each section (no soft fade), oversized bleeding type anchors the hero like a magazine spread, hard-edge geometric shapes (squares, triangles, rings) parallax behind every section with deliberate rather than ambient motion, and slanted color bars replace straight rule lines between sections.",
+  "brief": "For couples who explicitly do not want anything floral or ceremonial — bold contrasting color blocking, confident asymmetric energy, editorial rather than ornamental. Includes the full standard section set (Susunan Acara with icons, Dress Code, Hashtag & Instagram, quick-nav, auto-scroll, per-section background photos)."
 }
