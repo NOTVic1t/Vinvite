@@ -1,0 +1,353 @@
+/* =============================================================================
+   VINVITE — THEME 09: KAMAR VINTAGE (1920s Film Title Card Premium)
+   Old-world romantic vintage elevated to cinematic art-deco luxury — sepia
+   grain/vignette over everything, a shimmering art-deco sunburst hero,
+   tilted taped polaroid couple photos, a film-projector flicker on open,
+   ornate brass corner frames, and a maximized 3-layer parallax + lively
+   ambient floating field of vintage ephemera (film reels, sunburst fans,
+   pocket watches) across every section.
+   Palette: sepia #E8DCC4 / dusty_rose #B98C8C / ink #3B342B / brass #A88B4A / cream #F5EEDD
+============================================================================= */
+
+:root {
+  --sepia: #E8DCC4;
+  --dusty-rose: #B98C8C;
+  --ink: #3B342B;
+  --brass: #A88B4A;
+  --cream: #F5EEDD;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--sepia);
+  color: var(--ink);
+  font-family: "Vollkorn", serif;
+  font-weight: 400;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 { font-family: "Abril Fatface", serif; font-weight: 400; color: var(--ink); }
+
+.eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--brass);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* ---------- SEPIA GRAIN + VIGNETTE (signature #1) ----------
+   Fixed, full-page, pointer-events:none — a faint photographic grain plus
+   a darkened-edge vignette, like light falling on an aged print. */
+.grain-overlay {
+  position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: .12; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+.vignette-overlay {
+  position: fixed; inset: 0; z-index: 59; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(59,52,43,.28) 100%);
+}
+
+/* ---------- BRASS RULE (universal divider) ---------- */
+.brass-rule { width: 70px; height: 2px; margin: 0 auto 22px; background: var(--brass); opacity: 0; transform: scaleX(.3); transition: opacity .7s ease, transform .7s cubic-bezier(.16,.84,.32,1); position: relative; }
+.brass-rule.is-visible { opacity: 1; transform: scaleX(1); }
+.brass-rule::before, .brass-rule::after { content: "◆"; position: absolute; top: 50%; transform: translateY(-50%); font-size: .5rem; color: var(--brass); }
+.brass-rule::before { left: -14px; }
+.brass-rule::after { right: -14px; }
+
+/* ---------- ORNATE BRASS CORNERS (signature #5) ----------
+   Applied via ::before/::after directly on the card itself (top-left +
+   bottom-right corners), so it works even though the card's *inner*
+   content is generated dynamically by the engine — no extra markup needed. */
+.event-card, .gift-account { position: relative; }
+.event-card::before, .event-card::after,
+.gift-account::before, .gift-account::after {
+  content: ""; position: absolute; width: 20px; height: 20px; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cg fill='none' stroke='%23A88B4A' stroke-width='1.2' opacity='0.85'%3E%3Cpath d='M0 0 L20 0 M0 0 L0 20'/%3E%3Cpath d='M3 0 L3 3 L0 3'/%3E%3Cpath d='M0 6 Q6 6 6 0'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+}
+.event-card::before, .gift-account::before { top: 4px; left: 4px; }
+.event-card::after, .gift-account::after { bottom: 4px; right: 4px; transform: scale(-1,-1); }
+
+/* ---------- ART-DECO SUNBURST + SHIMMER (signature #2) ---------- */
+.sunburst-wrap { position: relative; width: 110px; height: 110px; margin: 0 auto 18px; }
+.sunburst-fan { width: 100%; height: 100%; }
+.fan-rays path { fill: var(--brass); opacity: .85; }
+.fan-center { fill: var(--cream); stroke: var(--brass); stroke-width: 1.2; }
+.shine-sweep {
+  position: absolute; inset: 0; border-radius: 50%; overflow: hidden; pointer-events: none;
+}
+.shine-sweep::before {
+  content: ""; position: absolute; top: -20%; left: -120%; width: 60%; height: 140%;
+  background: linear-gradient(100deg, transparent, rgba(255,250,230,.85), transparent);
+  transform: skewX(-18deg);
+}
+.sunburst-wrap.is-visible .shine-sweep::before { animation: sunburstShine 2.4s ease-in-out .3s; }
+@keyframes sunburstShine { to { left: 160%; } }
+
+/* ---------- POLAROID + TAPE (signature #3) ---------- */
+.polaroid {
+  background: var(--cream); padding: 12px 12px 26px; box-shadow: 0 14px 28px rgba(59,52,43,.28);
+  display: inline-block; position: relative; transition: transform .35s ease;
+}
+.tilt-left { transform: rotate(-4deg); }
+.tilt-right { transform: rotate(3deg); }
+.polaroid:hover { transform: rotate(0deg) scale(1.03); }
+.tape { position: absolute; width: 38px; height: 16px; background: rgba(245,238,221,.55); border: 1px solid rgba(168,139,74,.4); top: -8px; opacity: .9; }
+.tape-l { left: 6px; transform: rotate(-30deg); }
+.tape-r { right: 6px; transform: rotate(28deg); }
+.couple-photo { width: 150px; height: 170px; overflow: hidden; filter: sepia(.35) contrast(1.02); }
+.couple-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---------- COVER ---------- */
+.cover {
+  position: fixed; inset: 0; z-index: 50; overflow: hidden;
+  background: var(--ink);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; color: var(--sepia); padding: 32px;
+  touch-action: none;
+}
+.cover-frame { max-width: 380px; position: relative; z-index: 1; }
+.cover-eyebrow { letter-spacing: .3em; text-transform: uppercase; font-size: .64rem; color: var(--brass); }
+.cover-names { font-family: "Abril Fatface", serif; font-size: 2.5rem; margin: 18px 0 6px; color: var(--cream); }
+.cover-names span { color: var(--brass); padding: 0 8px; }
+.cover-to { font-size: .8rem; color: var(--sepia); opacity: .75; margin-top: 18px; }
+.cover-guest { font-family: "Abril Fatface", serif; font-size: 1.1rem; margin-top: 6px; color: var(--cream); }
+.btn-open {
+  margin-top: 34px; padding: 14px 38px; background: transparent;
+  border: 1px solid var(--brass); color: var(--brass);
+  font-family: "Vollkorn"; letter-spacing: .16em; text-transform: uppercase; font-size: .7rem;
+  cursor: pointer; transition: background .3s, color .3s;
+}
+.btn-open:hover { background: var(--brass); color: var(--ink); }
+
+/* ---------- FILM-PROJECTOR FLICKER (signature #4) ----------
+   Replaces the engine's plain fade for this theme. A rapid multi-step
+   opacity/brightness flicker plus a slight vertical "film jump" before the
+   cover clears — see initFilmFlicker() in script.js. */
+.flicker-mask { position: absolute; inset: 0; background: var(--ink); z-index: 10; opacity: 0; pointer-events: none; }
+.cover.is-flickering .flicker-mask { animation: filmFlicker 1.1s steps(1) forwards; }
+.cover.is-flickering .cover-frame { animation: filmJump 1.1s steps(1) forwards; }
+@keyframes filmFlicker {
+  0%   { opacity: 0; }
+  8%   { opacity: .8; } 14% { opacity: .1; } 20% { opacity: .7; } 27% { opacity: 0; }
+  34%  { opacity: .55; } 40% { opacity: .05; } 50% { opacity: .4; }
+  62%  { opacity: 0; } 74% { opacity: .25; } 100% { opacity: 1; }
+}
+@keyframes filmJump {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  10% { transform: translateY(-3px); } 22% { transform: translateY(2px); }
+  45% { transform: translateY(-1px); opacity: .5; } 70% { opacity: 0; }
+}
+
+/* ---------- FULL-PAGE PARALLAX + LIVELY FLOATING (maximized) ----------
+   Three depth layers per section (back/mid/front), each independently
+   scroll-parallaxed by the engine's window.initParallax() AND continuously
+   floating via CSS on an inner wrapper (separate element, so the two
+   transform sources never fight each other). */
+.parallax-layer { position: absolute; z-index: -2; pointer-events: none; }
+.parallax-layer svg { width: 100%; height: 100%; display: block; }
+.layer-back { width: 84px; height: 84px; top: -24px; left: -22px; opacity: .14; }
+.layer-mid { width: 56px; height: 66px; top: 38%; right: -18px; opacity: .22; }
+.layer-front { width: 46px; height: 54px; bottom: -16px; left: 10%; opacity: .3; }
+
+.parallax-float { width: 100%; height: 100%; }
+.float-slow { animation: vintageFloat 12s ease-in-out infinite alternate; }
+.float-med { animation: vintageFloat 8s ease-in-out infinite alternate-reverse; }
+.float-fast { animation: vintageFloat 6s ease-in-out infinite alternate; }
+@keyframes vintageFloat {
+  0%   { transform: translate(0,0) rotate(0deg); }
+  50%  { transform: translate(6px,-12px) rotate(5deg); }
+  100% { transform: translate(-6px,8px) rotate(-4deg); }
+}
+
+.reel-rim { fill: none; stroke: var(--ink); stroke-width: 2; }
+.reel-hub, .reel-hole { fill: var(--brass); }
+.fan-rays path { fill: var(--brass); }
+.watch-face { fill: var(--cream); stroke: var(--ink); stroke-width: 1.6; }
+.watch-mark, .watch-hand-h, .watch-hand-m, .watch-stem { stroke: var(--ink); stroke-width: 1.4; }
+.watch-crown, .watch-dot { fill: var(--brass); }
+
+/* ---------- SECTIONS ---------- */
+.section { max-width: 640px; margin: 0 auto; padding: 88px 28px; text-align: center; position: relative; overflow: hidden; }
+
+/* ---------- HERO ---------- */
+.hero-names { font-size: 2.8rem; margin: 6px 0 4px; }
+.hero-date { letter-spacing: .12em; color: var(--dusty-rose); font-size: .9rem; text-transform: uppercase; }
+
+/* ---------- QUOTE ---------- */
+.quote-text { font-family: "Vollkorn", serif; font-style: italic; font-size: 1.22rem; line-height: 1.7; color: var(--ink); }
+.quote-source { margin-top: 14px; font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--brass); }
+
+/* ---------- COUPLE ---------- */
+.couple-grid { display: flex; align-items: flex-start; justify-content: center; gap: 36px; flex-wrap: wrap; margin-top: 10px; }
+.couple-card { max-width: 220px; }
+.couple-card h3 { font-size: 1.4rem; margin: 14px 0 6px; }
+.couple-card p { font-size: .8rem; line-height: 1.55; color: var(--ink); opacity: .8; }
+.couple-amp { font-family: "Abril Fatface", serif; font-size: 1.8rem; color: var(--dusty-rose); align-self: center; margin-top: 80px; }
+
+/* ---------- COUNTDOWN ---------- */
+.countdown { display: flex; justify-content: center; gap: 18px; margin-top: 22px; flex-wrap: wrap; position: relative; z-index: 1; }
+.cd-item { display: flex; flex-direction: column; align-items: center; min-width: 64px; padding: 12px 6px; background: var(--cream); border: 1px solid var(--brass); }
+.cd-item span { font-family: "Abril Fatface", serif; font-size: 1.9rem; color: var(--ink); }
+.cd-item label { font-size: .62rem; letter-spacing: .16em; text-transform: uppercase; margin-top: 4px; color: var(--brass); }
+
+/* ---------- EVENTS ---------- */
+.event-grid { display: grid; gap: 20px; margin-top: 10px; position: relative; z-index: 1; }
+@media (min-width: 600px) { .event-grid { grid-template-columns: 1fr 1fr; } }
+.event-card { background: var(--cream); padding: 30px 24px; box-shadow: 0 10px 24px rgba(59,52,43,.14); }
+.event-card h3, .event-name { font-size: 1.25rem; margin-bottom: 10px; }
+.event-divider { width: 30px; height: 2px; background: var(--brass); margin: 0 auto 14px; }
+.event-card p, .event-date, .event-time, .event-venue { font-size: .84rem; margin-bottom: 4px; color: var(--ink); }
+.event-address { color: var(--dusty-rose) !important; font-size: .76rem !important; }
+.btn-maps { display: inline-block; margin-top: 14px; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--brass); padding-bottom: 3px; }
+
+/* ---------- MAP EMBED ---------- */
+.map-embed { margin-top: 14px; overflow: hidden; border: 1px solid var(--brass); position: relative; z-index: 1; }
+.map-embed iframe { width: 100%; height: 160px; border: 0; display: block; filter: sepia(.4); }
+
+/* ---------- SUSUNAN ACARA (rundown) — icon-based markup from engine ---------- */
+.rundown-timeline { margin-top: 8px; text-align: left; display: flex; flex-direction: column; gap: 2px; position: relative; z-index: 1; }
+.rundown-item { display: grid; grid-template-columns: 62px 42px 1fr; gap: 14px; align-items: flex-start; padding: 8px 0; }
+.rundown-left { padding-top: 8px; }
+.rundown-time { font-size: .76rem; color: var(--dusty-rose); white-space: nowrap; font-weight: 600; }
+.rundown-center { display: flex; flex-direction: column; align-items: center; }
+.rundown-icon { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; background: var(--cream); border: 1px solid var(--brass); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+.rundown-line { flex: 1; width: 1px; background: var(--brass); opacity: .5; margin: 4px 0; min-height: 22px; }
+.rundown-line.last { display: none; }
+.rundown-right { padding-top: 3px; padding-bottom: 16px; }
+.rundown-title { font-family: "Abril Fatface", serif; font-size: 1.05rem; margin-bottom: 4px; color: var(--ink); }
+.rundown-desc { font-size: .82rem; color: var(--ink); opacity: .8; line-height: 1.55; }
+
+/* ---------- STORY ---------- */
+.story-timeline { text-align: left; margin-top: 10px; border-left: 1px solid var(--brass); padding-left: 26px; display: flex; flex-direction: column; gap: 28px; position: relative; z-index: 1; }
+.story-item { position: relative; }
+.story-item::before { content: "◆"; font-size: .5rem; color: var(--brass); position: absolute; margin-left: -30px; margin-top: 8px; }
+.story-date { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--brass); }
+.story-title { font-family: "Abril Fatface", serif; font-size: 1.15rem; margin: 5px 0 6px; }
+.story-text { font-size: .84rem; color: var(--ink); opacity: .85; line-height: 1.6; }
+
+/* ---------- GALLERY ---------- */
+.gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 10px; position: relative; z-index: 1; }
+.gallery-item { aspect-ratio: 1; overflow: hidden; filter: sepia(.3); }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+.gallery-item img:hover { transform: scale(1.06); }
+
+/* ---------- GIFT ---------- */
+.gift-intro { font-size: .84rem; color: var(--ink); opacity: .8; line-height: 1.65; margin-bottom: 22px; position: relative; z-index: 1; }
+.gift-accounts { display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 1; }
+.gift-account { background: var(--cream); padding: 16px 20px; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 12px; border: 1px solid var(--brass); }
+.gift-account-info p:first-child { font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--brass); margin-bottom: 4px; }
+.gift-account-info p:last-child { font-size: .76rem; color: var(--ink); opacity: .75; }
+.gift-account-info strong { font-family: "Abril Fatface", serif; font-size: 1.1rem; display: block; color: var(--ink); }
+.btn-copy { border: 1px solid var(--ink); background: none; color: var(--ink); padding: 7px 14px; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; white-space: nowrap; }
+.btn-copy:hover { background: var(--ink); color: var(--cream); }
+
+/* ---------- DRESS CODE ---------- */
+.dress-code-label { font-family: "Abril Fatface", serif; font-size: 1.1rem; color: var(--ink); margin-bottom: 16px; position: relative; z-index: 1; }
+.dress-code-colors { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; position: relative; z-index: 1; }
+.dress-color-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.dress-color-swatch { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--brass); box-shadow: 0 4px 10px rgba(59,52,43,.18); }
+.dress-color-name { font-size: .66rem; color: var(--ink); opacity: .75; }
+
+/* ---------- HASHTAG & INSTAGRAM ---------- */
+#hashtag-container { display: flex; flex-direction: column; gap: 12px; align-items: center; position: relative; z-index: 1; }
+.hashtag-item { display: flex; align-items: center; gap: 10px; background: var(--cream); border: 1px solid var(--brass); padding: 10px 20px; }
+.hashtag-icon { font-size: 1rem; }
+.hashtag-text { font-family: "Abril Fatface", serif; font-size: .95rem; color: var(--ink); }
+.btn-copy-hashtag { border: none; background: var(--brass); color: var(--cream); padding: 6px 14px; font-size: .66rem; font-weight: 700; cursor: pointer; }
+.btn-copy-hashtag:hover { opacity: .85; }
+
+/* ---------- FORMS (RSVP + Guestbook) ---------- */
+.form { display: flex; flex-direction: column; gap: 12px; margin-top: 22px; text-align: left; position: relative; z-index: 1; }
+.form input, .form select, .form textarea {
+  font-family: "Vollkorn"; font-size: .88rem; padding: 12px 14px;
+  border: 1px solid var(--brass); background: rgba(255,255,255,.4); color: var(--ink); width: 100%;
+}
+.form input:focus, .form select:focus, .form textarea:focus { outline: 1px solid var(--ink); outline-offset: 1px; }
+.btn-submit { background: var(--ink); color: var(--cream); border: none; padding: 13px; font-size: .73rem; letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+.btn-submit:hover { background: #251f17; }
+.form-success { margin-top: 16px; color: var(--ink); font-size: .85rem; }
+
+/* ---------- SOCIAL PROOF ---------- */
+.social-proof { display: inline-block; margin: 0 auto 18px; padding: 7px 18px; border: 1px solid var(--brass); color: var(--ink); font-size: .76rem; position: relative; z-index: 1; }
+
+/* ---------- WISHES ---------- */
+.wishes-list { margin-top: 26px; display: flex; flex-direction: column; gap: 14px; text-align: left; max-height: 360px; overflow-y: auto; position: relative; z-index: 1; }
+.wish-item { border-bottom: 1px solid rgba(168,139,74,.4); padding-bottom: 12px; }
+.wish-name { font-family: "Abril Fatface", serif; font-size: .98rem; color: var(--ink); }
+.wish-message { font-size: .82rem; color: var(--ink); opacity: .85; margin-top: 3px; line-height: 1.5; }
+.vinvite-empty { font-size: .82rem; color: var(--ink); opacity: .6; }
+
+/* ---------- FOOTER ---------- */
+.footer { padding-bottom: 110px; }
+.closing-text { font-size: .85rem; color: var(--ink); opacity: .8; line-height: 1.75; max-width: 420px; margin: 0 auto; position: relative; z-index: 1; }
+.closing-names { font-family: "Abril Fatface", serif; font-size: 1.9rem; margin-top: 20px; color: var(--ink); position: relative; z-index: 1; }
+.credit { margin-top: 38px; font-size: .66rem; letter-spacing: .06em; color: var(--ink); opacity: .6; position: relative; z-index: 1; }
+
+/* ---------- SECTION BACKGROUND PHOTO (optional, admin-controlled) ---------- */
+.section-bg-photo {
+  position: absolute; inset: 0; z-index: -1;
+  background-size: cover; background-position: center; filter: sepia(.4);
+  opacity: 0; transition: opacity 1.4s ease;
+}
+.section-bg-photo::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(rgba(232,220,196,.86), rgba(232,220,196,.93));
+}
+.section-bg-photo.is-visible { opacity: 1; }
+
+/* ---------- QUICK NAV ---------- */
+.quicknav {
+  position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 45;
+  display: flex; gap: 6px; padding: 8px; background: var(--ink);
+  border: 1px solid var(--brass); border-radius: 999px; box-shadow: 0 8px 24px rgba(0,0,0,.25);
+}
+.quicknav-link { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: rgba(245,238,221,.55); transition: color .25s, background .25s; }
+.quicknav-link svg { width: 17px; height: 17px; }
+.quicknav-link.is-active { color: var(--ink); background: var(--brass); }
+
+/* ---------- FLOATING CONTROLS ---------- */
+.floating-controls { position: fixed; right: 18px; bottom: 18px; z-index: 46; display: flex; flex-direction: column; gap: 10px; }
+.control-btn { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--brass); background: var(--ink); color: var(--brass); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.control-btn svg { width: 18px; height: 18px; }
+.music-toggle.is-playing { animation: spin 4s linear infinite; }
+#autoscroll-toggle.is-active { background: var(--brass); color: var(--ink); }
+#autoscroll-toggle.is-active svg { animation: nudge 1.1s ease-in-out infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(2px); } }
+
+/* ---------- SCROLL REVEAL ---------- */
+[data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
+[data-reveal].is-visible { opacity: 1; transform: none; }
+
+/* ---------- PARALLAX (couple photos) ---------- */
+[data-parallax] { will-change: transform; }
+
+/* ---------- SCROLL PROGRESS ---------- */
+.scroll-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--brass); z-index: 70; transition: width .1s linear; }
+
+@media (max-width: 480px) {
+  .cover-names { font-size: 2.1rem; }
+  .hero-names { font-size: 2.2rem; }
+  .couple-grid { gap: 18px; }
+  .couple-amp { margin-top: 64px; }
+  .quicknav { gap: 2px; }
+  .polaroid { padding: 8px 8px 20px; }
+  .couple-photo { width: 120px; height: 136px; }
+  .sunburst-wrap { width: 90px; height: 90px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .brass-rule { opacity: 1; transform: none; transition: none; }
+  .gallery-item img { transition: none; }
+  .music-toggle.is-playing { animation: none; }
+  #autoscroll-toggle.is-active svg { animation: none; }
+  .parallax-float { animation: none; }
+  .shine-sweep::before { animation: none; opacity: 0; }
+  .cover.is-flickering .flicker-mask,
+  .cover.is-flickering .cover-frame { animation: none; opacity: 1; transform: none; }
+}
