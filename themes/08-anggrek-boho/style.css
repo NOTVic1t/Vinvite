@@ -88,7 +88,20 @@ h1, h2, h3 { font-family: "Italiana", serif; font-weight: 400; color: var(--rust
 .btn-open:hover { background: var(--mustard); color: var(--ink); }
 
 /* ---------- SECTIONS ---------- */
-.section { max-width: 640px; margin: 0 auto; padding: 88px 28px; text-align: center; position: relative; }
+.section { max-width: 640px; margin: 0 auto; padding: 88px 28px; text-align: center; position: relative; overflow: hidden; }
+
+/* ---------- FULL-PAGE PARALLAX (dried botanical, signature) ----------
+   Two depth layers per section: back (large, faint, slow) and mid
+   (smaller, more visible, faster) — driven entirely by the engine's
+   existing window.initParallax() via data-parallax / data-parallax-speed,
+   no new script needed. */
+.parallax-layer { position: absolute; z-index: -2; pointer-events: none; }
+.parallax-layer svg { width: 100%; height: 100%; display: block; }
+.layer-back { width: 90px; height: 200px; top: -30px; left: -28px; opacity: .16; }
+.layer-mid { width: 64px; height: 150px; bottom: -20px; right: -22px; opacity: .26; }
+.parallax-fill { fill: var(--terracotta); }
+.parallax-wisp path, .parallax-stem { stroke: var(--rust); stroke-width: 1.2; fill: none; opacity: .7; }
+.parallax-grain ellipse { fill: var(--mustard); opacity: .85; }
 
 /* ---------- HERO ---------- */
 .hero-names { font-size: 3rem; margin: 6px 0 4px; }
