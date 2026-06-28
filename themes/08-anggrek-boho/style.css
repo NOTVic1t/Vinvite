@@ -99,6 +99,20 @@ h1, h2, h3 { font-family: "Italiana", serif; font-weight: 400; color: var(--rust
 .parallax-layer svg { width: 100%; height: 100%; display: block; }
 .layer-back { width: 90px; height: 200px; top: -30px; left: -28px; opacity: .16; }
 .layer-mid { width: 64px; height: 150px; bottom: -20px; right: -22px; opacity: .26; }
+
+/* Ambient floating — on an INNER wrapper, separate from the outer
+   .parallax-layer (which the engine's initParallax sets transform on via
+   JS during scroll). Two different elements animating `transform` each,
+   composing naturally instead of fighting over the same property. */
+.parallax-float { width: 100%; height: 100%; }
+.float-slow { animation: botanicalFloat 13s ease-in-out infinite alternate; }
+.float-fast { animation: botanicalFloat 9s ease-in-out infinite alternate-reverse; }
+@keyframes botanicalFloat {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  50%  { transform: translate(4px, -10px) rotate(2deg); }
+  100% { transform: translate(-4px, 6px) rotate(-1.5deg); }
+}
+
 .parallax-fill { fill: var(--terracotta); }
 .parallax-wisp path, .parallax-stem { stroke: var(--rust); stroke-width: 1.2; fill: none; opacity: .7; }
 .parallax-grain ellipse { fill: var(--mustard); opacity: .85; }
@@ -278,4 +292,5 @@ h1, h2, h3 { font-family: "Italiana", serif; font-weight: 400; color: var(--rust
   .rope { stroke-dashoffset: 0; transition: none; }
   .rope-shadow { opacity: .6; animation: none; }
   .tassel { opacity: 1; animation: none; transition: none; }
+  .parallax-float { animation: none; }
 }
