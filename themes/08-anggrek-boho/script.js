@@ -1,123 +1,23 @@
 // =============================================================================
 // VINVITE — THEME 08: ANGGREK BOHO — render logic
+//
+// Structure note: all UI/animation wiring runs FIRST, before any
+// data-dependent content rendering. Each content-rendering block below is
+// wrapped in try/catch so a problem with one piece of data (e.g. a missing
+// or oddly-shaped field) can't silently stop everything that comes after it
+// — which is what made the cover-open animation and every other animation
+// disappear together previously: one earlier render call threw, and every
+// line after it (including initCoverGate, sunburst rays, the macrame
+// observer, quicknav, autoscroll) never ran at all.
 // =============================================================================
 
 window.renderInvitation = function (data) {
-  document.getElementById("cover-guest-name").textContent = data.guest_name || "Bapak/Ibu Tamu Undangan";
-
-  const groomShort = data.groom_nickname || data.groom_name;
-  const brideShort = data.bride_nickname || data.bride_name;
-  const shortNames = `${groomShort} & ${brideShort}`;
-
-  document.querySelector(".cover-names").innerHTML = `${groomShort} <span>&amp;</span> ${brideShort}`;
-  document.getElementById("hero-names").innerHTML = `${groomShort} &amp; ${brideShort}`;
-  document.title = `Undangan Pernikahan ${shortNames}`;
-
-  // Cover background photo (optional) — dip-dye wash layers on top of it so
-  // a photo and the gradient accent can coexist.
-  if (data.cover_image_url) {
-    const cover = document.getElementById("cover-screen");
-    if (cover) {
-      cover.style.backgroundImage = `linear-gradient(rgba(51,39,32,.55), rgba(51,39,32,.75)), url('${data.cover_image_url}')`;
-      cover.style.backgroundSize = "cover";
-      cover.style.backgroundPosition = "center";
-    }
-  }
-
-  const events = Array.isArray(data.events) ? data.events : JSON.parse(data.events || "[]");
-  const firstEvent = events[0];
-  const heroDateStr = firstEvent ? firstEvent.date : (data.resepsi_date || data.akad_date);
-  if (heroDateStr) {
-    const d = new Date(heroDateStr);
-    if (!isNaN(d)) document.getElementById("hero-date").textContent =
-      d.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
-  }
-
-  document.getElementById("groom-name").textContent = data.groom_name;
-  document.getElementById("groom-parents").textContent = data.groom_parents || "";
-  document.getElementById("bride-name").textContent = data.bride_name;
-  document.getElementById("bride-parents").textContent = data.bride_parents || "";
-  document.querySelector(".closing-names").innerHTML = `${groomShort} &amp; ${brideShort}`;
-
-  const groomImg = document.getElementById("groom-photo");
-  const brideImg = document.getElementById("bride-photo");
-  if (groomImg && data.groom_photo_url) groomImg.src = data.groom_photo_url;
-  if (brideImg && data.bride_photo_url) brideImg.src = data.bride_photo_url;
-
-  const qt = document.getElementById("quote-text");
-  const qs = document.getElementById("quote-source");
-  if (qt && data.quote_text) qt.innerHTML = `&ldquo;${data.quote_text}&rdquo;`;
-  if (qs && data.quote_source) qs.textContent = data.quote_source;
-
-  window.renderEvents(data, "#events-container");
-  window.renderRundown(data, "#rundown-container");
-  window.renderDressCode(data, "#dress-code-container");
-  window.renderHashtag(data, "#hashtag-container");
-
-  if (firstEvent && firstEvent.date) {
-    window.startCountdown(`${firstEvent.date}T${firstEvent.time_start || "00:00"}:00`,
-      { d: "#cd-d", h: "#cd-h", m: "#cd-m", s: "#cd-s" });
-  } else if (data.resepsi_date || data.akad_date) {
-    window.startCountdown(`${data.resepsi_date || data.akad_date}T00:00:00`,
-      { d: "#cd-d", h: "#cd-h", m: "#cd-m", s: "#cd-s" });
-  }
-
-  const story = Array.isArray(data.love_story) ? data.love_story : JSON.parse(data.love_story || "[]");
-  document.getElementById("story-timeline").innerHTML = story.map(s => `
-    <div class="story-item">
-      <p class="story-date">${s.date || ""}</p>
-      <h3 class="story-title">${s.title || ""}</h3>
-      <p class="story-text">${s.text || ""}</p>
-    </div>
-  `).join("");
-
-  const gallery = Array.isArray(data.gallery) ? data.gallery : JSON.parse(data.gallery || "[]");
-  document.getElementById("gallery-grid").innerHTML = gallery.map(url => `
-    <div class="gallery-item"><img src="${url}" loading="lazy" alt="" /></div>
-  `).join("");
-
-  const accounts = Array.isArray(data.gift_accounts) ? data.gift_accounts : JSON.parse(data.gift_accounts || "[]");
-  document.getElementById("gift-accounts").innerHTML = accounts.map(a => `
-    <div class="gift-account">
-      <div class="gift-account-info">
-        <p>${a.type || ""}${a.bank_name ? " · " + a.bank_name : ""}</p>
-        <strong>${a.account_number || ""}</strong>
-        <p>a.n. ${a.account_holder || ""}</p>
-      </div>
-      <button class="btn-copy" data-copy="${a.account_number || ""}">Salin</button>
-    </div>
-  `).join("");
-  document.querySelectorAll(".btn-copy").forEach(btn => {
-    btn.addEventListener("click", () => {
-      navigator.clipboard.writeText(btn.dataset.copy);
-      btn.textContent = "Tersalin!";
-      setTimeout(() => (btn.textContent = "Salin"), 1500);
-    });
-  });
-
-  if (data.music_url) document.getElementById("bg-music").src = data.music_url;
-
+  // ---------------------------------------------------------------------
+  // 1) UI / ANIMATION WIRING — must always run, regardless of data shape.
+  // ---------------------------------------------------------------------
   window.initCoverGate("#cover-screen", "#open-invitation-btn");
-  window.initMusicPlayer("#bg-music", "#music-toggle");
-  window.initGalleryLightbox(".gallery-item img");
-  // RSVP: kontrak data tetap 3 field (guest_name, attendance, guest_count).
-  window.bindRsvpForm("#rsvp-form", data._invitationId);
-  window.onRsvpSuccess = () => { document.getElementById("rsvp-success").hidden = false; };
-  window.initGuestbook({
-    formSelector: "#guestbook-form",
-    listSelector: "#guestbook-list",
-    invitationId: data._invitationId,
-    itemTemplate: (e) => `
-      <div class="wish-item">
-        <p class="wish-name">${e.name}</p>
-        <p class="wish-message">${e.message}</p>
-      </div>`
-  });
-
   buildSunburstRays();
 
-  // Macrame dividers knot themselves in (stroke-dasharray draw) once their
-  // section scrolls into view.
   const io = new IntersectionObserver((entries) => {
     entries.forEach(en => { if (en.isIntersecting) en.target.classList.add("is-visible"); });
   }, { threshold: 0.35 });
@@ -126,30 +26,165 @@ window.renderInvitation = function (data) {
   window.initScrollReveal();
   window.initParallax();
   window.initScrollProgress("#scroll-progress");
-  window.initSocialProof("#social-proof", data._invitationId);
-  window.applySectionControl(data);
-
-  // Optional per-section background photos (admin-controlled, independent
-  // of section content visibility).
-  window.applySectionBackgrounds(data, {
-    hero: "#section-hero",
-    quote: '[data-section="quote"]',
-    couple: "#section-couple",
-    countdown: "#section-countdown",
-    events: "#section-acara",
-    rundown: '[data-section="rundown"]',
-    story: '[data-section="story"]',
-    gallery: "#section-galeri",
-    gift: '[data-section="gift"]',
-    dress_code: '[data-section="dress_code"]',
-    hashtag: '[data-section="hashtag"]',
-    rsvp: "#section-rsvp",
-    guestbook: '[data-section="guestbook"]',
-    footer: ".footer",
-  });
-
   initQuickNav();
   initAutoScroll();
+
+  // ---------------------------------------------------------------------
+  // 2) CONTENT RENDERING — each block guarded so one failure can't cascade.
+  // ---------------------------------------------------------------------
+  const groomShort = data.groom_nickname || data.groom_name || "";
+  const brideShort = data.bride_nickname || data.bride_name || "";
+
+  try {
+    document.getElementById("cover-guest-name").textContent = data.guest_name || "Bapak/Ibu Tamu Undangan";
+    document.querySelector(".cover-names").innerHTML = `${groomShort} <span>&amp;</span> ${brideShort}`;
+    document.getElementById("hero-names").innerHTML = `${groomShort} &amp; ${brideShort}`;
+    document.title = `Undangan Pernikahan ${groomShort} & ${brideShort}`;
+  } catch (e) { console.error("[Vinvite] names render failed:", e); }
+
+  try {
+    if (data.cover_image_url) {
+      const cover = document.getElementById("cover-screen");
+      if (cover) {
+        cover.style.backgroundImage = `linear-gradient(rgba(51,39,32,.55), rgba(51,39,32,.75)), url('${data.cover_image_url}')`;
+        cover.style.backgroundSize = "cover";
+        cover.style.backgroundPosition = "center";
+      }
+    }
+  } catch (e) { console.error("[Vinvite] cover photo failed:", e); }
+
+  let firstEvent = null;
+  try {
+    const events = Array.isArray(data.events) ? data.events : JSON.parse(data.events || "[]");
+    firstEvent = events[0] || null;
+    const heroDateStr = firstEvent ? firstEvent.date : (data.resepsi_date || data.akad_date);
+    if (heroDateStr) {
+      const d = new Date(heroDateStr);
+      if (!isNaN(d)) document.getElementById("hero-date").textContent =
+        d.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    }
+    window.renderEvents(data, "#events-container");
+  } catch (e) { console.error("[Vinvite] events render failed:", e); }
+
+  try {
+    document.getElementById("groom-name").textContent = data.groom_name || "";
+    document.getElementById("groom-parents").textContent = data.groom_parents || "";
+    document.getElementById("bride-name").textContent = data.bride_name || "";
+    document.getElementById("bride-parents").textContent = data.bride_parents || "";
+    document.querySelector(".closing-names").innerHTML = `${groomShort} &amp; ${brideShort}`;
+    const groomImg = document.getElementById("groom-photo");
+    const brideImg = document.getElementById("bride-photo");
+    if (groomImg && data.groom_photo_url) groomImg.src = data.groom_photo_url;
+    if (brideImg && data.bride_photo_url) brideImg.src = data.bride_photo_url;
+  } catch (e) { console.error("[Vinvite] couple render failed:", e); }
+
+  try {
+    const qt = document.getElementById("quote-text");
+    const qs = document.getElementById("quote-source");
+    if (qt && data.quote_text) qt.innerHTML = `&ldquo;${data.quote_text}&rdquo;`;
+    if (qs && data.quote_source) qs.textContent = data.quote_source;
+  } catch (e) { console.error("[Vinvite] quote render failed:", e); }
+
+  try { window.renderRundown(data, "#rundown-container"); } catch (e) { console.error("[Vinvite] rundown render failed:", e); }
+  try { window.renderDressCode(data, "#dress-code-container"); } catch (e) { console.error("[Vinvite] dress code render failed:", e); }
+  try { window.renderHashtag(data, "#hashtag-container"); } catch (e) { console.error("[Vinvite] hashtag render failed:", e); }
+
+  try {
+    if (firstEvent && firstEvent.date) {
+      window.startCountdown(`${firstEvent.date}T${firstEvent.time_start || "00:00"}:00`,
+        { d: "#cd-d", h: "#cd-h", m: "#cd-m", s: "#cd-s" });
+    } else if (data.resepsi_date || data.akad_date) {
+      window.startCountdown(`${data.resepsi_date || data.akad_date}T00:00:00`,
+        { d: "#cd-d", h: "#cd-h", m: "#cd-m", s: "#cd-s" });
+    }
+  } catch (e) { console.error("[Vinvite] countdown failed:", e); }
+
+  try {
+    const story = Array.isArray(data.love_story) ? data.love_story : JSON.parse(data.love_story || "[]");
+    document.getElementById("story-timeline").innerHTML = story.map(s => `
+      <div class="story-item">
+        <p class="story-date">${s.date || ""}</p>
+        <h3 class="story-title">${s.title || ""}</h3>
+        <p class="story-text">${s.text || ""}</p>
+      </div>
+    `).join("");
+  } catch (e) { console.error("[Vinvite] story render failed:", e); }
+
+  try {
+    const gallery = Array.isArray(data.gallery) ? data.gallery : JSON.parse(data.gallery || "[]");
+    document.getElementById("gallery-grid").innerHTML = gallery.map(url => `
+      <div class="gallery-item"><img src="${url}" loading="lazy" alt="" /></div>
+    `).join("");
+  } catch (e) { console.error("[Vinvite] gallery render failed:", e); }
+
+  try {
+    const accounts = Array.isArray(data.gift_accounts) ? data.gift_accounts : JSON.parse(data.gift_accounts || "[]");
+    document.getElementById("gift-accounts").innerHTML = accounts.map(a => `
+      <div class="gift-account">
+        <div class="gift-account-info">
+          <p>${a.type || ""}${a.bank_name ? " · " + a.bank_name : ""}</p>
+          <strong>${a.account_number || ""}</strong>
+          <p>a.n. ${a.account_holder || ""}</p>
+        </div>
+        <button class="btn-copy" data-copy="${a.account_number || ""}">Salin</button>
+      </div>
+    `).join("");
+    document.querySelectorAll(".btn-copy").forEach(btn => {
+      btn.addEventListener("click", () => {
+        navigator.clipboard.writeText(btn.dataset.copy);
+        btn.textContent = "Tersalin!";
+        setTimeout(() => (btn.textContent = "Salin"), 1500);
+      });
+    });
+  } catch (e) { console.error("[Vinvite] gift render failed:", e); }
+
+  try {
+    if (data.music_url) document.getElementById("bg-music").src = data.music_url;
+    window.initMusicPlayer("#bg-music", "#music-toggle");
+  } catch (e) { console.error("[Vinvite] music player failed:", e); }
+
+  try { window.initGalleryLightbox(".gallery-item img"); } catch (e) { console.error("[Vinvite] gallery lightbox failed:", e); }
+
+  try {
+    // RSVP: kontrak data tetap 3 field (guest_name, attendance, guest_count).
+    window.bindRsvpForm("#rsvp-form", data._invitationId);
+    window.onRsvpSuccess = () => { document.getElementById("rsvp-success").hidden = false; };
+  } catch (e) { console.error("[Vinvite] RSVP bind failed:", e); }
+
+  try {
+    window.initGuestbook({
+      formSelector: "#guestbook-form",
+      listSelector: "#guestbook-list",
+      invitationId: data._invitationId,
+      itemTemplate: (e) => `
+        <div class="wish-item">
+          <p class="wish-name">${e.name}</p>
+          <p class="wish-message">${e.message}</p>
+        </div>`
+    });
+  } catch (e) { console.error("[Vinvite] guestbook init failed:", e); }
+
+  try { window.initSocialProof("#social-proof", data._invitationId); } catch (e) { console.error("[Vinvite] social proof failed:", e); }
+  try { window.applySectionControl(data); } catch (e) { console.error("[Vinvite] section control failed:", e); }
+
+  try {
+    window.applySectionBackgrounds(data, {
+      hero: "#section-hero",
+      quote: '[data-section="quote"]',
+      couple: "#section-couple",
+      countdown: "#section-countdown",
+      events: "#section-acara",
+      rundown: '[data-section="rundown"]',
+      story: '[data-section="story"]',
+      gallery: "#section-galeri",
+      gift: '[data-section="gift"]',
+      dress_code: '[data-section="dress_code"]',
+      hashtag: '[data-section="hashtag"]',
+      rsvp: "#section-rsvp",
+      guestbook: '[data-section="guestbook"]',
+      footer: ".footer",
+    });
+  } catch (e) { console.error("[Vinvite] section backgrounds failed:", e); }
 };
 
 // -----------------------------------------------------------------------------
@@ -202,9 +237,6 @@ function initQuickNav() {
   links.forEach(a => {
     a.addEventListener("click", (e) => {
       e.preventDefault();
-      // "Beranda" points at #cover-screen, which is fixed-position and
-      // hidden once the invitation is opened — scrollIntoView on it does
-      // nothing. Scroll to the literal top of the page instead.
       if (a.getAttribute("href") === "#cover-screen") {
         window.scrollTo({ top: 0, behavior: "smooth" });
         return;
