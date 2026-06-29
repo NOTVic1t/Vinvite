@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Undangan Pernikahan — Geometri Berani</title>
+<title>Undangan Pernikahan — Midnight Gala</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -11,12 +11,28 @@
 </head>
 <body>
 
+<!-- Shared gala-glamour symbols for the parallax sparkle field. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="goldStar" viewBox="0 0 40 40">
+      <path d="M20 2 L24 16 L38 20 L24 24 L20 38 L16 24 L2 20 L16 16 Z" />
+    </symbol>
+    <symbol id="goldGem" viewBox="0 0 40 40">
+      <path d="M8 14 L20 4 L32 14 L26 34 L14 34 Z" />
+      <path d="M8 14 L32 14 M14 34 L20 14 L26 34" class="gem-facet" />
+    </symbol>
+    <symbol id="goldRing" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="15" />
+    </symbol>
+  </defs>
+</svg>
+
+<div class="velvet-overlay" aria-hidden="true"></div>
 <div id="scroll-progress" class="scroll-progress"></div>
 
 <!-- COVER GATE -->
 <section id="cover-screen" class="cover">
-  <div class="block-deco block-coral bd-1"></div>
-  <div class="block-deco block-mustard bd-2"></div>
+  <div class="marquee-row marquee-top" id="marquee-top"></div>
   <div class="cover-frame">
     <p class="cover-eyebrow">Undangan Pernikahan</p>
     <h1 class="cover-names">Raka <span>&amp;</span> Naya</h1>
@@ -24,52 +40,52 @@
     <p class="cover-guest" id="cover-guest-name">Bapak/Ibu Tamu Undangan</p>
     <button id="open-invitation-btn" class="btn-open">Buka Undangan</button>
   </div>
+  <div class="marquee-row marquee-bottom" id="marquee-bottom"></div>
 </section>
 
 <main id="main-content">
 
-  <!-- HERO — oversized bleeding typography -->
+  <!-- HERO -->
   <section class="section hero" id="section-hero">
-    <div class="geo-layer layer-back shape-square coral" data-parallax data-parallax-speed="0.07"></div>
-    <div class="geo-layer layer-mid shape-triangle mustard" data-parallax data-parallax-speed="0.16"></div>
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 40 40"><use href="#goldStar" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.12"><div class="parallax-float float-med"><svg viewBox="0 0 40 40"><use href="#goldGem" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.2"><div class="parallax-float float-fast"><svg viewBox="0 0 40 40"><use href="#goldRing" /></svg></div></div>
     <p class="eyebrow">The Wedding Of</p>
-    <h1 class="hero-names block-reveal block-coral" id="hero-names" data-reveal>Raka &amp; Naya</h1>
-    <div class="diagonal-divider div-mustard"></div>
-    <p class="hero-date block-reveal block-mustard" data-reveal>17 Oktober 2026</p>
+    <div class="marquee-row marquee-top" id="marquee-hero-top"></div>
+    <h1 class="hero-names" id="hero-names" data-reveal>Raka &amp; Naya</h1>
+    <div class="marquee-row marquee-bottom" id="marquee-hero-bottom"></div>
+    <p class="hero-date" data-reveal>17 Oktober 2026</p>
   </section>
 
   <!-- QUOTE -->
   <section class="section quote" data-section="quote">
-    <div class="geo-layer layer-back shape-triangle mustard" data-parallax data-parallax-speed="0.07"></div>
-    <div class="geo-layer layer-mid shape-ring navy" data-parallax data-parallax-speed="0.16"></div>
-    <p class="quote-text block-reveal block-navy" id="quote-text" data-reveal>&ldquo;Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu cenderung dan merasa tenteram kepadanya.&rdquo;</p>
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 40 40"><use href="#goldGem" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.12"><div class="parallax-float float-med"><svg viewBox="0 0 40 40"><use href="#goldRing" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.2"><div class="parallax-float float-fast"><svg viewBox="0 0 40 40"><use href="#goldStar" /></svg></div></div>
+    <div class="gold-rule" data-rule></div>
+    <p class="quote-text" id="quote-text" data-reveal>&ldquo;Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu cenderung dan merasa tenteram kepadanya.&rdquo;</p>
     <p id="quote-source" class="quote-source">QS. Ar-Rum: 21</p>
   </section>
 
-  <!-- COUPLE — hard-edge offset block photo frames -->
+  <!-- COUPLE -->
   <section class="section couple" id="section-couple">
-    <div class="geo-layer layer-back shape-ring navy" data-parallax data-parallax-speed="0.07"></div>
-    <div class="geo-layer layer-mid shape-square coral" data-parallax data-parallax-speed="0.16"></div>
-    <div class="diagonal-divider div-coral"></div>
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 40 40"><use href="#goldRing" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.12"><div class="parallax-float float-med"><svg viewBox="0 0 40 40"><use href="#goldStar" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.2"><div class="parallax-float float-fast"><svg viewBox="0 0 40 40"><use href="#goldGem" /></svg></div></div>
+    <div class="gold-rule" data-rule></div>
     <p class="eyebrow">Mempelai</p>
-    <div class="couple-grid block-reveal block-mustard" data-reveal>
+    <div class="couple-grid" data-reveal>
       <div class="couple-card">
-        <div class="block-photo">
-          <span class="photo-offset offset-coral"></span>
-          <div class="couple-photo">
-            <img id="groom-photo" data-parallax data-parallax-speed="0.05" src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?q=80&w=600&auto=format&fit=crop" alt="" />
-          </div>
+        <div class="couple-photo">
+          <img id="groom-photo" data-parallax data-parallax-speed="0.05" src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?q=80&w=600&auto=format&fit=crop" alt="" />
         </div>
         <h3 id="groom-name">Raka Aditya</h3>
         <p id="groom-parents">Putra dari Bapak Hendra &amp; Ibu Lestari</p>
       </div>
       <div class="couple-amp">&amp;</div>
       <div class="couple-card">
-        <div class="block-photo">
-          <span class="photo-offset offset-navy"></span>
-          <div class="couple-photo">
-            <img id="bride-photo" data-parallax data-parallax-speed="0.05" src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=600&auto=format&fit=crop" alt="" />
-          </div>
+        <div class="couple-photo">
+          <img id="bride-photo" data-parallax data-parallax-speed="0.05" src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=600&auto=format&fit=crop" alt="" />
         </div>
         <h3 id="bride-name">Naya Kirana</h3>
         <p id="bride-parents">Putri dari Bapak Hartono &amp; Ibu Suryani</p>
@@ -79,11 +95,12 @@
 
   <!-- COUNTDOWN -->
   <section class="section countdown-section" data-section="countdown" id="section-countdown">
-    <div class="geo-layer layer-back shape-square mustard" data-parallax data-parallax-speed="0.07"></div>
-    <div class="geo-layer layer-mid shape-triangle navy" data-parallax data-parallax-speed="0.16"></div>
-    <div class="diagonal-divider div-navy"></div>
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 40 40"><use href="#goldStar" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.12"><div class="parallax-float float-med"><svg viewBox="0 0 40 40"><use href="#goldGem" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.2"><div class="parallax-float float-fast"><svg viewBox="0 0 40 40"><use href="#goldRing" /></svg></div></div>
+    <div class="gold-rule" data-rule></div>
     <p class="eyebrow" data-section-label="countdown">Menuju Hari Bahagia</p>
-    <div class="countdown block-reveal block-coral" data-reveal>
+    <div class="countdown" data-reveal>
       <div class="cd-item"><span id="cd-d">00</span><label>Hari</label></div>
       <div class="cd-item"><span id="cd-h">00</span><label>Jam</label></div>
       <div class="cd-item"><span id="cd-m">00</span><label>Menit</label></div>
@@ -93,94 +110,106 @@
 
   <!-- EVENTS -->
   <section class="section events-section" data-section="events" id="section-acara">
-    <div class="geo-layer layer-back shape-triangle navy" data-parallax data-parallax-speed="0.07"></div>
-    <div class="geo-layer layer-mid shape-ring coral" data-parallax data-parallax-speed="0.16"></div>
-    <div class="diagonal-divider div-mustard"></div>
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 40 40"><use href="#goldGem" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.12"><div class="parallax-float float-med"><svg viewBox="0 0 40 40"><use href="#goldRing" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.2"><div class="parallax-float float-fast"><svg viewBox="0 0 40 40"><use href="#goldStar" /></svg></div></div>
+    <div class="gold-rule" data-rule></div>
     <p class="eyebrow" data-section-label="events">Acara</p>
-    <div class="event-grid block-reveal block-navy" id="events-container" data-reveal></div>
+    <div class="event-grid" id="events-container" data-reveal></div>
   </section>
 
   <!-- SUSUNAN ACARA -->
   <section class="section rundown-section" data-section="rundown">
-    <div class="geo-layer layer-back shape-ring coral" data-parallax data-parallax-speed="0.07"></div>
-    <div class="geo-layer layer-mid shape-square mustard" data-parallax data-parallax-speed="0.16"></div>
-    <div class="diagonal-divider div-coral"></div>
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 40 40"><use href="#goldRing" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.12"><div class="parallax-float float-med"><svg viewBox="0 0 40 40"><use href="#goldStar" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.2"><div class="parallax-float float-fast"><svg viewBox="0 0 40 40"><use href="#goldGem" /></svg></div></div>
+    <div class="gold-rule" data-rule></div>
     <p class="eyebrow" data-section-label="rundown">Susunan Acara</p>
-    <div class="rundown-timeline block-reveal block-mustard" id="rundown-container" data-reveal></div>
+    <div class="rundown-timeline" id="rundown-container" data-reveal></div>
   </section>
 
   <!-- STORY -->
   <section class="section story" data-section="story">
-    <div class="geo-layer layer-back shape-square navy" data-parallax data-parallax-speed="0.07"></div>
-    <div class="geo-layer layer-mid shape-triangle coral" data-parallax data-parallax-speed="0.16"></div>
-    <div class="diagonal-divider div-navy"></div>
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 40 40"><use href="#goldStar" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.12"><div class="parallax-float float-med"><svg viewBox="0 0 40 40"><use href="#goldGem" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.2"><div class="parallax-float float-fast"><svg viewBox="0 0 40 40"><use href="#goldRing" /></svg></div></div>
+    <div class="gold-rule" data-rule></div>
     <p class="eyebrow" data-section-label="story">Kisah Kami</p>
-    <div class="story-timeline block-reveal block-coral" id="story-timeline" data-reveal></div>
+    <div class="story-timeline" id="story-timeline" data-reveal></div>
   </section>
 
   <!-- GALLERY -->
   <section class="section gallery" data-section="gallery" id="section-galeri">
-    <div class="geo-layer layer-back shape-triangle coral" data-parallax data-parallax-speed="0.07"></div>
-    <div class="geo-layer layer-mid shape-ring mustard" data-parallax data-parallax-speed="0.16"></div>
-    <div class="diagonal-divider div-mustard"></div>
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 40 40"><use href="#goldGem" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.12"><div class="parallax-float float-med"><svg viewBox="0 0 40 40"><use href="#goldRing" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.2"><div class="parallax-float float-fast"><svg viewBox="0 0 40 40"><use href="#goldStar" /></svg></div></div>
+    <div class="gold-rule" data-rule></div>
     <p class="eyebrow" data-section-label="gallery">Galeri</p>
-    <div class="gallery-grid block-reveal block-navy" id="gallery-grid" data-reveal></div>
+    <div class="gallery-grid" id="gallery-grid" data-reveal></div>
   </section>
 
   <!-- GIFT -->
   <section class="section gift" data-section="gift">
-    <div class="geo-layer layer-back shape-ring mustard" data-parallax data-parallax-speed="0.07"></div>
-    <div class="geo-layer layer-mid shape-square navy" data-parallax data-parallax-speed="0.16"></div>
-    <div class="diagonal-divider div-coral"></div>
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 40 40"><use href="#goldRing" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.12"><div class="parallax-float float-med"><svg viewBox="0 0 40 40"><use href="#goldStar" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.2"><div class="parallax-float float-fast"><svg viewBox="0 0 40 40"><use href="#goldGem" /></svg></div></div>
+    <div class="gold-rule" data-rule></div>
     <p class="eyebrow" data-section-label="gift">Tanda Kasih</p>
     <p class="gift-intro">Doa restu Anda adalah hadiah yang paling berarti. Namun jika ingin memberi tanda kasih, kami menyediakan:</p>
-    <div class="gift-accounts block-reveal block-mustard" id="gift-accounts" data-reveal></div>
+    <div class="gift-accounts" id="gift-accounts" data-reveal></div>
   </section>
 
   <!-- DRESS CODE -->
   <section class="section dress-code-section" data-section="dress_code">
-    <div class="geo-layer layer-back shape-square coral" data-parallax data-parallax-speed="0.07"></div>
-    <div class="geo-layer layer-mid shape-triangle mustard" data-parallax data-parallax-speed="0.16"></div>
-    <div class="diagonal-divider div-navy"></div>
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 40 40"><use href="#goldStar" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.12"><div class="parallax-float float-med"><svg viewBox="0 0 40 40"><use href="#goldGem" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.2"><div class="parallax-float float-fast"><svg viewBox="0 0 40 40"><use href="#goldRing" /></svg></div></div>
+    <div class="gold-rule" data-rule></div>
     <p class="eyebrow" data-section-label="dress_code">Dress Code</p>
-    <div class="block-reveal block-coral" id="dress-code-container" data-reveal></div>
+    <div id="dress-code-container" data-reveal></div>
   </section>
 
   <!-- HASHTAG & INSTAGRAM -->
   <section class="section hashtag-section" data-section="hashtag">
-    <div class="geo-layer layer-back shape-triangle mustard" data-parallax data-parallax-speed="0.07"></div>
-    <div class="geo-layer layer-mid shape-ring navy" data-parallax data-parallax-speed="0.16"></div>
-    <div class="diagonal-divider div-mustard"></div>
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 40 40"><use href="#goldGem" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.12"><div class="parallax-float float-med"><svg viewBox="0 0 40 40"><use href="#goldRing" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.2"><div class="parallax-float float-fast"><svg viewBox="0 0 40 40"><use href="#goldStar" /></svg></div></div>
+    <div class="gold-rule" data-rule></div>
     <p class="eyebrow" data-section-label="hashtag">Abadikan Momen</p>
-    <div class="block-reveal block-navy" id="hashtag-container" data-reveal></div>
+    <div id="hashtag-container" data-reveal></div>
   </section>
 
-  <!-- RSVP — kontrak data tetap 3 field -->
+  <!-- RSVP — gala ticket-stub style, kontrak data tetap 3 field -->
   <section class="section rsvp" data-section="rsvp" id="section-rsvp">
-    <div class="geo-layer layer-back shape-ring navy" data-parallax data-parallax-speed="0.07"></div>
-    <div class="geo-layer layer-mid shape-square coral" data-parallax data-parallax-speed="0.16"></div>
-    <div class="diagonal-divider div-coral"></div>
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 40 40"><use href="#goldRing" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.12"><div class="parallax-float float-med"><svg viewBox="0 0 40 40"><use href="#goldStar" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.2"><div class="parallax-float float-fast"><svg viewBox="0 0 40 40"><use href="#goldGem" /></svg></div></div>
+    <div class="gold-rule" data-rule></div>
     <p class="eyebrow">Konfirmasi Kehadiran</p>
     <p id="social-proof" class="social-proof" hidden></p>
-    <form id="rsvp-form" class="form block-reveal block-mustard" data-reveal>
-      <input type="text" name="guest_name" placeholder="Nama Anda" required />
-      <select name="attendance" required>
-        <option value="">Konfirmasi Kehadiran</option>
-        <option value="hadir">Hadir</option>
-        <option value="tidak_hadir">Tidak Hadir</option>
-        <option value="ragu">Masih Ragu</option>
-      </select>
-      <input type="number" name="guest_count" min="1" max="5" value="1" placeholder="Jumlah Tamu" />
-      <button type="submit" class="btn-submit">Kirim Konfirmasi</button>
-    </form>
-    <p id="rsvp-success" class="form-success" hidden>Terima kasih atas konfirmasi Anda</p>
+    <div class="ticket-stub">
+      <p class="ticket-label">ADMIT ONE — MALAM PERNIKAHAN</p>
+      <form id="rsvp-form" class="form" data-reveal>
+        <input type="text" name="guest_name" placeholder="Nama Anda" required />
+        <select name="attendance" required>
+          <option value="">Konfirmasi Kehadiran</option>
+          <option value="hadir">Hadir</option>
+          <option value="tidak_hadir">Tidak Hadir</option>
+          <option value="ragu">Masih Ragu</option>
+        </select>
+        <input type="number" name="guest_count" min="1" max="5" value="1" placeholder="Jumlah Tamu" />
+        <button type="submit" class="btn-submit">Kirim Konfirmasi</button>
+      </form>
+    </div>
+    <p id="rsvp-success" class="form-success" hidden>Terima kasih atas konfirmasi Anda ✨</p>
   </section>
 
   <!-- GUESTBOOK -->
   <section class="section guestbook" data-section="guestbook">
-    <div class="geo-layer layer-back shape-square mustard" data-parallax data-parallax-speed="0.07"></div>
-    <div class="geo-layer layer-mid shape-triangle navy" data-parallax data-parallax-speed="0.16"></div>
-    <div class="diagonal-divider div-navy"></div>
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 40 40"><use href="#goldStar" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.12"><div class="parallax-float float-med"><svg viewBox="0 0 40 40"><use href="#goldGem" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.2"><div class="parallax-float float-fast"><svg viewBox="0 0 40 40"><use href="#goldRing" /></svg></div></div>
+    <div class="gold-rule" data-rule></div>
     <p class="eyebrow">Ucapan &amp; Doa</p>
     <form id="guestbook-form" class="form">
       <input type="text" name="name" placeholder="Nama Anda" required />
@@ -192,9 +221,10 @@
 
   <!-- CLOSING -->
   <footer class="section footer">
-    <div class="geo-layer layer-back shape-triangle navy" data-parallax data-parallax-speed="0.07"></div>
-    <div class="geo-layer layer-mid shape-ring coral" data-parallax data-parallax-speed="0.16"></div>
-    <div class="diagonal-divider div-coral"></div>
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 40 40"><use href="#goldGem" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.12"><div class="parallax-float float-med"><svg viewBox="0 0 40 40"><use href="#goldRing" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.2"><div class="parallax-float float-fast"><svg viewBox="0 0 40 40"><use href="#goldStar" /></svg></div></div>
+    <div class="gold-rule" data-rule></div>
     <p class="closing-text">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
     <p class="closing-names">Raka &amp; Naya</p>
     <p class="credit">Made with Vinvite — By Victor Rizki Valentiano</p>

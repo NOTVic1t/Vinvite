@@ -1,5 +1,5 @@
 // =============================================================================
-// VINVITE — THEME 10: GEOMETRI BERANI — render logic
+// VINVITE — THEME 10: MIDNIGHT GALA — render logic
 // =============================================================================
 
 window.renderInvitation = function (data) {
@@ -7,12 +7,16 @@ window.renderInvitation = function (data) {
   // 1) UI / ANIMATION WIRING — always runs, regardless of data shape.
   // ---------------------------------------------------------------------
   window.initCoverGate("#cover-screen", "#open-invitation-btn");
+  initFlareBurstTrigger();
+  buildMarquees();
+  spawnBubbles();
 
-  const revealIO = new IntersectionObserver((entries) => {
+  const ruleIO = new IntersectionObserver((entries) => {
     entries.forEach(en => { if (en.isIntersecting) en.target.classList.add("is-visible"); });
-  }, { threshold: 0.3 });
-  document.querySelectorAll(".block-reveal, .diagonal-divider").forEach(el => revealIO.observe(el));
+  }, { threshold: 0.35 });
+  document.querySelectorAll(".gold-rule").forEach(el => ruleIO.observe(el));
 
+  window.initScrollReveal();
   window.initParallax();
   window.initScrollProgress("#scroll-progress");
   initQuickNav();
@@ -32,10 +36,13 @@ window.renderInvitation = function (data) {
   } catch (e) { console.error("[Vinvite] names render failed:", e); }
 
   try {
+    // Cover background photo is admin-controlled and togglable — when set,
+    // it sits behind the same radial navy gradient (slightly darkened) so
+    // the gold text and marquee bulbs stay legible on top of any photo.
     if (data.cover_image_url) {
       const cover = document.getElementById("cover-screen");
       if (cover) {
-        cover.style.backgroundImage = `linear-gradient(rgba(22,21,26,.7), rgba(22,21,26,.85)), url('${data.cover_image_url}')`;
+        cover.style.backgroundImage = `radial-gradient(ellipse at 50% 30%, rgba(27,42,74,.55) 0%, rgba(15,26,48,.82) 75%), url('${data.cover_image_url}')`;
         cover.style.backgroundSize = "cover";
         cover.style.backgroundPosition = "center";
       }
@@ -49,7 +56,7 @@ window.renderInvitation = function (data) {
     const heroDateStr = firstEvent ? firstEvent.date : (data.resepsi_date || data.akad_date);
     if (heroDateStr) {
       const d = new Date(heroDateStr);
-      if (!isNaN(d)) document.getElementById("hero-date").textContent =
+      if (!isNaN(d)) document.querySelector(".hero-date").textContent =
         d.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
     }
     window.renderEvents(data, "#events-container");
@@ -175,6 +182,87 @@ window.renderInvitation = function (data) {
     });
   } catch (e) { console.error("[Vinvite] section backgrounds failed:", e); }
 };
+
+// -----------------------------------------------------------------------------
+// MARQUEE BULBS — fills each .marquee-row with a chasing row of small
+// light bulbs (theater-marquee style), staggered so they appear to chase.
+// -----------------------------------------------------------------------------
+function buildMarquees() {
+  document.querySelectorAll(".marquee-row").forEach(row => {
+    const count = 14;
+    let html = "";
+    for (let i = 0; i < count; i++) {
+      html += `<span class="bulb" style="animation-delay:${(i * 0.1).toFixed(2)}s"></span>`;
+    }
+    row.innerHTML = html;
+  });
+}
+
+// -----------------------------------------------------------------------------
+// CHAMPAGNE BUBBLES — a handful of small bubbles continuously rise from the
+// bottom of the viewport for the whole life of the page (independent of
+// scroll position, fixed-position field).
+// -----------------------------------------------------------------------------
+function spawnBubbles() {
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const field = document.createElement("div");
+  field.className = "bubble-field";
+  document.body.appendChild(field);
+
+  function spawnOne() {
+    const b = document.createElement("span");
+    b.className = "bubble";
+    const size = 4 + Math.random() * 7;
+    b.style.width = `${size}px`;
+    b.style.height = `${size}px`;
+    b.style.left = `${Math.random() * 100}%`;
+    b.style.setProperty("--drift", `${(Math.random() * 40 - 20).toFixed(0)}px`);
+    b.style.animationDuration = `${9 + Math.random() * 7}s`;
+    field.appendChild(b);
+    setTimeout(() => b.remove(), 17000);
+  }
+
+  for (let i = 0; i < 6; i++) setTimeout(spawnOne, i * 900);
+  setInterval(spawnOne, 1400);
+}
+
+// -----------------------------------------------------------------------------
+// LIGHT-FLARE BURST — a handful of gold sparks burst outward from the
+// "Buka Undangan" button the moment it's clicked, alongside the engine's
+// normal cover fade (both listeners fire independently on the same click).
+// -----------------------------------------------------------------------------
+function initFlareBurstTrigger() {
+  const btn = document.getElementById("open-invitation-btn");
+  if (!btn) return;
+
+  btn.addEventListener("click", () => {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const rect = btn.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+
+    const container = document.createElement("div");
+    container.className = "flare-burst-container";
+    document.body.appendChild(container);
+
+    const count = 10;
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * Math.PI * 2 + Math.random() * 0.3;
+      const dist = 50 + Math.random() * 50;
+      const flare = document.createElement("span");
+      flare.className = "flare";
+      flare.style.left = `${cx}px`;
+      flare.style.top = `${cy}px`;
+      flare.style.setProperty("--fx", `${(Math.cos(angle) * dist).toFixed(0)}px`);
+      flare.style.setProperty("--fy", `${(Math.sin(angle) * dist).toFixed(0)}px`);
+      container.appendChild(flare);
+    }
+
+    setTimeout(() => container.remove(), 900);
+  }, { once: true });
+}
 
 // -----------------------------------------------------------------------------
 // QUICK NAV — floating bottom pill, highlights the section currently in view.

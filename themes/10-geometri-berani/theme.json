@@ -1,10 +1,10 @@
 {
   "slug": "10-geometri-berani",
-  "name": "Geometri Berani",
-  "category": "Bold Editorial Geometric",
+  "name": "Midnight Gala",
+  "category": "Evening Glamour Premium",
   "status": "built",
-  "palette": { "navy": "#1B2A4A", "coral": "#E8593B", "mustard": "#E8B339", "cream": "#F7F4EC", "ink": "#16151A" },
+  "palette": { "navy": "#1B2A4A", "navy_deep": "#0F1A30", "coral": "#E8593B", "gold": "#E8B339", "cream": "#F7F4EC", "ink": "#16151A" },
   "type": { "display": "Space Grotesk", "body": "Inter" },
-  "signature": "Solid color blocks slide sharply away to unveil each section (no soft fade), oversized bleeding type anchors the hero like a magazine spread, hard-edge geometric shapes (squares, triangles, rings) parallax behind every section with deliberate rather than ambient motion, and slanted color bars replace straight rule lines between sections.",
-  "brief": "For couples who explicitly do not want anything floral or ceremonial — bold contrasting color blocking, confident asymmetric energy, editorial rather than ornamental. Includes the full standard section set (Susunan Acara with icons, Dress Code, Hashtag & Instagram, quick-nav, auto-scroll, per-section background photos)."
+  "signature": "Theater-marquee bulb-lights chase around the couple's names, champagne bubbles rise continuously across the whole page, a burst of gold light-flares fires from the open button on click, every card carries a diagonal gold sash ribbon, the RSVP sits inside a perforated gala-ticket stub, and a maximized three-layer field of floating + parallaxed gold sparkles (stars, gems, rings) covers all 14 sections over a subtle navy velvet texture.",
+  "brief": "A full concept pivot, by explicit request, away from the original 'anti-floral/ceremonial bold geometric' brief — now an evening-gala ballroom mood: navy-dominant, gold ornamental, glamorous rather than stark. Includes the full standard section set (Susunan Acara with icons, Dress Code, Hashtag & Instagram, quick-nav, auto-scroll, per-section background photos, which are admin-controlled and independently togglable)."
 }
