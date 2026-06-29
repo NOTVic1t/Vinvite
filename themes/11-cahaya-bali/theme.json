@@ -1,10 +1,10 @@
 {
   "slug": "11-cahaya-bali",
   "name": "Cahaya Bali",
-  "category": "Balinese Tropical",
-  "status": "planned",
-  "palette": { "teal": "#1E5F5A", "white": "#FAFAF6", "gold": "#C9A24B", "sand": "#E4D8BE", "ink": "#1E2421" },
+  "category": "Luxury Bali Resort",
+  "status": "built",
+  "palette": { "teal": "#1E5F5A", "teal_deep": "#143F3C", "white": "#FAFAF6", "gold": "#C9A24B", "sand": "#E4D8BE", "ink": "#1E2421" },
   "type": { "display": "Marcellus", "body": "Mulish" },
-  "signature": "A candi bentar (split temple gate) silhouette frames the cover photo, with frangipani petals drifting down on open.",
-  "brief": "Balinese resort-wedding aesthetic — teal lagoon and gold, temple-gate framing, frangipani motif, breezy and ceremonial at once."
+  "signature": "A candi bentar split gate rendered in two depth layers frames the cover, frangipani petals fall continuously across the whole page, a soft lagoon-light sweep glides over the cover and hero, gold Balinese carved-relief corners mark every card, a lotus blooms with rippling water rings as the divider between sections, a slow sunset-sky gradient drifts behind everything, and a maximized three-layer field of floating + parallaxed frangipani, lotus, and wave-ring motifs covers all 14 sections.",
+  "brief": "Balinese resort-wedding aesthetic elevated to Four Seasons / Bvlgari Bali territory — teal lagoon and gold, layered temple-gate architecture, frangipani motif rendered as a living, falling element rather than a one-time effect. Includes the full standard section set (Susunan Acara with icons, Dress Code, Hashtag & Instagram, quick-nav, auto-scroll, per-section background photos, admin-controlled and independently togglable)."
 }
