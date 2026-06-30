@@ -28,6 +28,9 @@
       <circle class="vine-leaf" cx="150" cy="8" r="4" />
       <circle class="vine-bud" cx="100" cy="25" r="5" />
     </symbol>
+    <symbol id="fallingPetal" viewBox="0 0 30 30">
+      <path class="petal-shape" d="M15 2 C22 6 24 16 15 28 C6 16 8 6 15 2 Z" />
+    </symbol>
   </defs>
 </svg>
 
@@ -45,12 +48,17 @@
 
 <!-- COVER GATE — enchanted arch -->
 <section id="cover-screen" class="cover">
+  <div class="cover-mist cover-mist-a"></div>
+  <div class="cover-mist cover-mist-b"></div>
+  <div class="cover-firefly-field" id="cover-firefly-field"></div>
   <svg class="enchanted-arch" viewBox="0 0 220 280" aria-hidden="true">
-    <path class="arch-branch" d="M10 280 L10 120 C10 70 40 35 70 22 C85 15 95 10 100 4" />
-    <path class="arch-branch" d="M210 280 L210 120 C210 70 180 35 150 22 C135 15 125 10 120 4" />
-    <g class="arch-leaves">
+    <path class="arch-branch branch-left" d="M10 280 L10 120 C10 70 40 35 70 22 C85 15 95 10 100 4" />
+    <path class="arch-branch branch-right" d="M210 280 L210 120 C210 70 180 35 150 22 C135 15 125 10 120 4" />
+    <g class="arch-leaves leaves-left">
       <circle cx="18" cy="200" r="7" /><circle cx="30" cy="160" r="6" /><circle cx="50" cy="110" r="7" />
       <circle cx="75" cy="70" r="6" /><circle cx="98" cy="30" r="5" />
+    </g>
+    <g class="arch-leaves leaves-right">
       <circle cx="202" cy="200" r="7" /><circle cx="190" cy="160" r="6" /><circle cx="170" cy="110" r="7" />
       <circle cx="145" cy="70" r="6" /><circle cx="122" cy="30" r="5" />
     </g>
@@ -62,6 +70,8 @@
     <p class="cover-guest" id="cover-guest-name">Bapak/Ibu Tamu Undangan</p>
     <button id="open-invitation-btn" class="btn-open">Buka Undangan</button>
   </div>
+  <div class="gate-curtain gate-curtain-left"></div>
+  <div class="gate-curtain gate-curtain-right"></div>
 </section>
 
 <main id="main-content">
@@ -71,6 +81,7 @@
     <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 50 60"><use href="#leafSprig" /></svg></div></div>
+    <div class="parallax-layer layer-extra" data-parallax data-parallax-speed="0.3"><div class="parallax-float float-med"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <p class="eyebrow">We're Getting Married</p>
     <h1 class="hero-names" id="hero-names" data-reveal>Aiden &amp; Liora</h1>
     <svg class="vine-divider" viewBox="0 0 200 50" data-rule><use href="#vineFlourish" /></svg>
@@ -82,6 +93,7 @@
     <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 50 60"><use href="#leafSprig" /></svg></div></div>
     <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
+    <div class="parallax-layer layer-extra" data-parallax data-parallax-speed="0.27"><div class="parallax-float float-fast"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <p class="quote-text fairy-dust" id="quote-text" data-reveal>&ldquo;Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu cenderung dan merasa tenteram kepadanya.&rdquo;</p>
     <p id="quote-source" class="quote-source">QS. Ar-Rum: 21</p>
   </section>
@@ -91,6 +103,7 @@
     <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 50 60"><use href="#leafSprig" /></svg></div></div>
     <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
+    <div class="parallax-layer layer-extra" data-parallax data-parallax-speed="0.3"><div class="parallax-float float-med"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <svg class="vine-divider" viewBox="0 0 200 50" data-rule><use href="#vineFlourish" /></svg>
     <p class="eyebrow">Mempelai</p>
     <div class="couple-grid" data-reveal>
@@ -123,6 +136,7 @@
     <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 50 60"><use href="#leafSprig" /></svg></div></div>
+    <div class="parallax-layer layer-extra" data-parallax data-parallax-speed="0.27"><div class="parallax-float float-fast"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <svg class="vine-divider" viewBox="0 0 200 50" data-rule><use href="#vineFlourish" /></svg>
     <p class="eyebrow" data-section-label="countdown">Menuju Hari Bahagia</p>
     <div class="countdown" data-reveal>
@@ -138,6 +152,7 @@
     <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 50 60"><use href="#leafSprig" /></svg></div></div>
     <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
+    <div class="parallax-layer layer-extra" data-parallax data-parallax-speed="0.3"><div class="parallax-float float-med"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <svg class="vine-divider" viewBox="0 0 200 50" data-rule><use href="#vineFlourish" /></svg>
     <p class="eyebrow" data-section-label="events">Acara</p>
     <div class="event-grid" id="events-container" data-reveal></div>
@@ -148,6 +163,7 @@
     <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 50 60"><use href="#leafSprig" /></svg></div></div>
     <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
+    <div class="parallax-layer layer-extra" data-parallax data-parallax-speed="0.27"><div class="parallax-float float-fast"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <svg class="vine-divider" viewBox="0 0 200 50" data-rule><use href="#vineFlourish" /></svg>
     <p class="eyebrow" data-section-label="rundown">Susunan Acara</p>
     <div class="rundown-timeline" id="rundown-container" data-reveal></div>
@@ -158,6 +174,7 @@
     <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 50 60"><use href="#leafSprig" /></svg></div></div>
+    <div class="parallax-layer layer-extra" data-parallax data-parallax-speed="0.3"><div class="parallax-float float-med"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <svg class="vine-divider" viewBox="0 0 200 50" data-rule><use href="#vineFlourish" /></svg>
     <p class="eyebrow" data-section-label="story">Kisah Kami</p>
     <div class="story-timeline" id="story-timeline" data-reveal></div>
@@ -168,6 +185,7 @@
     <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 50 60"><use href="#leafSprig" /></svg></div></div>
     <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
+    <div class="parallax-layer layer-extra" data-parallax data-parallax-speed="0.27"><div class="parallax-float float-fast"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <svg class="vine-divider" viewBox="0 0 200 50" data-rule><use href="#vineFlourish" /></svg>
     <p class="eyebrow" data-section-label="gallery">Galeri</p>
     <div class="gallery-grid" id="gallery-grid" data-reveal></div>
@@ -178,6 +196,7 @@
     <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 50 60"><use href="#leafSprig" /></svg></div></div>
     <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
+    <div class="parallax-layer layer-extra" data-parallax data-parallax-speed="0.3"><div class="parallax-float float-med"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <svg class="vine-divider" viewBox="0 0 200 50" data-rule><use href="#vineFlourish" /></svg>
     <p class="eyebrow" data-section-label="gift">Tanda Kasih</p>
     <p class="gift-intro">Doa restu Anda adalah hadiah yang paling berarti. Namun jika ingin memberi tanda kasih, kami menyediakan:</p>
@@ -189,6 +208,7 @@
     <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 50 60"><use href="#leafSprig" /></svg></div></div>
+    <div class="parallax-layer layer-extra" data-parallax data-parallax-speed="0.27"><div class="parallax-float float-fast"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <svg class="vine-divider" viewBox="0 0 200 50" data-rule><use href="#vineFlourish" /></svg>
     <p class="eyebrow" data-section-label="dress_code">Dress Code</p>
     <div id="dress-code-container" data-reveal></div>
@@ -199,6 +219,7 @@
     <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 50 60"><use href="#leafSprig" /></svg></div></div>
     <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
+    <div class="parallax-layer layer-extra" data-parallax data-parallax-speed="0.3"><div class="parallax-float float-med"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <svg class="vine-divider" viewBox="0 0 200 50" data-rule><use href="#vineFlourish" /></svg>
     <p class="eyebrow" data-section-label="hashtag">Abadikan Momen</p>
     <div id="hashtag-container" data-reveal></div>
@@ -209,6 +230,7 @@
     <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 50 60"><use href="#leafSprig" /></svg></div></div>
     <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
+    <div class="parallax-layer layer-extra" data-parallax data-parallax-speed="0.27"><div class="parallax-float float-fast"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <svg class="vine-divider" viewBox="0 0 200 50" data-rule><use href="#vineFlourish" /></svg>
     <p class="eyebrow">Konfirmasi Kehadiran</p>
     <p id="social-proof" class="social-proof" hidden></p>
@@ -231,6 +253,7 @@
     <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 50 60"><use href="#leafSprig" /></svg></div></div>
+    <div class="parallax-layer layer-extra" data-parallax data-parallax-speed="0.3"><div class="parallax-float float-med"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <svg class="vine-divider" viewBox="0 0 200 50" data-rule><use href="#vineFlourish" /></svg>
     <p class="eyebrow">Ucapan &amp; Doa</p>
     <form id="guestbook-form" class="form">
@@ -246,6 +269,7 @@
     <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 50 60"><use href="#leafSprig" /></svg></div></div>
     <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
+    <div class="parallax-layer layer-extra" data-parallax data-parallax-speed="0.27"><div class="parallax-float float-fast"><svg viewBox="0 0 20 20"><use href="#firefly" /></svg></div></div>
     <svg class="vine-divider" viewBox="0 0 200 50" data-rule><use href="#vineFlourish" /></svg>
     <p class="closing-text">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
     <p class="closing-names">Aiden &amp; Liora</p>

@@ -7,7 +7,9 @@ window.renderInvitation = function (data) {
   // 1) UI / ANIMATION WIRING — always runs, regardless of data shape.
   // ---------------------------------------------------------------------
   initLoadingScreen();
-  window.initCoverGate("#cover-screen", "#open-invitation-btn");
+  spawnCoverFireflies();
+  initGateOpen();
+  spawnPetals();
 
   const io = new IntersectionObserver((entries) => {
     entries.forEach(en => { if (en.isIntersecting) en.target.classList.add("is-visible"); });
@@ -181,6 +183,91 @@ window.renderInvitation = function (data) {
     });
   } catch (e) { console.error("[Vinvite] section backgrounds failed:", e); }
 };
+
+// -----------------------------------------------------------------------------
+// COVER FIREFLIES — a denser cluster of fireflies confined to the cover
+// screen, on top of the regular page-wide parallax field.
+// -----------------------------------------------------------------------------
+function spawnCoverFireflies() {
+  const field = document.getElementById("cover-firefly-field");
+  if (!field) return;
+
+  const drifts = ["drift-a", "drift-b", "drift-c"];
+  const count = 16;
+  let html = "";
+  for (let i = 0; i < count; i++) {
+    const size = 10 + Math.random() * 14;
+    const drift = drifts[i % drifts.length];
+    const duration = (6 + Math.random() * 6).toFixed(1);
+    const delay = (Math.random() * 4).toFixed(1);
+    html += `<span class="cover-firefly ${drift}" style="width:${size}px;height:${size}px;top:${(Math.random()*92).toFixed(0)}%;left:${(Math.random()*92).toFixed(0)}%;animation-duration:${duration}s;animation-delay:-${delay}s;">
+      <svg viewBox="0 0 20 20"><use href="#firefly" /></svg>
+    </span>`;
+  }
+  field.innerHTML = html;
+}
+
+// -----------------------------------------------------------------------------
+// GATE OPEN — replaces the engine's plain fade for this theme. The two
+// .gate-curtain panels (matching the cover background) swing open like a
+// garden gate when "Buka Undangan" is pressed.
+// -----------------------------------------------------------------------------
+function initGateOpen() {
+  const cover = document.getElementById("cover-screen");
+  const btn = document.getElementById("open-invitation-btn");
+  const frame = document.querySelector(".cover-frame");
+  if (!cover || !btn) return;
+
+  document.body.style.overflow = "hidden";
+  document.body.style.height = "100vh";
+
+  btn.addEventListener("click", () => {
+    if (frame) {
+      frame.style.transition = "opacity .3s ease, transform .3s ease";
+      frame.style.opacity = "0";
+      frame.style.transform = "scale(.97)";
+    }
+    setTimeout(() => {
+      cover.classList.add("is-opening");
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+      if (typeof window.vinviteTryAutoplayMusic === "function") {
+        window.vinviteTryAutoplayMusic();
+      }
+    }, 280);
+    setTimeout(() => { cover.style.display = "none"; }, 280 + 1150);
+  }, { once: true });
+}
+
+// -----------------------------------------------------------------------------
+// FALLING PETALS — continuously spawned blush petals drifting down the
+// whole page for as long as it's open (independent of scroll position),
+// alongside the firefly/leaf parallax field.
+// -----------------------------------------------------------------------------
+function spawnPetals() {
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const field = document.createElement("div");
+  field.className = "petal-field";
+  document.body.appendChild(field);
+
+  function spawnOne() {
+    const p = document.createElement("div");
+    p.className = "falling-petal";
+    const size = 10 + Math.random() * 9;
+    p.style.width = `${size}px`;
+    p.style.height = `${size}px`;
+    p.style.left = `${Math.random() * 100}%`;
+    p.style.setProperty("--drift", `${(Math.random() * 50 - 25).toFixed(0)}px`);
+    p.style.animationDuration = `${9 + Math.random() * 7}s`;
+    p.innerHTML = '<svg viewBox="0 0 30 30"><use href="#fallingPetal" /></svg>';
+    field.appendChild(p);
+    setTimeout(() => p.remove(), 18000);
+  }
+
+  for (let i = 0; i < 4; i++) setTimeout(spawnOne, i * 1300);
+  setInterval(spawnOne, 2000);
+}
 
 // -----------------------------------------------------------------------------
 // LOADING SCREEN — brief monogram fade-in, hidden once the page finishes

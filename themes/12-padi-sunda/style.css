@@ -39,6 +39,49 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 600; color: 
   margin-bottom: 10px;
 }
 
+/* ---------- COVER-LOCAL MIST (richer cover background) ---------- */
+.cover-mist { position: absolute; border-radius: 50%; filter: blur(50px); pointer-events: none; z-index: 0; }
+.cover-mist-a { width: 70vw; height: 45vh; top: -10%; left: -20%; background: radial-gradient(circle, rgba(107,144,128,.4), transparent 70%); animation: coverMistA 22s ease-in-out infinite; }
+.cover-mist-b { width: 60vw; height: 40vh; bottom: -10%; right: -20%; background: radial-gradient(circle, rgba(232,210,122,.25), transparent 70%); animation: coverMistB 26s ease-in-out infinite; }
+@keyframes coverMistA { 0%,100% { transform: translate(0,0); } 50% { transform: translate(6vw,4vh); } }
+@keyframes coverMistB { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-5vw,-3vh); } }
+
+/* ---------- COVER FIREFLY FIELD (populated by JS) ---------- */
+.cover-firefly-field { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.cover-firefly { position: absolute; }
+.cover-firefly svg { width: 100%; height: 100%; }
+.cover-firefly.drift-a { animation: coverFlyDriftA linear infinite; }
+.cover-firefly.drift-b { animation: coverFlyDriftB linear infinite; }
+.cover-firefly.drift-c { animation: coverFlyDriftC linear infinite; }
+@keyframes coverFlyDriftA { 0% { transform: translate(0,0); } 25% { transform: translate(14px,-22px); } 50% { transform: translate(-8px,-10px); } 75% { transform: translate(18px,6px); } 100% { transform: translate(0,0); } }
+@keyframes coverFlyDriftB { 0% { transform: translate(0,0); } 30% { transform: translate(-16px,-14px); } 60% { transform: translate(10px,-24px); } 100% { transform: translate(0,0); } }
+@keyframes coverFlyDriftC { 0% { transform: translate(0,0); } 40% { transform: translate(12px,18px); } 70% { transform: translate(-14px,8px); } 100% { transform: translate(0,0); } }
+
+/* ---------- ARCH BLOOM-IN (grows on cover appear) ---------- */
+.arch-branch { fill: none; stroke: var(--emerald-deep); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 320; stroke-dashoffset: 320; animation: archGrow 1.8s cubic-bezier(.34,1.2,.4,1) .15s forwards; }
+.branch-right { animation-delay: .35s; }
+@keyframes archGrow { to { stroke-dashoffset: 0; } }
+.arch-leaves circle { fill: var(--moss); opacity: 0; transform-origin: center; animation: leafBloom .6s ease-out forwards; }
+.arch-leaves circle:nth-child(1) { animation-delay: 1.5s; } .arch-leaves circle:nth-child(2) { animation-delay: 1.6s; }
+.arch-leaves circle:nth-child(3) { animation-delay: 1.7s; } .arch-leaves circle:nth-child(4) { animation-delay: 1.8s; }
+.arch-leaves circle:nth-child(5) { animation-delay: 1.9s; }
+@keyframes leafBloom { from { opacity: 0; transform: scale(0); } to { opacity: .85; transform: scale(1); } }
+
+/* ---------- GATE CURTAINS (dramatic open animation) ----------
+   Two panels matching the cover background that part outward like a
+   garden gate swinging open, driven by initGateOpen() in script.js
+   (replacing the engine's plain fade for this theme). */
+.gate-curtain {
+  position: absolute; top: 0; bottom: 0; width: 52%; z-index: 0;
+  background: radial-gradient(ellipse at 50% 20%, var(--emerald) 0%, var(--emerald-deep) 80%);
+  transition: transform 1.1s cubic-bezier(.76,0,.24,1), opacity 1.1s ease;
+}
+.gate-curtain-left { left: 0; transform-origin: left center; }
+.gate-curtain-right { right: 0; transform-origin: right center; }
+.cover.is-opening .gate-curtain-left { transform: translateX(-100%) rotateY(-12deg); opacity: 0; }
+.cover.is-opening .cover-mist { opacity: 0; transition: opacity .6s ease; }
+.cover.is-opening .gate-curtain-right { transform: translateX(100%) rotateY(12deg); opacity: 0; }
+
 /* ---------- MAGIC MIST (signature #2) ----------
    Two slow-drifting translucent blur layers, fixed behind everything. */
 .mist-layer { position: fixed; z-index: -4; pointer-events: none; border-radius: 50%; filter: blur(40px); opacity: .35; }
@@ -62,10 +105,10 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 600; color: 
 .loading-initials { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-family: "Cormorant Garamond", serif; color: var(--gold-glow); font-size: 1.1rem; white-space: nowrap; }
 @keyframes loadingRingDraw { 0% { stroke-dashoffset: 240; transform: rotate(0deg); } 50% { stroke-dashoffset: 40; } 100% { stroke-dashoffset: 240; transform: rotate(360deg); } }
 
-/* ---------- ENCHANTED ARCH (cover, signature #3) ---------- */
-.enchanted-arch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 84%; max-width: 320px; height: 92%; pointer-events: none; }
-.arch-branch { fill: none; stroke: var(--emerald-deep); stroke-width: 4; stroke-linecap: round; }
-.arch-leaves circle { fill: var(--moss); opacity: .85; }
+/* ---------- ENCHANTED ARCH (cover, signature #3) ----------
+   Animated bloom-in version defined earlier in this file (near
+   .cover-mist); kept this section header for navigation only. */
+.enchanted-arch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 84%; max-width: 320px; height: 92%; pointer-events: none; z-index: 1; }
 
 /* ---------- GLOWING VINE DIVIDER (signature #4) ---------- */
 .vine-divider { width: 150px; height: 38px; margin: 0 auto 22px; display: block; overflow: visible; opacity: 0; transform: scaleX(.5); transition: opacity .8s ease, transform .8s cubic-bezier(.16,.84,.32,1); }
@@ -101,6 +144,7 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 600; color: 
 .layer-back { width: 26px; height: 26px; top: -8px; left: -6px; opacity: .5; }
 .layer-mid { width: 34px; height: 40px; top: 42%; right: -10px; opacity: .35; }
 .layer-front { width: 20px; height: 20px; bottom: -6px; left: 16%; opacity: .55; }
+.layer-extra { width: 16px; height: 16px; top: 16%; left: 38%; opacity: .4; }
 .parallax-float { width: 100%; height: 100%; }
 .float-slow { animation: gardenFloat 13s ease-in-out infinite alternate; }
 .float-med { animation: gardenFloat 9s ease-in-out infinite alternate-reverse; }
@@ -112,6 +156,45 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 600; color: 
 }
 .parallax-layer .leaf-fill { fill: var(--moss); opacity: .7; }
 .parallax-layer .leaf-vein { stroke: var(--emerald); opacity: .4; }
+
+/* Light trail behind firefly motifs in the parallax field — a soft
+   elongated glow smear that follows the float direction, giving the
+   motion a "living light" feel rather than a static dot moving around. */
+.parallax-layer .fly-glow { filter: blur(2px) drop-shadow(0 0 5px rgba(232,210,122,.7)); }
+.float-slow .fly-core, .float-med .fly-core, .float-fast .fly-core { filter: drop-shadow(0 0 3px rgba(255,246,214,.9)); }
+
+/* More organic per-instance float variants (randomized via nth-child in
+   addition to the base float-slow/med/fast speeds), so motion doesn't
+   read as simple synchronized up-down. */
+.float-slow:nth-of-type(3n) { animation-name: gardenFloatVariantA; }
+.float-med:nth-of-type(3n) { animation-name: gardenFloatVariantB; }
+.float-fast:nth-of-type(2n) { animation-name: gardenFloatVariantA; }
+@keyframes gardenFloatVariantA {
+  0%   { transform: translate(0,0) rotate(0deg); }
+  30%  { transform: translate(-9px,-11px) rotate(-7deg); }
+  62%  { transform: translate(6px,-18px) rotate(5deg); }
+  100% { transform: translate(3px,4px) rotate(-3deg); }
+}
+@keyframes gardenFloatVariantB {
+  0%   { transform: translate(0,0) rotate(0deg); }
+  35%  { transform: translate(11px,7px) rotate(9deg); }
+  68%  { transform: translate(-7px,-13px) rotate(-6deg); }
+  100% { transform: translate(-4px,5px) rotate(4deg); }
+}
+
+/* ---------- FALLING PETALS (continuous, page-wide) ----------
+   Distinct from the parallax field — petals drift down the whole page
+   for as long as it's open, spawned by spawnPetals() in script.js. */
+.petal-field { position: fixed; inset: 0; z-index: 38; pointer-events: none; overflow: hidden; }
+.falling-petal { position: absolute; top: -24px; animation: petalDrop linear infinite; }
+.falling-petal svg { width: 100%; height: 100%; display: block; }
+.petal-shape { fill: var(--blush); opacity: .85; }
+@keyframes petalDrop {
+  0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+  8%   { opacity: .85; }
+  92%  { opacity: .6; }
+  100% { transform: translateY(110vh) translateX(var(--drift, 30px)) rotate(280deg); opacity: 0; }
+}
 
 /* ---------- COVER ---------- */
 .cover {
@@ -317,4 +400,10 @@ html { scroll-behavior: smooth; }
   .fairy-dust::before, .fairy-dust::after { animation: none; opacity: .5; }
   .loading-ring { animation: none; stroke-dashoffset: 40; }
   html { scroll-behavior: auto; }
+  .arch-branch { animation: none; stroke-dashoffset: 0; }
+  .arch-leaves circle { animation: none; opacity: .85; }
+  .cover-mist { animation: none; }
+  .cover-firefly { animation: none; }
+  .gate-curtain { transition: none; }
+  .falling-petal { animation: none; opacity: 0; }
 }
