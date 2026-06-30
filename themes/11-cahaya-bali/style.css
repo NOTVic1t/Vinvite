@@ -136,6 +136,33 @@ h1, h2, h3 { font-family: "Marcellus", serif; font-weight: 400; color: var(--tea
 .parallax-layer #waveRing circle, .parallax-layer [href="#waveRing"] { fill: none; }
 #waveRing circle { fill: none; stroke: var(--gold); stroke-width: 2; }
 
+/* ---------- LOADING SCREEN (monogram) ---------- */
+.loading-screen {
+  position: fixed; inset: 0; z-index: 100; background: var(--teal-deep);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity .6s ease, visibility .6s ease;
+}
+.loading-screen.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.loading-monogram { position: relative; width: 90px; height: 90px; }
+.loading-ring { fill: none; stroke: var(--gold); stroke-width: 1.5; stroke-dasharray: 240; stroke-dashoffset: 240; animation: loadingRingDraw 1.6s ease-in-out infinite; transform-origin: center; }
+.loading-initials { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-family: "Marcellus", serif; color: var(--gold); font-size: 1.1rem; white-space: nowrap; }
+@keyframes loadingRingDraw {
+  0%   { stroke-dashoffset: 240; transform: rotate(0deg); }
+  50%  { stroke-dashoffset: 40; }
+  100% { stroke-dashoffset: 240; transform: rotate(360deg); }
+}
+
+/* ---------- KINTSUGI GOLD-CRACK FRAME (couple photo) ----------
+   A gold-leaf "repaired crack" overlay across each couple photo. */
+.couple-photo { position: relative; }
+.kintsugi-crack { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+.kintsugi-crack path { fill: none; stroke: var(--gold); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; opacity: .85; filter: drop-shadow(0 0 1.5px rgba(255,255,255,.6)); }
+
+/* ---------- SMOOTH-SCROLL SNAP ---------- */
+html { scroll-behavior: smooth; }
+#main-content { scroll-snap-type: y proximity; }
+.section, .footer { scroll-snap-align: start; }
+
 /* ---------- COVER ---------- */
 .cover {
   position: fixed; inset: 0; z-index: 50; overflow: hidden;
@@ -338,4 +365,6 @@ h1, h2, h3 { font-family: "Marcellus", serif; font-weight: 400; color: var(--tea
   .lagoon-sweep::before { animation: none; opacity: 0; }
   .section, .cover { animation: none; }
   .falling-petal { animation: none; opacity: 0; }
+  .loading-ring { animation: none; stroke-dashoffset: 40; }
+  html { scroll-behavior: auto; }
 }

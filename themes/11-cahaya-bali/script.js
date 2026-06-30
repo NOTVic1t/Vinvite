@@ -6,6 +6,7 @@ window.renderInvitation = function (data) {
   // ---------------------------------------------------------------------
   // 1) UI / ANIMATION WIRING — always runs, regardless of data shape.
   // ---------------------------------------------------------------------
+  initLoadingScreen();
   window.initCoverGate("#cover-screen", "#open-invitation-btn");
   spawnPetals();
 
@@ -31,6 +32,10 @@ window.renderInvitation = function (data) {
     document.querySelector(".cover-names").innerHTML = `${groomShort} <span>&amp;</span> ${brideShort}`;
     document.getElementById("hero-names").innerHTML = `${groomShort} &amp; ${brideShort}`;
     document.title = `Undangan Pernikahan ${groomShort} & ${brideShort}`;
+    const loadingInitials = document.getElementById("loading-initials");
+    if (loadingInitials && groomShort && brideShort) {
+      loadingInitials.innerHTML = `${groomShort.charAt(0)}&nbsp;&amp;&nbsp;${brideShort.charAt(0)}`;
+    }
   } catch (e) { console.error("[Vinvite] names render failed:", e); }
 
   try {
@@ -179,6 +184,32 @@ window.renderInvitation = function (data) {
     });
   } catch (e) { console.error("[Vinvite] section backgrounds failed:", e); }
 };
+
+// -----------------------------------------------------------------------------
+// LOADING SCREEN — a brief monogram fade-in shown before the cover, hidden
+// once the page (images/fonts) finishes loading, with a safety timeout so
+// it never gets stuck if "load" fires unusually late or never.
+// -----------------------------------------------------------------------------
+function initLoadingScreen() {
+  const screen = document.getElementById("loading-screen");
+  if (!screen) return;
+
+  let hidden = false;
+  function hide() {
+    if (hidden) return;
+    hidden = true;
+    screen.classList.add("is-hidden");
+    setTimeout(() => screen.remove(), 700);
+  }
+
+  if (document.readyState === "complete") {
+    setTimeout(hide, 500);
+  } else {
+    window.addEventListener("load", () => setTimeout(hide, 400), { once: true });
+  }
+  // Safety net: never block the invitation for more than 2.5s.
+  setTimeout(hide, 2500);
+}
 
 // -----------------------------------------------------------------------------
 // FALLING FRANGIPANI — continuously spawned petals drifting down the whole

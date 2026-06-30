@@ -11,6 +11,18 @@
 </head>
 <body>
 
+<!-- LOADING SCREEN — brief monogram fade-in before the cover reveals
+     itself, removed by initLoadingScreen() in script.js once fonts/page
+     are ready (or after a safety timeout, whichever comes first). -->
+<div id="loading-screen" class="loading-screen">
+  <div class="loading-monogram">
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <circle class="loading-ring" cx="50" cy="50" r="38" />
+    </svg>
+    <span class="loading-initials" id="loading-initials">W&nbsp;&amp;&nbsp;S</span>
+  </div>
+</div>
+
 <!-- Shared symbols: candi bentar gate half, frangipani flower, lotus. -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -95,6 +107,11 @@
     <div class="couple-grid" data-reveal>
       <div class="couple-card">
         <div class="couple-photo">
+          <svg class="kintsugi-crack" viewBox="0 0 160 190" aria-hidden="true">
+            <path d="M0 60 L42 72 L38 100 L70 96 L62 130 L100 118 L96 160 L160 150" />
+            <path d="M42 72 L55 40 L90 50 L80 0" />
+            <path d="M70 96 L110 90 L120 60 L160 70" />
+          </svg>
           <img id="groom-photo" data-parallax data-parallax-speed="0.05" src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?q=80&w=600&auto=format&fit=crop" alt="" />
         </div>
         <h3 id="groom-name">Wira Nugraha</h3>
@@ -103,6 +120,11 @@
       <div class="couple-amp">&amp;</div>
       <div class="couple-card">
         <div class="couple-photo">
+          <svg class="kintsugi-crack" viewBox="0 0 160 190" aria-hidden="true">
+            <path d="M0 60 L42 72 L38 100 L70 96 L62 130 L100 118 L96 160 L160 150" />
+            <path d="M42 72 L55 40 L90 50 L80 0" />
+            <path d="M70 96 L110 90 L120 60 L160 70" />
+          </svg>
           <img id="bride-photo" data-parallax data-parallax-speed="0.05" src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=600&auto=format&fit=crop" alt="" />
         </div>
         <h3 id="bride-name">Sekar Maharani</h3>
