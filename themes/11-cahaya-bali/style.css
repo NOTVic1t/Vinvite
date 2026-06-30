@@ -152,16 +152,11 @@ h1, h2, h3 { font-family: "Marcellus", serif; font-weight: 400; color: var(--tea
   100% { stroke-dashoffset: 240; transform: rotate(360deg); }
 }
 
-/* ---------- KINTSUGI GOLD-CRACK FRAME (couple photo) ----------
-   A gold-leaf "repaired crack" overlay across each couple photo. */
-.couple-photo { position: relative; }
-.kintsugi-crack { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
-.kintsugi-crack path { fill: none; stroke: var(--gold); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; opacity: .85; filter: drop-shadow(0 0 1.5px rgba(255,255,255,.6)); }
-
-/* ---------- SMOOTH-SCROLL SNAP ---------- */
+/* ---------- SMOOTH SCROLL ----------
+   Scroll-snap was removed: sections vary in height (e.g. the guestbook
+   list grows with comments), and snap was forcing the viewport to land
+   mid-section instead of at its top, making sections look "cut off". */
 html { scroll-behavior: smooth; }
-#main-content { scroll-snap-type: y proximity; }
-.section, .footer { scroll-snap-align: start; }
 
 /* ---------- COVER ---------- */
 .cover {
