@@ -1,10 +1,10 @@
 {
   "slug": "12-padi-sunda",
-  "name": "Padi Sunda",
-  "category": "Traditional Sundanese",
-  "status": "planned",
-  "palette": { "rice_green": "#5C7A3B", "earth_brown": "#6B4A2F", "cream": "#F4EEDD", "maroon": "#6E2A2A", "ink": "#2A2118" },
-  "type": { "display": "Cormorant Garamond", "body": "Mukta" },
-  "signature": "Terraced rice-paddy line art forms the horizon behind the hero section; a kujang blade silhouette marks the closing scene.",
-  "brief": "West Java / Sundanese cultural wedding — rice-terrace imagery, earthy green and brown, regional rather than generically 'traditional'."
+  "name": "Enchanted Garden",
+  "category": "Fairy-tale Woodland Romance",
+  "status": "built",
+  "palette": { "emerald": "#1F4D3C", "emerald_deep": "#122E24", "moss": "#6B9080", "blush": "#F4D9D0", "cream": "#F6F2E9", "gold_glow": "#E8D27A", "ink": "#1C2620" },
+  "type": { "display": "Cormorant Garamond", "body": "Quicksand" },
+  "signature": "A living branch arch frames the cover like an enchanted garden gate, blinking fireflies and drifting magic mist fill the whole page, a glowing vine flourish blooms as the divider between every section, couple photos sit inside a six-leaf glowing medallion, fairy-dust sparkles twinkle around the opening quote, and a maximized three-layer field of floating + parallaxed fireflies and leaves covers all 14 sections.",
+  "brief": "Built entirely from scratch, by explicit request, with no relation to the prior 'Padi Sunda' brief — a fairy-tale woodland romance in deep emerald and warm firefly gold, dreamy rather than ceremonial. Includes the full standard section set (Susunan Acara with icons, Dress Code, Hashtag & Instagram, quick-nav, auto-scroll, per-section background photos, admin-controlled and independently togglable)."
 }
