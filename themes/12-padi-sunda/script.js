@@ -42,11 +42,19 @@ window.renderInvitation = function (data) {
   try {
     if (data.cover_image_url) {
       const cover = document.getElementById("cover-screen");
+      const curtainImage = `radial-gradient(ellipse at 50% 20%, rgba(31,77,60,.55) 0%, rgba(18,46,36,.82) 80%), url('${data.cover_image_url}')`;
       if (cover) {
-        cover.style.backgroundImage = `radial-gradient(ellipse at 50% 20%, rgba(31,77,60,.55) 0%, rgba(18,46,36,.82) 80%), url('${data.cover_image_url}')`;
+        cover.style.backgroundImage = curtainImage;
         cover.style.backgroundSize = "cover";
         cover.style.backgroundPosition = "center";
       }
+      // The two .gate-curtain panels need the SAME photo set explicitly —
+      // background-attachment:fixed makes both panels read as one
+      // continuous image (split by the panel edges) rather than each
+      // panel showing a stretched, disconnected crop of its own.
+      document.querySelectorAll(".gate-curtain").forEach(el => {
+        el.style.backgroundImage = curtainImage;
+      });
     }
   } catch (e) { console.error("[Vinvite] cover photo failed:", e); }
 
