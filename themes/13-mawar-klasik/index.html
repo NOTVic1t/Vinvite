@@ -3,21 +3,342 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mawar Klasik — Segera Hadir</title>
-<style>
-  body { margin:0; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
-         background:#181614; color:#EFE9DF; font-family: Georgia, serif; text-align:center; padding:32px; }
-  h1 { font-weight:500; font-size:1.8rem; margin-bottom:10px; }
-  p { color:#A89F8E; font-size:.95rem; max-width:440px; line-height:1.6; }
-  .tag { font-size:.68rem; letter-spacing:.25em; text-transform:uppercase; color:#B08C4F; margin-bottom:18px; }
-  .credit { margin-top:36px; font-size:.65rem; color:#5c574c; letter-spacing:.08em; }
-</style>
+<title>Undangan Pernikahan — Mawar Klasik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <p class="tag">Tema Classic Romantic Floral</p>
-  <h1>Mawar Klasik</h1>
-  <p>Timelessly romantic, rose-centric, deep red and blush — for couples who want florals without going boho or pastel.</p>
-  <p style="margin-top:18px;">Tema ini sedang dalam tahap pembuatan dan akan tersedia pada batch build berikutnya. Lihat <code>theme.json</code> di folder ini untuk brief desainnya.</p>
-  <p class="credit">Vinvite — By Victor Rizki Valentiano</p>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Full rose: outer petals + inner petals + center, all drawn in via stroke-dasharray -->
+    <symbol id="roseBloom" viewBox="0 0 120 120">
+      <g class="rose-outer">
+        <path d="M60 20 C44 28 36 48 42 62 C48 76 60 80 60 80 C60 80 72 76 78 62 C84 48 76 28 60 20 Z" />
+        <path d="M60 20 C44 28 36 48 42 62 C48 76 60 80 60 80 C60 80 72 76 78 62 C84 48 76 28 60 20 Z" transform="rotate(72 60 60)" />
+        <path d="M60 20 C44 28 36 48 42 62 C48 76 60 80 60 80 C60 80 72 76 78 62 C84 48 76 28 60 20 Z" transform="rotate(144 60 60)" />
+        <path d="M60 20 C44 28 36 48 42 62 C48 76 60 80 60 80 C60 80 72 76 78 62 C84 48 76 28 60 20 Z" transform="rotate(216 60 60)" />
+        <path d="M60 20 C44 28 36 48 42 62 C48 76 60 80 60 80 C60 80 72 76 78 62 C84 48 76 28 60 20 Z" transform="rotate(288 60 60)" />
+      </g>
+      <g class="rose-inner">
+        <path d="M60 36 C52 40 48 52 52 60 C55 66 60 68 60 68 C60 68 65 66 68 60 C72 52 68 40 60 36 Z" />
+        <path d="M60 36 C52 40 48 52 52 60 C55 66 60 68 60 68 C60 68 65 66 68 60 C72 52 68 40 60 36 Z" transform="rotate(120 60 60)" />
+        <path d="M60 36 C52 40 48 52 52 60 C55 66 60 68 60 68 C60 68 65 66 68 60 C72 52 68 40 60 36 Z" transform="rotate(240 60 60)" />
+      </g>
+      <circle class="rose-heart" cx="60" cy="60" r="6" />
+      <g class="rose-leaves">
+        <path d="M60 80 C54 90 44 95 38 100" /><path d="M60 80 C64 92 56 98 50 105" />
+        <path d="M60 80 C66 90 76 95 82 100" /><path d="M60 80 C56 92 64 98 70 105" />
+      </g>
+      <path class="rose-stem" d="M60 80 L60 115" />
+    </symbol>
+    <!-- Rose petal for falling particles -->
+    <symbol id="rosePetal" viewBox="0 0 28 36">
+      <path d="M14 2 C6 8 4 22 8 30 C10 34 14 36 14 36 C14 36 18 34 20 30 C24 22 22 8 14 2 Z" />
+    </symbol>
+    <!-- Perfume bottle ornament -->
+    <symbol id="perfumeBottle" viewBox="0 0 50 80">
+      <rect class="bottle-body" x="10" y="28" width="30" height="44" rx="6" />
+      <rect class="bottle-neck" x="18" y="18" width="14" height="12" rx="2" />
+      <rect class="bottle-cap" x="16" y="12" width="18" height="8" rx="3" />
+      <ellipse class="bottle-gem" cx="25" cy="50" rx="8" ry="10" />
+      <path class="bottle-shine" d="M18 36 C20 33 24 32 27 34" />
+    </symbol>
+    <!-- Wreath leaf for couple photo frame -->
+    <symbol id="wreathLeaf" viewBox="0 0 16 28">
+      <path class="wreath-fill" d="M8 1 C3 6 2 16 4 22 C6 26 8 28 8 28 C8 28 10 26 12 22 C14 16 13 6 8 1 Z" />
+    </symbol>
+  </defs>
+</svg>
+
+<!-- LOADING SCREEN -->
+<div id="loading-screen" class="loading-screen">
+  <div class="loading-monogram">
+    <svg class="loading-rose-ring" viewBox="0 0 100 100" aria-hidden="true">
+      <circle class="loading-ring" cx="50" cy="50" r="38" />
+    </svg>
+    <span class="loading-initials" id="loading-initials">R&nbsp;&amp;&nbsp;A</span>
+  </div>
+</div>
+
+<div id="scroll-progress" class="scroll-progress"></div>
+
+<!-- COVER GATE -->
+<section id="cover-screen" class="cover">
+  <div class="cover-rose-hero" aria-hidden="true">
+    <svg class="hero-rose" viewBox="0 0 120 120"><use href="#roseBloom" /></svg>
+    <div class="dew-drops" id="cover-dew"></div>
+  </div>
+  <div class="cover-frame">
+    <p class="cover-eyebrow">Undangan Pernikahan</p>
+    <h1 class="cover-names shimmer-gold" id="cover-names-el">Rama <span>&amp;</span> Adelia</h1>
+    <p class="cover-to">Kepada Yth.</p>
+    <p class="cover-guest" id="cover-guest-name">Bapak/Ibu Tamu Undangan</p>
+    <button id="open-invitation-btn" class="btn-open">Buka Undangan</button>
+  </div>
+</section>
+
+<main id="main-content">
+
+  <!-- HERO — rose bloom on scroll -->
+  <section class="section hero" id="section-hero">
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 28 36"><use href="#rosePetal" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 120 120"><use href="#roseBloom" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 50 80"><use href="#perfumeBottle" /></svg></div></div>
+    <p class="eyebrow">The Wedding Of</p>
+    <h1 class="hero-names shimmer-gold" id="hero-names" data-reveal>Rama &amp; Adelia</h1>
+    <div class="rose-divider" data-rule>
+      <svg class="divider-rose" viewBox="0 0 120 120"><use href="#roseBloom" /></svg>
+    </div>
+    <p class="hero-date" data-reveal>17 Oktober 2026</p>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="section quote" data-section="quote">
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 120 120"><use href="#roseBloom" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 50 80"><use href="#perfumeBottle" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 28 36"><use href="#rosePetal" /></svg></div></div>
+    <p class="quote-text" id="quote-text" data-reveal>&ldquo;Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu cenderung dan merasa tenteram kepadanya.&rdquo;</p>
+    <p id="quote-source" class="quote-source">QS. Ar-Rum: 21</p>
+  </section>
+
+  <!-- COUPLE — rose wreath frame -->
+  <section class="section couple" id="section-couple">
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 50 80"><use href="#perfumeBottle" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 28 36"><use href="#rosePetal" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 120 120"><use href="#roseBloom" /></svg></div></div>
+    <div class="rose-divider" data-rule>
+      <svg class="divider-rose" viewBox="0 0 120 120"><use href="#roseBloom" /></svg>
+    </div>
+    <p class="eyebrow">Mempelai</p>
+    <div class="couple-grid" data-reveal>
+      <div class="couple-card">
+        <div class="rose-wreath-frame">
+          <svg class="wreath-ring" viewBox="0 0 200 200" aria-hidden="true" id="wreath-groom"></svg>
+          <div class="couple-photo">
+            <img id="groom-photo" data-parallax data-parallax-speed="0.05" src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?q=80&w=600&auto=format&fit=crop" alt="" />
+          </div>
+        </div>
+        <h3 id="groom-name">Rama Satria</h3>
+        <p id="groom-parents">Putra dari Bapak Hendra &amp; Ibu Lestari</p>
+      </div>
+      <div class="couple-amp">&amp;</div>
+      <div class="couple-card">
+        <div class="rose-wreath-frame">
+          <svg class="wreath-ring" viewBox="0 0 200 200" aria-hidden="true" id="wreath-bride"></svg>
+          <div class="couple-photo">
+            <img id="bride-photo" data-parallax data-parallax-speed="0.05" src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=600&auto=format&fit=crop" alt="" />
+          </div>
+        </div>
+        <h3 id="bride-name">Adelia Putri</h3>
+        <p id="bride-parents">Putri dari Bapak Hartono &amp; Ibu Suryani</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <section class="section countdown-section" data-section="countdown" id="section-countdown">
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 28 36"><use href="#rosePetal" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 120 120"><use href="#roseBloom" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 50 80"><use href="#perfumeBottle" /></svg></div></div>
+    <div class="rose-divider" data-rule>
+      <svg class="divider-rose" viewBox="0 0 120 120"><use href="#roseBloom" /></svg>
+    </div>
+    <p class="eyebrow" data-section-label="countdown">Menuju Hari Bahagia</p>
+    <div class="countdown" data-reveal>
+      <div class="cd-item"><span id="cd-d">00</span><label>Hari</label></div>
+      <div class="cd-item"><span id="cd-h">00</span><label>Jam</label></div>
+      <div class="cd-item"><span id="cd-m">00</span><label>Menit</label></div>
+      <div class="cd-item"><span id="cd-s">00</span><label>Detik</label></div>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section class="section events-section" data-section="events" id="section-acara">
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 120 120"><use href="#roseBloom" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 50 80"><use href="#perfumeBottle" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 28 36"><use href="#rosePetal" /></svg></div></div>
+    <div class="rose-divider" data-rule>
+      <svg class="divider-rose" viewBox="0 0 120 120"><use href="#roseBloom" /></svg>
+    </div>
+    <p class="eyebrow" data-section-label="events">Acara</p>
+    <div class="event-grid" id="events-container" data-reveal></div>
+  </section>
+
+  <!-- SUSUNAN ACARA -->
+  <section class="section rundown-section" data-section="rundown">
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 50 80"><use href="#perfumeBottle" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 28 36"><use href="#rosePetal" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 120 120"><use href="#roseBloom" /></svg></div></div>
+    <div class="rose-divider" data-rule>
+      <svg class="divider-rose" viewBox="0 0 120 120"><use href="#roseBloom" /></svg>
+    </div>
+    <p class="eyebrow" data-section-label="rundown">Susunan Acara</p>
+    <div class="rundown-timeline" id="rundown-container" data-reveal></div>
+  </section>
+
+  <!-- STORY -->
+  <section class="section story" data-section="story">
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 28 36"><use href="#rosePetal" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 120 120"><use href="#roseBloom" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 50 80"><use href="#perfumeBottle" /></svg></div></div>
+    <div class="rose-divider" data-rule>
+      <svg class="divider-rose" viewBox="0 0 120 120"><use href="#roseBloom" /></svg>
+    </div>
+    <p class="eyebrow" data-section-label="story">Kisah Kami</p>
+    <div class="story-timeline" id="story-timeline" data-reveal></div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="section gallery" data-section="gallery" id="section-galeri">
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 120 120"><use href="#roseBloom" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 50 80"><use href="#perfumeBottle" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 28 36"><use href="#rosePetal" /></svg></div></div>
+    <div class="rose-divider" data-rule>
+      <svg class="divider-rose" viewBox="0 0 120 120"><use href="#roseBloom" /></svg>
+    </div>
+    <p class="eyebrow" data-section-label="gallery">Galeri</p>
+    <div class="gallery-grid" id="gallery-grid" data-reveal></div>
+  </section>
+
+  <!-- GIFT -->
+  <section class="section gift" data-section="gift">
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 50 80"><use href="#perfumeBottle" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 28 36"><use href="#rosePetal" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 120 120"><use href="#roseBloom" /></svg></div></div>
+    <div class="rose-divider" data-rule>
+      <svg class="divider-rose" viewBox="0 0 120 120"><use href="#roseBloom" /></svg>
+    </div>
+    <p class="eyebrow" data-section-label="gift">Tanda Kasih</p>
+    <p class="gift-intro">Doa restu Anda adalah hadiah yang paling berarti. Namun jika ingin memberi tanda kasih, kami menyediakan:</p>
+    <div class="gift-accounts" id="gift-accounts" data-reveal></div>
+  </section>
+
+  <!-- DRESS CODE -->
+  <section class="section dress-code-section" data-section="dress_code">
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 28 36"><use href="#rosePetal" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 120 120"><use href="#roseBloom" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 50 80"><use href="#perfumeBottle" /></svg></div></div>
+    <div class="rose-divider" data-rule>
+      <svg class="divider-rose" viewBox="0 0 120 120"><use href="#roseBloom" /></svg>
+    </div>
+    <p class="eyebrow" data-section-label="dress_code">Dress Code</p>
+    <div id="dress-code-container" data-reveal></div>
+  </section>
+
+  <!-- HASHTAG & INSTAGRAM -->
+  <section class="section hashtag-section" data-section="hashtag">
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 120 120"><use href="#roseBloom" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 50 80"><use href="#perfumeBottle" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 28 36"><use href="#rosePetal" /></svg></div></div>
+    <div class="rose-divider" data-rule>
+      <svg class="divider-rose" viewBox="0 0 120 120"><use href="#roseBloom" /></svg>
+    </div>
+    <p class="eyebrow" data-section-label="hashtag">Abadikan Momen</p>
+    <div id="hashtag-container" data-reveal></div>
+  </section>
+
+  <!-- RSVP — kontrak data tetap 3 field -->
+  <section class="section rsvp" data-section="rsvp" id="section-rsvp">
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 50 80"><use href="#perfumeBottle" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 28 36"><use href="#rosePetal" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 120 120"><use href="#roseBloom" /></svg></div></div>
+    <div class="rose-divider" data-rule>
+      <svg class="divider-rose" viewBox="0 0 120 120"><use href="#roseBloom" /></svg>
+    </div>
+    <p class="eyebrow">Konfirmasi Kehadiran</p>
+    <p id="social-proof" class="social-proof" hidden></p>
+    <form id="rsvp-form" class="form" data-reveal>
+      <input type="text" name="guest_name" placeholder="Nama Anda" required />
+      <select name="attendance" required>
+        <option value="">Konfirmasi Kehadiran</option>
+        <option value="hadir">Hadir</option>
+        <option value="tidak_hadir">Tidak Hadir</option>
+        <option value="ragu">Masih Ragu</option>
+      </select>
+      <input type="number" name="guest_count" min="1" max="5" value="1" placeholder="Jumlah Tamu" />
+      <button type="submit" class="btn-submit">Kirim Konfirmasi</button>
+    </form>
+    <p id="rsvp-success" class="form-success" hidden>Terima kasih atas konfirmasi Anda 🌹</p>
+  </section>
+
+  <!-- GUESTBOOK -->
+  <section class="section guestbook" data-section="guestbook">
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 28 36"><use href="#rosePetal" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 120 120"><use href="#roseBloom" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 50 80"><use href="#perfumeBottle" /></svg></div></div>
+    <div class="rose-divider" data-rule>
+      <svg class="divider-rose" viewBox="0 0 120 120"><use href="#roseBloom" /></svg>
+    </div>
+    <p class="eyebrow">Ucapan &amp; Doa</p>
+    <form id="guestbook-form" class="form">
+      <input type="text" name="name" placeholder="Nama Anda" required />
+      <textarea name="message" placeholder="Tulis ucapan & doa Anda" rows="3" required></textarea>
+      <button type="submit" class="btn-submit">Kirim Ucapan</button>
+    </form>
+    <div id="guestbook-list" class="wishes-list"></div>
+  </section>
+
+  <!-- CLOSING -->
+  <footer class="section footer">
+    <div class="parallax-layer layer-back" data-parallax data-parallax-speed="0.05"><div class="parallax-float float-slow"><svg viewBox="0 0 120 120"><use href="#roseBloom" /></svg></div></div>
+    <div class="parallax-layer layer-mid" data-parallax data-parallax-speed="0.13"><div class="parallax-float float-med"><svg viewBox="0 0 50 80"><use href="#perfumeBottle" /></svg></div></div>
+    <div class="parallax-layer layer-front" data-parallax data-parallax-speed="0.22"><div class="parallax-float float-fast"><svg viewBox="0 0 28 36"><use href="#rosePetal" /></svg></div></div>
+    <div class="rose-divider" data-rule>
+      <svg class="divider-rose" viewBox="0 0 120 120"><use href="#roseBloom" /></svg>
+    </div>
+    <p class="closing-text">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
+    <p class="closing-names">Rama &amp; Adelia</p>
+    <p class="credit">Made with Vinvite — By Victor Rizki Valentiano</p>
+  </footer>
+
+</main>
+
+<nav class="quicknav" id="quicknav" aria-label="Navigasi cepat">
+  <a href="#cover-screen" class="quicknav-link" aria-label="Beranda">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 11.5 12 4l9 7.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 10v10h13V10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+  <a href="#section-couple" class="quicknav-link" aria-label="Mempelai">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="9" cy="8.5" r="2.6"/><circle cx="16" cy="8.5" r="2.6"/><path d="M3.5 19c.6-3 3-5 5.5-5s4.9 2 5.5 5" stroke-linecap="round"/><path d="M11 19c.6-2.6 2.7-4.4 5-4.4s4.4 1.8 5 4.4" stroke-linecap="round"/></svg>
+  </a>
+  <a href="#section-acara" class="quicknav-link" data-nav-section="events" aria-label="Acara">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="5.5" width="16" height="14.5" rx="1"/><path d="M4 9.5h16M8 3.5v4M16 3.5v4" stroke-linecap="round"/></svg>
+  </a>
+  <a href="#section-galeri" class="quicknav-link" data-nav-section="gallery" aria-label="Galeri">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3.5" y="4.5" width="17" height="15" rx="1"/><circle cx="9" cy="10" r="1.7"/><path d="M4 17.5l4.5-4.5 3.5 3.5 2.5-2.5 5.5 5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+  <a href="#section-rsvp" class="quicknav-link" data-nav-section="rsvp" aria-label="Kehadiran">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="12" cy="12" r="8.5"/><path d="M8 12.3l2.8 2.8 5.2-5.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</nav>
+
+<div class="floating-controls">
+  <button id="autoscroll-toggle" class="control-btn" aria-label="Mulai scroll otomatis">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M7 9l5 4.5L17 9" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 14.5l5 4.5 5-4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button id="music-toggle" class="control-btn music-toggle" aria-label="Putar musik">♪</button>
+</div>
+<audio id="bg-music" src="" preload="none"></audio>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../../engine/config.js"></script>
+<script src="../../engine/supabase-client.js"></script>
+<script src="../../engine/sample-data.js"></script>
+<script src="../../engine/countdown.js"></script>
+<script src="../../engine/rsvp.js"></script>
+<script src="../../engine/guestbook.js"></script>
+<script src="../../engine/gallery.js"></script>
+<script src="../../engine/music-player.js"></script>
+<script src="../../engine/cover-gate.js"></script>
+<script src="../../engine/scroll-fx.js"></script>
+<script src="../../engine/demo-banner.js"></script>
+<script src="../../engine/maps-embed.js"></script>
+<script src="../../engine/social-proof.js"></script>
+<script src="../../engine/section-control.js"></script>
+<script src="../../engine/section-backgrounds.js"></script>
+<script src="script.js"></script>
+<script src="../../engine/data-loader.js"></script>
 </body>
 </html>

@@ -1,10 +1,10 @@
 {
   "slug": "13-mawar-klasik",
   "name": "Mawar Klasik",
-  "category": "Classic Romantic Floral",
-  "status": "planned",
-  "palette": { "deep_rose": "#7A2E3A", "blush": "#E9C9C9", "cream": "#FBF5EF", "gold": "#B68A4E", "ink": "#3A2A2A" },
+  "category": "Classic Romantic Floral Premium",
+  "status": "built",
+  "palette": { "deep_rose": "#7A2E3A", "rose_mid": "#A84455", "blush": "#E9C9C9", "cream": "#FBF5EF", "gold": "#B68A4E", "rose_gold": "#C9907A", "ink": "#3A2A2A" },
   "type": { "display": "Playfair Display", "body": "EB Garamond" },
-  "signature": "A single hand-drawn rose illustration that blooms (via SVG path animation) the first time the hero section scrolls into view.",
-  "brief": "Timelessly romantic, rose-centric, deep red and blush — for couples who want florals without going boho or pastel."
+  "signature": "A full rose blooms petal-by-petal via multi-stage SVG stroke+fill animation on the cover and each section divider; blush rose petals fall continuously across the page; couple photos sit inside an 18-leaf rose wreath frame; dew shimmer dots pulse on the cover rose; perfume bottle ornaments drift in the 3-layer parallax field; and a rose-gold foil shimmer sweeps the couple names.",
+  "brief": "Timelessly romantic, rose-centric premium upgrade — deep rose and blush without going boho or pastel. Includes full standard section set (Susunan Acara, Dress Code, Hashtag, quick-nav, auto-scroll, per-section background photos)."
 }
