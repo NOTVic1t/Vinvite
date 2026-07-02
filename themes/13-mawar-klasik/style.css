@@ -131,14 +131,17 @@ h1, h2, h3 { font-family: "Playfair Display", serif; font-weight: 700; color: va
 .layer-back { width: 52px; height: 52px; top: -14px; left: -10px; opacity: .18; }
 .layer-mid { width: 36px; height: 36px; top: 42%; right: -10px; opacity: .26; }
 .layer-front { width: 28px; height: 28px; bottom: -8px; left: 14%; opacity: .34; }
+.layer-extra { width: 22px; height: 22px; top: 22%; right: 18%; opacity: .28; }
 .parallax-float { width: 100%; height: 100%; }
 .float-slow { animation: roseFloat 13s ease-in-out infinite alternate; }
 .float-med { animation: roseFloat 9s ease-in-out infinite alternate-reverse; }
 .float-fast { animation: roseFloat 7s ease-in-out infinite alternate; }
 .float-slow:nth-of-type(3n) { animation-name: roseFloatB; }
 .float-med:nth-of-type(2n) { animation-name: roseFloatB; }
+.float-slow:nth-of-type(5n) { animation-name: roseFloatC; }
 @keyframes roseFloat { 0% { transform: translate(0,0) rotate(0deg); } 50% { transform: translate(7px,-12px) rotate(8deg); } 100% { transform: translate(-6px,9px) rotate(-6deg); } }
 @keyframes roseFloatB { 0% { transform: translate(0,0) rotate(0deg); } 35% { transform: translate(-9px,-8px) rotate(-7deg); } 70% { transform: translate(8px,-14px) rotate(6deg); } 100% { transform: translate(-3px,5px) rotate(-3deg); } }
+@keyframes roseFloatC { 0% { transform: translate(0,0) rotate(0deg) scale(1); } 40% { transform: translate(10px,6px) rotate(10deg) scale(1.08); } 80% { transform: translate(-8px,-10px) rotate(-8deg) scale(.95); } 100% { transform: translate(2px,3px) rotate(3deg) scale(1); } }
 
 /* ---------- LOADING SCREEN ---------- */
 .loading-screen { position: fixed; inset: 0; z-index: 100; background: var(--deep-rose); display: flex; align-items: center; justify-content: center; transition: opacity .6s ease, visibility .6s ease; }
