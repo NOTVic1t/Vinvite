@@ -29,6 +29,29 @@ h1, h2, h3 { font-family: "Bebas Neue", sans-serif; font-weight: 400; letter-spa
 }
 @keyframes silverShimmer { 0%,100% { background-position: 220% 0; } 50% { background-position: -20% 0; } }
 
+/* ---------- POLAROID CORNER (floating field accent) ---------- */
+.polaroid-corner { position: fixed; width: 34px; height: 34px; z-index: -3; pointer-events: none; border-top: 2px solid rgba(17,17,17,.15); border-left: 2px solid rgba(17,17,17,.15); }
+
+/* ---------- COVER LIGHT-LEAK SWEEP ---------- */
+.cover-light-leak { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.cover-light-leak::before {
+  content: ""; position: absolute; top: -30%; left: -80%; width: 60%; height: 160%;
+  background: linear-gradient(100deg, transparent, rgba(196,150,110,.22), transparent);
+  transform: skewX(-15deg);
+  animation: leakSweep 9s ease-in-out infinite;
+}
+@keyframes leakSweep { 0%, 70%, 100% { left: -80%; } 35% { left: 120%; } }
+
+/* ---------- DOUBLE EXPOSURE (couple names) ---------- */
+.double-exposure { position: relative; display: inline-block; }
+.double-exposure::after {
+  content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%;
+  color: rgba(17,17,17,.18); transform: translate(3px, 2px);
+  z-index: -1; -webkit-text-fill-color: rgba(17,17,17,.18);
+  animation: doubleDrift 5s ease-in-out infinite;
+}
+@keyframes doubleDrift { 0%,100% { transform: translate(3px, 2px); } 50% { transform: translate(-2px, 3px); } }
+
 /* ---------- SHUTTER STRIP REVEAL (signature #2) ----------
    4 horizontal strips that slide up simultaneously, like a camera
    shutter opening, revealing the page behind. Driven by initShutter()
@@ -36,16 +59,17 @@ h1, h2, h3 { font-family: "Bebas Neue", sans-serif; font-weight: 400; letter-spa
 .shutter-strip {
   position: absolute; left: 0; right: 0; height: 25%; z-index: 0;
   background: var(--black);
-  transition: transform 0.7s cubic-bezier(.76,0,.24,1);
+  transition: transform 0.85s cubic-bezier(.76,0,.24,1), filter 0.85s ease;
+  filter: blur(0px);
 }
 .ss-1 { top: 0; }
-.ss-2 { top: 25%; transition-delay: .06s; }
-.ss-3 { top: 50%; transition-delay: .12s; }
-.ss-4 { top: 75%; transition-delay: .18s; }
-.cover.is-opening .ss-1 { transform: translateY(-101%); }
-.cover.is-opening .ss-2 { transform: translateY(-101%); }
-.cover.is-opening .ss-3 { transform: translateY(-101%); }
-.cover.is-opening .ss-4 { transform: translateY(-101%); }
+.ss-2 { top: 25%; transition-delay: .12s; }
+.ss-3 { top: 50%; transition-delay: .24s; }
+.ss-4 { top: 75%; transition-delay: .36s; }
+.cover.is-opening .ss-1 { transform: translateY(-101%); filter: blur(6px); }
+.cover.is-opening .ss-2 { transform: translateY(-101%); filter: blur(6px); }
+.cover.is-opening .ss-3 { transform: translateY(-101%); filter: blur(6px); }
+.cover.is-opening .ss-4 { transform: translateY(-101%); filter: blur(6px); }
 
 /* ---------- MONO RULE DIVIDER (draw-in, signature #3) ---------- */
 .mono-rule { width: 0; height: 1px; background: var(--black); margin: 0 auto 22px; transition: width .9s cubic-bezier(.65,0,.35,1); position: relative; }
@@ -63,6 +87,11 @@ h1, h2, h3 { font-family: "Bebas Neue", sans-serif; font-weight: 400; letter-spa
   background: repeating-linear-gradient(0deg, rgba(0,0,0,.04) 0 1px, transparent 1px 3px);
   mix-blend-mode: multiply;
 }
+
+/* ---------- VIGNETTE PULSE (scroll-reactive) ---------- */
+.vignette-overlay { position: fixed; inset: 0; z-index: 39; pointer-events: none; background: radial-gradient(ellipse at center, transparent 55%, rgba(17,17,17,.14) 100%); opacity: .6; transition: opacity .4s ease; }
+.vignette-overlay.is-pulsing { animation: vignettePulse 1.1s ease-out; }
+@keyframes vignettePulse { 0% { opacity: .9; } 100% { opacity: .6; } }
 
 /* ---------- FALLING SILVER GRAIN (signature #6) ---------- */
 .grain-field { position: fixed; inset: 0; z-index: 38; pointer-events: none; overflow: hidden; }
@@ -86,8 +115,12 @@ h1, h2, h3 { font-family: "Bebas Neue", sans-serif; font-weight: 400; letter-spa
 .cross-line { stroke: var(--grey); stroke-width: 1; }
 .cross-dot { fill: var(--grey); }
 .grain-particle svg circle { fill: var(--grey); }
+.leak-band { fill: rgba(196,150,110,.55); }
+.thumb-frame { fill: none; stroke: var(--grey); stroke-width: 1; }
+.thumb-corner { stroke: var(--grey); stroke-width: 1.4; }
+.thumb-dot { fill: var(--grey); }
 
-/* 6 distinct float speeds/directions for maximum visual density without monotony */
+/* 8 distinct float speeds/directions for maximum visual density */
 .float-s1 { animation: monoFloat1 11s ease-in-out infinite alternate; }
 .float-s2 { animation: monoFloat2 8s ease-in-out infinite alternate-reverse; }
 .float-s3 { animation: monoFloat3 14s ease-in-out infinite alternate; }
@@ -100,6 +133,10 @@ h1, h2, h3 { font-family: "Bebas Neue", sans-serif; font-weight: 400; letter-spa
 @keyframes monoFloat4 { 0%{transform:translate(0,0) rotate(0deg);} 30%{transform:translate(-10px,6px) rotate(-9deg);} 70%{transform:translate(7px,-12px) rotate(7deg);} 100%{transform:translate(-3px,4px) rotate(-3deg);} }
 @keyframes monoFloat5 { 0%{transform:translate(0,0) rotate(0deg);} 60%{transform:translate(11px,-6px) rotate(12deg);} 100%{transform:translate(-7px,9px) rotate(-8deg);} }
 @keyframes monoFloat6 { 0%{transform:translate(0,0) rotate(0deg) scale(1);} 45%{transform:translate(-6px,-16px) rotate(-11deg) scale(1.08);} 100%{transform:translate(5px,6px) rotate(6deg) scale(.94);} }
+.float-s7 { animation: monoFloat7 10s ease-in-out infinite alternate-reverse; }
+.float-s8 { animation: monoFloat8 15s ease-in-out infinite alternate; }
+@keyframes monoFloat7 { 0%{transform:translate(0,0) rotate(0deg);} 50%{transform:translate(13px,4px) rotate(4deg);} 100%{transform:translate(-9px,-6px) rotate(-9deg);} }
+@keyframes monoFloat8 { 0%{transform:translate(0,0) rotate(0deg) scale(1);} 35%{transform:translate(-11px,9px) rotate(-6deg) scale(1.05);} 70%{transform:translate(8px,-13px) rotate(9deg) scale(.97);} 100%{transform:translate(-3px,-2px) rotate(-2deg) scale(1);} }
 
 /* ---------- LOADING SCREEN ---------- */
 .loading-screen { position: fixed; inset: 0; z-index: 100; background: var(--black); display: flex; align-items: center; justify-content: center; transition: opacity .6s ease, visibility .6s ease; }
@@ -283,6 +320,10 @@ html { scroll-behavior: smooth; }
   .float-s1,.float-s2,.float-s3,.float-s4,.float-s5,.float-s6 { animation: none; }
   .grain-particle { animation: none; opacity: 0; }
   .loading-ring { animation: none; stroke-dashoffset: 40; }
-  .shutter-strip { transition: none; }
+  .shutter-strip { transition: none; filter: none !important; }
+  .vignette-overlay { animation: none; }
+  .polaroid-corner { animation: none; }
+  .cover-light-leak::before { animation: none; opacity: 0; }
+  .double-exposure::after { animation: none; }
   html { scroll-behavior: auto; }
 }

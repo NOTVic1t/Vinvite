@@ -7,6 +7,8 @@ window.renderInvitation = function (data) {
   initLoadingScreen();
   initShutter();
   spawnGrain();
+  spawnPolaroidCorners();
+  initVignettePulse();
 
   const io = new IntersectionObserver((entries) => {
     entries.forEach(en => { if (en.isIntersecting) en.target.classList.add("is-visible"); });
@@ -25,7 +27,9 @@ window.renderInvitation = function (data) {
 
   try {
     document.getElementById("cover-guest-name").textContent = data.guest_name || "Bapak/Ibu Tamu Undangan";
-    document.querySelector(".cover-names").innerHTML = `${groomShort} <span>&amp;</span> ${brideShort}`;
+    const coverNamesEl = document.getElementById("cover-names-el");
+    coverNamesEl.innerHTML = `${groomShort} <span>&amp;</span> ${brideShort}`;
+    coverNamesEl.setAttribute("data-text", `${groomShort} & ${brideShort}`);
     document.getElementById("hero-names").innerHTML = `${groomShort} &amp; ${brideShort}`;
     document.title = `Undangan Pernikahan ${groomShort} & ${brideShort}`;
     const li = document.getElementById("loading-initials");
@@ -169,6 +173,46 @@ window.renderInvitation = function (data) {
 };
 
 // -----------------------------------------------------------------------------
+// POLAROID CORNERS — a handful of fixed L-shaped corner marks scattered
+// across the viewport, rotating slowly, purely decorative photography-
+// editorial texture (independent of scroll and the main parallax field).
+// -----------------------------------------------------------------------------
+function spawnPolaroidCorners() {
+  const field = document.getElementById("polaroid-corner-field");
+  if (!field) return;
+  const positions = [
+    { top: "8%", left: "6%", rot: 0 }, { top: "18%", right: "9%", rot: 90 },
+    { top: "62%", left: "4%", rot: 180 }, { top: "72%", right: "7%", rot: 270 },
+    { top: "40%", left: "88%", rot: 45 },
+  ];
+  field.innerHTML = positions.map((p, i) => {
+    const posStyle = Object.entries(p).filter(([k]) => k !== "rot")
+      .map(([k, v]) => `${k}:${v}`).join(";");
+    return `<div class="polaroid-corner" style="${posStyle};transform:rotate(${p.rot}deg);animation-delay:${i * 0.6}s;"></div>`;
+  }).join("");
+}
+
+// -----------------------------------------------------------------------------
+// VIGNETTE PULSE — a brief intensity pulse on the fixed vignette overlay,
+// triggered (throttled) on scroll for a subtle "breathing" reaction.
+// -----------------------------------------------------------------------------
+function initVignettePulse() {
+  const vignette = document.getElementById("vignette-overlay");
+  if (!vignette || (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)) return;
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      vignette.classList.remove("is-pulsing");
+      void vignette.offsetWidth; // restart animation
+      vignette.classList.add("is-pulsing");
+      ticking = false;
+    });
+  }, { passive: true });
+}
+
+// -----------------------------------------------------------------------------
 // SHUTTER REVEAL — 4 horizontal strips slide upward simultaneously, like a
 // camera shutter opening. Replaces the engine's plain fade for this theme.
 // -----------------------------------------------------------------------------
@@ -189,7 +233,7 @@ function initShutter() {
       document.body.style.height = "";
       if (typeof window.vinviteTryAutoplayMusic === "function") window.vinviteTryAutoplayMusic();
     }, 200);
-    setTimeout(() => { cover.style.display = "none"; }, 200 + 900);
+    setTimeout(() => { cover.style.display = "none"; }, 200 + 1250);
   }, { once: true });
 }
 
@@ -210,8 +254,8 @@ function spawnGrain() {
     field.appendChild(p);
     setTimeout(() => p.remove(), 17000);
   }
-  for (let i = 0; i < 8; i++) setTimeout(one, i * 600);
-  setInterval(one, 1200);
+  for (let i = 0; i < 16; i++) setTimeout(one, i * 300);
+  setInterval(one, 600);
 }
 
 // -----------------------------------------------------------------------------
