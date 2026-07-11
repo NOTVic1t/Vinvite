@@ -1,10 +1,10 @@
 {
   "slug": "14-monokrom-galeri",
   "name": "Monokrom Galeri",
-  "category": "Minimal Editorial Photography",
-  "status": "planned",
-  "palette": { "black": "#111111", "white": "#FFFFFF", "grey": "#B7B7B7", "off_white": "#F2F2F2" },
-  "type": { "display": "a tall condensed grotesk", "body": "Helvetica-style neutral grotesk" },
-  "signature": "A magazine-style asymmetric photo grid with large duotone portraits and oversized running numerals, like an editorial spread rather than a card.",
-  "brief": "For photography-forward couples — almost no color, huge black-and-white portraits do the talking, layout reads like a print magazine, not a typical invite."
+  "category": "Minimal Editorial Photography Premium",
+  "status": "built",
+  "palette": { "black": "#111111", "white": "#FFFFFF", "grey": "#B7B7B7", "silver": "#D0D0D0", "off_white": "#F2F2F2" },
+  "type": { "display": "Bebas Neue", "body": "DM Sans" },
+  "signature": "Four horizontal shutter strips slide upward like a camera opening on cover open; silver shimmer sweeps the couple names; scanline duotone overlays dress the couple photos in editorial black-and-white; giant editorial index numbers (01–14) anchor every section; a draw-in mono rule replaces plain dividers; falling silver grain particles drift continuously; and a maximized 6-layer parallax + 6-speed float field of film strips, apertures, and focus crosshairs fills all 14 sections (84 total decorative elements).",
+  "brief": "Photography-forward couples who want almost no color — huge black-and-white portraits, layout reads like a print magazine not a typical invite. Premium upgrade with maximum floating density (6 layers per section), shutter-reveal animation, silver grain rain, and duotone scanline photo frames. Includes full standard section set."
 }
