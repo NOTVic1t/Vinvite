@@ -1,10 +1,10 @@
 {
   "slug": "15-aurora-modern",
   "name": "Aurora Modern",
-  "category": "Modern Gradient",
-  "status": "planned",
+  "category": "Modern Gradient Premium (Maximum Density)",
+  "status": "built",
   "palette": { "violet": "#6B4FA0", "teal": "#3FA9A0", "pink": "#E07BA8", "near_black": "#15131C", "white": "#F7F5FA" },
-  "type": { "display": "Clash Display / a geometric display face", "body": "Satoshi / a clean geometric sans" },
-  "signature": "A slow-shifting aurora-gradient mesh behind glassmorphic content cards, with content panels that feel like frosted glass over moving light.",
-  "brief": "For couples wanting something unmistakably contemporary and tech-forward rather than traditional — soft gradient motion, frosted-glass cards, confident modern type."
+  "type": { "display": "Space Grotesk", "body": "Manrope" },
+  "signature": "Three slow-drifting aurora gradient blobs blend behind real frosted-glass cards (genuine backdrop-filter blur, not a translucent color), a flowing gradient line replaces plain dividers, couple names shift through a violet-pink-teal gradient continuously, the cover glow intensifies on open, a techy dot-grid textures the background, and a maximized ten-layer field of glowing orbs, rings, and sparks (140 total decorative elements — the highest density of all 15 themes) floats and parallaxes across every section.",
+  "brief": "For couples wanting something unmistakably contemporary and tech-forward rather than traditional — soft gradient motion, frosted-glass cards, confident modern type, pushed to maximum liveliness as the flagship closing theme. Includes full standard section set (Susunan Acara, Dress Code, Hashtag, quick-nav, auto-scroll, per-section background photos)."
 }
