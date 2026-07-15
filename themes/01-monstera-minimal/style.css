@@ -361,15 +361,12 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; }
    engraved invitation"). Continuous slow wind-sway so it never sits fully
    still, independent of scroll position — reused via CSS rotation for
    whichever corner it's placed in. */
-.corner-orn { position: absolute; width: 34px; height: 34px; pointer-events: none; z-index: 3; }
-.corner-orn .bracket-line { fill: none; stroke: var(--gold); stroke-width: 1.2; opacity: .7; }
-.corner-orn .bracket-curl { fill: none; stroke: var(--gold-light); stroke-width: 1; opacity: .6; }
+.corner-orn { position: absolute; width: 34px; height: 34px; pointer-events: none; z-index: 3; color: var(--gold); }
 .corner-orn-tl { top: 14px; left: 14px; }
 .corner-orn-br { bottom: 14px; right: 14px; transform: rotate(180deg); }
 .cover .corner-orn-tl { top: 22px; left: 18px; width: 42px; height: 42px; }
 .cover .corner-orn-br { bottom: 22px; right: 18px; width: 42px; height: 42px; }
-.cover .corner-orn .bracket-line { stroke: rgba(255,255,255,.75); }
-.cover .corner-orn .bracket-curl { stroke: var(--gold-light); }
+.cover .corner-orn { color: rgba(255,255,255,.85); }
 
 .sway-a { animation: windSwayA 7s ease-in-out infinite; transform-origin: top left; }
 .sway-b { animation: windSwayB 8.5s ease-in-out infinite; transform-origin: bottom right; }
