@@ -361,11 +361,11 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; }
    engraved invitation"). Continuous slow wind-sway so it never sits fully
    still, independent of scroll position — reused via CSS rotation for
    whichever corner it's placed in. */
-.corner-orn { position: absolute; width: 34px; height: 34px; pointer-events: none; z-index: 3; color: var(--gold); }
-.corner-orn-tl { top: 14px; left: 14px; }
-.corner-orn-br { bottom: 14px; right: 14px; transform: rotate(180deg); }
-.cover .corner-orn-tl { top: 22px; left: 18px; width: 42px; height: 42px; }
-.cover .corner-orn-br { bottom: 22px; right: 18px; width: 42px; height: 42px; }
+.corner-orn { position: absolute; width: 46px; height: 46px; pointer-events: none; z-index: 3; color: var(--gold); }
+.corner-orn-tl { top: 12px; left: 12px; }
+.corner-orn-br { bottom: 12px; right: 12px; transform: rotate(180deg); }
+.cover .corner-orn-tl { top: 20px; left: 16px; width: 58px; height: 58px; }
+.cover .corner-orn-br { bottom: 20px; right: 16px; width: 58px; height: 58px; }
 .cover .corner-orn { color: rgba(255,255,255,.85); }
 
 .sway-a { animation: windSwayA 7s ease-in-out infinite; transform-origin: top left; }

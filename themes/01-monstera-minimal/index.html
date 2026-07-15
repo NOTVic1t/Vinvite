@@ -17,9 +17,18 @@
      <use> at 4 rotations for any corner. -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <symbol id="cornerBracket" viewBox="0 0 60 60">
-      <path d="M2 40 L2 8 Q2 2 8 2 L40 2" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.8" />
-      <path d="M8 2 C15 2 15 11 8 11 C3 11 3 6 8 6" fill="none" stroke="currentColor" stroke-width="1.1" opacity="0.6" />
+    <symbol id="cornerBracket" viewBox="0 0 100 100">
+      <!-- main stem sweeping from the corner point into a tightening spiral -->
+      <path d="M6 74 C6 42 14 20 32 11 C48 4 63 7 71 18 C77 27 72 36 63 35 C56 34 53 28 58 25 C62 23 65 26 63 29"
+        fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.85" />
+      <!-- secondary smaller curl branching off the base -->
+      <path d="M6 74 C17 71 24 63 23 52 C23 44 18 40 12 43"
+        fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity="0.65" />
+      <!-- small leaf accent partway up the stem -->
+      <path d="M30 13 C34 8 40 8 43 13 C40 17 34 17 30 13 Z"
+        fill="currentColor" opacity="0.5" />
+      <!-- accent dot at the spiral's core -->
+      <circle cx="64" cy="30" r="2" fill="currentColor" opacity="0.8" />
     </symbol>
   </defs>
 </svg>
@@ -33,8 +42,8 @@
   <div class="cover-bg" id="cover-bg"
     data-default-bg="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1400&auto=format&fit=crop"
     style="background-image:url('https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1400&auto=format&fit=crop')"></div>
-  <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
-  <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+  <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
+  <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
   <div class="cover-content">
     <p class="cover-eyebrow enter-left" style="animation-delay:.1s">Undangan Pernikahan</p>
     <h1 class="cover-names glow-text enter-right" style="animation-delay:.25s">Radit <span>&amp;</span> Nindy</h1>
@@ -48,8 +57,8 @@
 
   <!-- HERO -->
   <section class="section hero" id="sec-home" data-section="home">
-    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
-    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <p class="eyebrow">The Wedding Of</p>
     <h1 class="hero-names" id="hero-names" data-reveal>Radit &amp; Nindy</h1>
     <div class="hero-divider"></div>
@@ -58,16 +67,16 @@
 
   <!-- QUOTE -->
   <section class="section quote" id="sec-quote" data-section="quote">
-    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
-    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <p class="quote-text" id="quote-text" data-reveal>&ldquo;Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu cenderung dan merasa tenteram kepadanya.&rdquo;</p>
     <p class="quote-source" id="quote-source">QS. AR-RUM: 21</p>
   </section>
 
   <!-- COUPLE -->
   <section class="section couple" id="sec-couple" data-section="couple">
-    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
-    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="couple">Mempelai</p>
     <div class="couple-grid" data-reveal>
@@ -87,8 +96,8 @@
 
   <!-- COUNTDOWN -->
   <section class="section countdown-section" id="sec-countdown" data-section="countdown">
-    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
-    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="countdown">Menuju Hari Bahagia</p>
     <div class="countdown" data-reveal>
@@ -104,8 +113,8 @@
 
   <!-- EVENTS -->
   <section class="section events-section" id="sec-events" data-section="events">
-    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
-    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="events">Acara</p>
     <div class="event-grid" id="events-container" data-reveal></div>
@@ -113,8 +122,8 @@
 
   <!-- RUNDOWN -->
   <section class="section rundown-section" id="sec-rundown" data-section="rundown">
-    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
-    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="rundown">Susunan Acara</p>
     <div class="rundown-wrap">
@@ -125,8 +134,8 @@
 
   <!-- LOVE STORY -->
   <section class="section story" id="sec-story" data-section="story">
-    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
-    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="story">Kisah Kami</p>
     <div class="story-timeline" id="story-timeline" data-reveal></div>
@@ -134,8 +143,8 @@
 
   <!-- GALLERY -->
   <section class="section gallery" id="sec-gallery" data-section="gallery">
-    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
-    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="gallery">Galeri</p>
     <div class="gallery-grid" id="gallery-grid"></div>
@@ -143,8 +152,8 @@
 
   <!-- GIFT -->
   <section class="section gift" id="sec-gift" data-section="gift">
-    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
-    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="gift">Tanda Kasih</p>
     <p class="gift-intro">Doa restu Anda adalah hadiah yang paling berarti. Namun jika ingin memberi tanda kasih, kami menyediakan:</p>
@@ -153,8 +162,8 @@
 
   <!-- DRESS CODE -->
   <section class="section dress-code-section" id="sec-dress_code" data-section="dress_code">
-    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
-    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="dress_code">Dress Code</p>
     <div id="dress-code-container" data-reveal></div>
@@ -162,8 +171,8 @@
 
   <!-- HASHTAG -->
   <section class="section hashtag-section" id="sec-hashtag" data-section="hashtag">
-    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
-    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="hashtag">Tagar &amp; Instagram</p>
     <div id="hashtag-container" data-reveal></div>
@@ -171,8 +180,8 @@
 
   <!-- RSVP -->
   <section class="section rsvp" id="sec-rsvp" data-section="rsvp">
-    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
-    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="rsvp">Konfirmasi Kehadiran</p>
     <p id="social-proof" class="social-proof" hidden></p>
@@ -192,8 +201,8 @@
 
   <!-- GUESTBOOK -->
   <section class="section guestbook" id="sec-guestbook" data-section="guestbook">
-    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
-    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="guestbook">Ucapan &amp; Doa</p>
     <form id="guestbook-form" class="form">
@@ -206,8 +215,8 @@
 
   <!-- CLOSING -->
   <footer class="section footer">
-    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
-    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 100 100" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="closing-text">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
     <p class="closing-names">Radit &amp; Nindy</p>
