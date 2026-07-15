@@ -89,7 +89,7 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; }
 /* ---------- SECTIONS ---------- */
 .section {
   max-width: 640px; margin: 0 auto; padding: 80px 28px; text-align: center;
-  scroll-snap-align: start;
+  scroll-snap-align: start; position: relative; overflow: hidden;
 }
 #main-content { scroll-snap-type: y proximity; }
 
@@ -355,6 +355,84 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; }
   100% { transform: translateY(112vh) translateX(-12px) rotate(320deg); }
 }
 
+/* ---------- CORNER-BRACKET ORNAMENT ----------
+   Hairline open bracket + small flourish curl, this theme's established
+   signature motif ("corner-bracket marks... like a wax-sealed, formally
+   engraved invitation"). Continuous slow wind-sway so it never sits fully
+   still, independent of scroll position — reused via CSS rotation for
+   whichever corner it's placed in. */
+.corner-orn { position: absolute; width: 34px; height: 34px; pointer-events: none; z-index: 3; }
+.corner-orn .bracket-line { fill: none; stroke: var(--gold); stroke-width: 1.2; opacity: .7; }
+.corner-orn .bracket-curl { fill: none; stroke: var(--gold-light); stroke-width: 1; opacity: .6; }
+.corner-orn-tl { top: 14px; left: 14px; }
+.corner-orn-br { bottom: 14px; right: 14px; transform: rotate(180deg); }
+.cover .corner-orn-tl { top: 22px; left: 18px; width: 42px; height: 42px; }
+.cover .corner-orn-br { bottom: 22px; right: 18px; width: 42px; height: 42px; }
+.cover .corner-orn .bracket-line { stroke: rgba(255,255,255,.75); }
+.cover .corner-orn .bracket-curl { stroke: var(--gold-light); }
+
+.sway-a { animation: windSwayA 7s ease-in-out infinite; transform-origin: top left; }
+.sway-b { animation: windSwayB 8.5s ease-in-out infinite; transform-origin: bottom right; }
+.corner-orn-br.sway-a, .corner-orn-br.sway-b { transform-origin: bottom right; }
+@keyframes windSwayA {
+  0%, 100% { transform: rotate(0deg) translate(0,0); }
+  50% { transform: rotate(2.5deg) translate(1px,-1px); }
+}
+@keyframes windSwayB {
+  0%, 100% { transform: rotate(180deg) translate(0,0); }
+  50% { transform: rotate(177deg) translate(-1px,1px); }
+}
+
+/* ---------- COVER TEXT ENTER (slide from left/right, converge to center) ---------- */
+.enter-left, .enter-right, .enter-fade {
+  opacity: 0; animation-duration: .9s; animation-timing-function: cubic-bezier(.16,.84,.32,1);
+  animation-fill-mode: both;
+}
+.enter-left { animation-name: enterFromLeft; }
+.enter-right { animation-name: enterFromRight; }
+.enter-fade { animation-name: enterFadeUp; }
+@keyframes enterFromLeft { from { opacity: 0; transform: translateX(-46px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes enterFromRight { from { opacity: 0; transform: translateX(46px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes enterFadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ---------- COVER BACKGROUND — slow settling zoom (Ken Burns) ---------- */
+.cover-bg { animation: coverSettleZoom 14s ease-out forwards; }
+@keyframes coverSettleZoom {
+  0% { transform: scale(1.18); }
+  100% { transform: scale(1.04); }
+}
+
+/* ---------- GALLERY — items converge from varied directions ---------- */
+.gallery-item {
+  opacity: 0; transition: opacity .7s cubic-bezier(.22,.9,.32,1), transform .7s cubic-bezier(.22,.9,.32,1);
+}
+.gallery-grid.is-visible .gallery-item { opacity: 1; transform: none !important; }
+.gallery-item.dir-tl { transform: translate(-26px,-22px) scale(.88); }
+.gallery-item.dir-t  { transform: translate(0,-30px) scale(.88); }
+.gallery-item.dir-tr { transform: translate(26px,-22px) scale(.88); }
+.gallery-item.dir-l  { transform: translate(-32px,0) scale(.88); }
+.gallery-item.dir-c  { transform: scale(.7); }
+.gallery-item.dir-r  { transform: translate(32px,0) scale(.88); }
+.gallery-grid.is-visible .gallery-item:nth-child(1) { transition-delay: .02s; }
+.gallery-grid.is-visible .gallery-item:nth-child(2) { transition-delay: .08s; }
+.gallery-grid.is-visible .gallery-item:nth-child(3) { transition-delay: .14s; }
+.gallery-grid.is-visible .gallery-item:nth-child(4) { transition-delay: .2s; }
+.gallery-grid.is-visible .gallery-item:nth-child(5) { transition-delay: .26s; }
+.gallery-grid.is-visible .gallery-item:nth-child(6) { transition-delay: .32s; }
+
+/* ---------- RUNDOWN — left/right content converge to center + scroll-linked progress dot ---------- */
+.rundown-wrap { position: relative; display: flow-root; }
+.timeline-progress-dot {
+  position: absolute; left: 112px; top: 24px; width: 9px; height: 9px; margin-left: -4.5px;
+  border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 4px rgba(176,140,79,.18);
+  transform: translateY(0); transition: opacity .3s ease; opacity: 0; pointer-events: none; z-index: 2;
+}
+.timeline-progress-dot.is-active { opacity: 1; }
+.rundown-left { opacity: 0; transform: translateX(-30px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,.9,.32,1); }
+.rundown-right { opacity: 0; transform: translateX(30px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,.9,.32,1); }
+.rundown-item.is-visible .rundown-left,
+.rundown-item.is-visible .rundown-right { opacity: 1; transform: none; }
+
 /* ---------- SCROLL REVEAL ---------- */
 [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity .8s ease, transform .8s ease; }
 [data-reveal].is-visible { opacity: 1; transform: none; }
@@ -364,4 +442,10 @@ h1, h2, h3 { font-family: "Cormorant Garamond", serif; font-weight: 500; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
   .particle-field { display: none; }
   .music-toggle.is-playing { animation: none; }
+  .sway-a, .sway-b { animation: none; }
+  .enter-left, .enter-right, .enter-fade { animation: none; opacity: 1; transform: none; }
+  .cover-bg { animation: none; transform: scale(1.04); }
+  .gallery-item { opacity: 1 !important; transform: none !important; transition: none; }
+  .rundown-left, .rundown-right { opacity: 1; transform: none; transition: none; }
+  .timeline-progress-dot { display: none; }
 }

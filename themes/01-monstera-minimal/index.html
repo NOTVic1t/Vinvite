@@ -11,6 +11,19 @@
 </head>
 <body>
 
+<!-- Corner-bracket ornament — hairline open bracket with a small flourish
+     curl, matching this theme's established signature ("corner-bracket
+     marks... like a wax-sealed, formally engraved invitation"). Reused via
+     <use> at 4 rotations for any corner. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="cornerBracket" viewBox="0 0 60 60">
+      <path class="bracket-line" d="M2 40 L2 8 Q2 2 8 2 L40 2" />
+      <path class="bracket-curl" d="M8 2 C15 2 15 11 8 11 C3 11 3 6 8 6" />
+    </symbol>
+  </defs>
+</svg>
+
 <div id="scroll-progress" class="scroll-progress"></div>
 <div id="particle-field" class="particle-field"></div>
 
@@ -20,12 +33,14 @@
   <div class="cover-bg" id="cover-bg"
     data-default-bg="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1400&auto=format&fit=crop"
     style="background-image:url('https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1400&auto=format&fit=crop')"></div>
+  <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+  <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
   <div class="cover-content">
-    <p class="cover-eyebrow">Undangan Pernikahan</p>
-    <h1 class="cover-names glow-text">Radit <span>&amp;</span> Nindy</h1>
-    <p class="cover-to">Kepada Yth.</p>
-    <p class="cover-guest" id="cover-guest-name">Bapak/Ibu Tamu Undangan</p>
-    <button id="open-invitation-btn" class="btn-open">Buka Undangan</button>
+    <p class="cover-eyebrow enter-left" style="animation-delay:.1s">Undangan Pernikahan</p>
+    <h1 class="cover-names glow-text enter-right" style="animation-delay:.25s">Radit <span>&amp;</span> Nindy</h1>
+    <p class="cover-to enter-left" style="animation-delay:.4s">Kepada Yth.</p>
+    <p class="cover-guest enter-right" id="cover-guest-name" style="animation-delay:.5s">Bapak/Ibu Tamu Undangan</p>
+    <button id="open-invitation-btn" class="btn-open enter-fade" style="animation-delay:.7s">Buka Undangan</button>
   </div>
 </section>
 
@@ -33,6 +48,8 @@
 
   <!-- HERO -->
   <section class="section hero" id="sec-home" data-section="home">
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <p class="eyebrow">The Wedding Of</p>
     <h1 class="hero-names" id="hero-names" data-reveal>Radit &amp; Nindy</h1>
     <div class="hero-divider"></div>
@@ -41,12 +58,16 @@
 
   <!-- QUOTE -->
   <section class="section quote" id="sec-quote" data-section="quote">
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <p class="quote-text" id="quote-text" data-reveal>&ldquo;Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan hidup agar kamu cenderung dan merasa tenteram kepadanya.&rdquo;</p>
     <p class="quote-source" id="quote-source">QS. AR-RUM: 21</p>
   </section>
 
   <!-- COUPLE -->
   <section class="section couple" id="sec-couple" data-section="couple">
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="couple">Mempelai</p>
     <div class="couple-grid" data-reveal>
@@ -66,6 +87,8 @@
 
   <!-- COUNTDOWN -->
   <section class="section countdown-section" id="sec-countdown" data-section="countdown">
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="countdown">Menuju Hari Bahagia</p>
     <div class="countdown" data-reveal>
@@ -81,6 +104,8 @@
 
   <!-- EVENTS -->
   <section class="section events-section" id="sec-events" data-section="events">
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="events">Acara</p>
     <div class="event-grid" id="events-container" data-reveal></div>
@@ -88,13 +113,20 @@
 
   <!-- RUNDOWN -->
   <section class="section rundown-section" id="sec-rundown" data-section="rundown">
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="rundown">Susunan Acara</p>
-    <div class="rundown-list" id="rundown-container" data-reveal></div>
+    <div class="rundown-wrap">
+      <div class="timeline-progress-dot" id="timeline-progress-dot"></div>
+      <div class="rundown-list" id="rundown-container" data-reveal></div>
+    </div>
   </section>
 
   <!-- LOVE STORY -->
   <section class="section story" id="sec-story" data-section="story">
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="story">Kisah Kami</p>
     <div class="story-timeline" id="story-timeline" data-reveal></div>
@@ -102,13 +134,17 @@
 
   <!-- GALLERY -->
   <section class="section gallery" id="sec-gallery" data-section="gallery">
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="gallery">Galeri</p>
-    <div class="gallery-grid" id="gallery-grid" data-reveal></div>
+    <div class="gallery-grid" id="gallery-grid"></div>
   </section>
 
   <!-- GIFT -->
   <section class="section gift" id="sec-gift" data-section="gift">
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="gift">Tanda Kasih</p>
     <p class="gift-intro">Doa restu Anda adalah hadiah yang paling berarti. Namun jika ingin memberi tanda kasih, kami menyediakan:</p>
@@ -117,6 +153,8 @@
 
   <!-- DRESS CODE -->
   <section class="section dress-code-section" id="sec-dress_code" data-section="dress_code">
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="dress_code">Dress Code</p>
     <div id="dress-code-container" data-reveal></div>
@@ -124,6 +162,8 @@
 
   <!-- HASHTAG -->
   <section class="section hashtag-section" id="sec-hashtag" data-section="hashtag">
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="hashtag">Tagar &amp; Instagram</p>
     <div id="hashtag-container" data-reveal></div>
@@ -131,6 +171,8 @@
 
   <!-- RSVP -->
   <section class="section rsvp" id="sec-rsvp" data-section="rsvp">
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="rsvp">Konfirmasi Kehadiran</p>
     <p id="social-proof" class="social-proof" hidden></p>
@@ -150,6 +192,8 @@
 
   <!-- GUESTBOOK -->
   <section class="section guestbook" id="sec-guestbook" data-section="guestbook">
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="eyebrow" data-section-label="guestbook">Ucapan &amp; Doa</p>
     <form id="guestbook-form" class="form">
@@ -162,6 +206,8 @@
 
   <!-- CLOSING -->
   <footer class="section footer">
+    <svg class="corner-orn corner-orn-tl sway-a" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
+    <svg class="corner-orn corner-orn-br sway-b" viewBox="0 0 60 60" aria-hidden="true"><use href="#cornerBracket" /></svg>
     <div class="section-divider" data-leaf></div>
     <p class="closing-text">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
     <p class="closing-names">Radit &amp; Nindy</p>
